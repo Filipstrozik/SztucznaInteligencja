@@ -8,14 +8,14 @@ namespace Z1
 {
     public class DijkstraAlgorithm
     {
-        private static int GetMinDistance(Dictionary<int, int> distances, HashSet<int> unvisited)
+        private static string? GetMinDistance(Dictionary<string, int> distances, HashSet<string> unvisited)
         {
             int minDistance = int.MaxValue;
-            int minNode = 0;
+            string? minNode = null;
 
             foreach (var pair in distances)
             {
-                int node = pair.Key;
+                string node = pair.Key;
                 int distance = pair.Value;
 
                 if (unvisited.Contains(node) && distance < minDistance)
@@ -28,10 +28,10 @@ namespace Z1
             return minNode;
         }
 
-        public static Dictionary<int, int> FindShortestPaths(Dictionary<int, Dictionary<int, int>> graph, int startNode)
+        public static Dictionary<string, int> FindShortestPaths(Dictionary<string, Dictionary<string, int>> graph, string startNode)
         {
-            Dictionary<int, int> distances = new Dictionary<int, int>();
-            HashSet<int> unvisited = new HashSet<int>();
+            Dictionary<string, int> distances = new Dictionary<string, int>();
+            HashSet<string> unvisited = new HashSet<string>();
 
             foreach (var node in graph.Keys)
             {
@@ -43,25 +43,54 @@ namespace Z1
 
             while (unvisited.Count > 0)
             {
-                int currentNode = GetMinDistance(distances, unvisited);
-                unvisited.Remove(currentNode);
+                string? currentNode = GetMinDistance(distances, unvisited);
 
-                if (graph.ContainsKey(currentNode))
+                if(currentNode == null)
                 {
-                    foreach (var neighbor in graph[currentNode])
-                    {
-                        int distanceToNeighbor = neighbor.Value;
-                        int distanceFromStart = distances[currentNode] + distanceToNeighbor;
+                    Console.WriteLine("Graph is not complete!");
+                    unvisited.Clear();
+                }
+                else
+                {
+                    unvisited.Remove(currentNode);
 
-                        if (distanceFromStart < distances[neighbor.Key])
+                    if (graph.ContainsKey(currentNode))
+                    {
+                        foreach (var neighbor in graph[currentNode])
                         {
-                            distances[neighbor.Key] = distanceFromStart;
+                            int distanceToNeighbor = neighbor.Value;
+                            int distanceFromStart = distances[currentNode] + distanceToNeighbor;
+
+                            if (distanceFromStart < distances[neighbor.Key])
+                            {
+                                distances[neighbor.Key] = distanceFromStart;
+                            }
                         }
                     }
                 }
+
             }
 
             return distances;
+        }
+
+        public static string Print(Dictionary<string, Dictionary<string, int>> graph)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var node in graph)
+            {
+                sb.AppendFormat("Node {0}:\n", node.Key);
+
+                foreach (var neighbor in node.Value)
+                {
+                    sb.AppendFormat("\t-> Node {0} (distance: {1})\n", neighbor.Key, neighbor.Value);
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
     }
 }
