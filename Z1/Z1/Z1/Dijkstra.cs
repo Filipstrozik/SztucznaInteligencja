@@ -32,6 +32,8 @@ namespace Z1
             Dictionary<(double, double), int> distances = new Dictionary<(double, double), int>();
             HashSet<(double, double)> unvisited = new HashSet<(double, double)>();
 
+            //TODO gotta have a piroryty queue
+
             foreach (var node in graph.Nodes.Keys)
             {
                 distances[node] = int.MaxValue;

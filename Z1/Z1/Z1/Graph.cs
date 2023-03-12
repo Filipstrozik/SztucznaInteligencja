@@ -34,25 +34,14 @@ namespace Z1
             return neighbors;
         }
 
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            var edgesByStartNode = Edges.GroupBy(e => e.StartNode.Name);
 
-            foreach (var group in edgesByStartNode)
-            {
-                sb.AppendLine($"Edges starting from node {group.Key}:");
-                foreach (var edge in group)
-                {
-                    sb.AppendLine($"- {edge}");
-                }
-            }
-            return sb.ToString();
-        }
 
         public void AddNode(Node node)
         {
-            Nodes[(node.Longitude, node.Latitude)] = node;
+            if(!Nodes.ContainsKey((node.Longitude, node.Latitude)))
+            {
+                Nodes[(node.Longitude, node.Latitude)] = node;
+            }
         }
 
         public void AddEdge(Edge edge)
@@ -71,6 +60,27 @@ namespace Z1
 
             Edges.Add(newEdge);
 
+            foundStartNode.Edges.Add(newEdge);
+
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            var nodes = Nodes;
+
+            foreach (var node in nodes)
+            {
+                if(node.Value.Edges.Count > 1)
+                {
+                    sb.AppendLine($"Edges starting from node {node}:");
+                    foreach (var edge in node.Value.Edges)
+                    {
+                        sb.AppendLine($"- {edge}");
+                    }
+                }
+            }
+            return sb.ToString();
         }
     }
 }
