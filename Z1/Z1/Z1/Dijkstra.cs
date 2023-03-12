@@ -8,19 +8,16 @@ namespace Z1
 {
     public class DijkstraAlgorithm
     {
-        private static string? GetMinDistance(Dictionary<string, int> distances, HashSet<string> unvisited)
+        private static (double,double)? GetMinDistance(Dictionary<(double, double), int> distances, HashSet<(double, double)> unvisited)
         {
             int minDistance = int.MaxValue;
-            string? minNode = null;
+            (double, double)? minNode = null;
 
-            foreach (var pair in distances)
+            foreach (var node in unvisited)
             {
-                string node = pair.Key;
-                int distance = pair.Value;
-
-                if (unvisited.Contains(node) && distance < minDistance)
+                if (distances[node] < minDistance)
                 {
-                    minDistance = distance;
+                    minDistance = distances[node];
                     minNode = node;
                 }
             }
@@ -28,12 +25,14 @@ namespace Z1
             return minNode;
         }
 
-        public static Dictionary<string, int> FindShortestPaths(Dictionary<string, Dictionary<string, int>> graph, string startNode)
+        public static Dictionary<(double, double), int> FindShortestPaths(Graph graph, string startPoint, string endPoint)
         {
-            Dictionary<string, int> distances = new Dictionary<string, int>();
-            HashSet<string> unvisited = new HashSet<string>();
+            (double, double) startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Key;
+            (double, double) endNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == endPoint).Key;
+            Dictionary<(double, double), int> distances = new Dictionary<(double, double), int>();
+            HashSet<(double, double)> unvisited = new HashSet<(double, double)>();
 
-            foreach (var node in graph.Keys)
+            foreach (var node in graph.Nodes.Keys)
             {
                 distances[node] = int.MaxValue;
                 unvisited.Add(node);
@@ -43,7 +42,7 @@ namespace Z1
 
             while (unvisited.Count > 0)
             {
-                string? currentNode = GetMinDistance(distances, unvisited);
+                (double, double)? currentNode = GetMinDistance(distances, unvisited);
 
                 if(currentNode == null)
                 {
@@ -52,14 +51,14 @@ namespace Z1
                 }
                 else
                 {
-                    unvisited.Remove(currentNode);
+                    unvisited.Remove(currentNode.Value);
 
-                    if (graph.ContainsKey(currentNode))
+                    if (graph.Nodes.ContainsKey(currentNode.Value))
                     {
-                        foreach (var neighbor in graph[currentNode])
+                        foreach (var neighbor in graph.Nodes)
                         {
-                            int distanceToNeighbor = neighbor.Value;
-                            int distanceFromStart = distances[currentNode] + distanceToNeighbor;
+                            int distanceToNeighbor = 1;
+                            int distanceFromStart = distances[currentNode.Value] + distanceToNeighbor;
 
                             if (distanceFromStart < distances[neighbor.Key])
                             {

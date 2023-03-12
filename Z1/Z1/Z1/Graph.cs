@@ -8,15 +8,15 @@ namespace Z1
 {
     public class Graph
     {
-        public List<Node> Nodes { get; set; }
+        public Dictionary<(double, double), Node> Nodes { get; set; }
         public List<Edge> Edges { get; set; }
 
         public Graph() 
         {
-            Nodes = new List<Node>();
+            Nodes = new Dictionary<(double,double),Node>();
             Edges = new List<Edge>();
         }
-        public Graph(List<Node> nodes, List<Edge> edges)
+        public Graph(Dictionary<(double, double), Node> nodes, List<Edge> edges)
         {
             Nodes = nodes;
             Edges = edges;
@@ -37,17 +37,40 @@ namespace Z1
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            var edgesByStartNode = Edges.GroupBy(e => e.StartNode);
+            var edgesByStartNode = Edges.GroupBy(e => e.StartNode.Name);
 
             foreach (var group in edgesByStartNode)
             {
-                sb.AppendLine($"Edges starting from node {group.Key.Name}:");
+                sb.AppendLine($"Edges starting from node {group.Key}:");
                 foreach (var edge in group)
                 {
                     sb.AppendLine($"- {edge}");
                 }
             }
             return sb.ToString();
+        }
+
+        public void AddNode(Node node)
+        {
+            Nodes[(node.Longitude, node.Latitude)] = node;
+        }
+
+        public void AddEdge(Edge edge)
+        {
+            Node? foundStartNode = Nodes[(edge.StartNode.Longitude, edge.StartNode.Latitude)];
+            Node? foundEndNode = Nodes[(edge.EndNode.Longitude, edge.EndNode.Latitude)];
+
+            Edge newEdge = new Edge(
+                edge.Id, 
+                edge.Company, 
+                edge.Line,
+                foundStartNode,
+                foundEndNode, 
+                edge.ArrivalTime, 
+                edge.DepartureTime);
+
+            Edges.Add(newEdge);
+
         }
     }
 }

@@ -8,14 +8,12 @@ namespace Z1
 {
     public class Node
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public List<Edge> Edges { get; set; }
-        public Node(int id, string name, double latitude, double longitude)
+        public Node(string name, double latitude, double longitude)
         {
-            Id = id;
             Name = name;
             Latitude = latitude;
             Longitude = longitude;
@@ -30,7 +28,7 @@ namespace Z1
 
         public override string ToString()
         {
-            return $"Node(Id={Id}, Name={Name}, Latitude={Latitude}, Longitude={Longitude})";
+            return $"Node(Name={Name}, Latitude={Latitude}, Longitude={Longitude})";
         }
     }
 
