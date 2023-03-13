@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Z1
 {
     public class DijkstraAlgorithm
     {
-        private static (double,double)? GetMinDistance(Dictionary<(double, double), int> distances, HashSet<(double, double)> unvisited)
+        private static Node GetMinDistance(Dictionary<Node, int> distances, HashSet<Node> unvisited)
         {
             int minDistance = int.MaxValue;
-            (double, double)? minNode = null;
+            Node? minNode = null;
 
             foreach (var node in unvisited)
             {
@@ -22,19 +23,36 @@ namespace Z1
                 }
             }
 
-            return minNode;
+            return minNode!;
         }
 
-        public static Dictionary<(double, double), int> FindShortestPaths(Graph graph, string startPoint, string endPoint)
+        public static Dictionary<Node, int> FindShortestPaths(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
         {
-            (double, double) startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Key;
-            (double, double) endNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == endPoint).Key;
-            Dictionary<(double, double), int> distances = new Dictionary<(double, double), int>();
-            HashSet<(double, double)> unvisited = new HashSet<(double, double)>();
+            Node startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
+            Node endNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == endPoint).Value;
+            Dictionary<Node, int> distances = new Dictionary<Node, int>();
+            HashSet<Node> unvisited = new HashSet<Node>();
 
-            //TODO gotta have a piroryty queue
 
-            foreach (var node in graph.Nodes.Keys)
+            Dictionary<Node, int> timeNodeVisited = new Dictionary<Node, int>();
+            timeNodeVisited[startNode] = 0;
+
+            //gotta have two dijskras 
+            //TODO gotta have a piroryty queues
+            Console.WriteLine("startting nodes:");
+            foreach (Node node in graph.Nodes.Values.Where(n => n.Name == startPoint))
+            {
+                Console.WriteLine(node);
+            }
+            Console.WriteLine("end nodes:");
+
+            foreach (Node node in graph.Nodes.Values.Where(n => n.Name == endPoint))
+            {
+                Console.WriteLine(node);
+            }
+
+
+            foreach (var node in graph.Nodes.Values)
             {
                 distances[node] = int.MaxValue;
                 unvisited.Add(node);
@@ -44,7 +62,14 @@ namespace Z1
 
             while (unvisited.Count > 0)
             {
-                (double, double)? currentNode = GetMinDistance(distances, unvisited);
+                Node currentNode = GetMinDistance(distances, unvisited);
+                if (currentNode.Name == endPoint)
+                {
+                    Console.WriteLine(currentNode);
+                    break;
+                }
+
+                int currentNodeTime = timeNodeVisited[currentNode];
 
                 if(currentNode == null)
                 {
@@ -53,18 +78,20 @@ namespace Z1
                 }
                 else
                 {
-                    unvisited.Remove(currentNode.Value);
+                    unvisited.Remove(currentNode);
 
-                    if (graph.Nodes.ContainsKey(currentNode.Value))
+                    if (graph.Nodes.ContainsValue(currentNode))
                     {
-                        foreach (var neighbor in graph.Nodes)
+                        foreach (var neighborEdge in graph.NeighbourEdges(currentNode))
                         {
-                            int distanceToNeighbor = 1;
-                            int distanceFromStart = distances[currentNode.Value] + distanceToNeighbor;
+                            
+                            int distanceToNeighbor = graph.CalculateCost(currentNode, neighborEdge, startTime);
+                            int distanceFromStart = distances[currentNode] + distanceToNeighbor;
 
-                            if (distanceFromStart < distances[neighbor.Key])
+                            if (distanceFromStart < distances[neighborEdge.EndNode])
                             {
-                                distances[neighbor.Key] = distanceFromStart;
+                                timeNodeVisited[neighborEdge.EndNode] = distanceToNeighbor;
+                                distances[neighborEdge.EndNode] = distanceFromStart;
                             }
                         }
                     }
@@ -72,7 +99,7 @@ namespace Z1
 
             }
 
-            return distances;
+            return timeNodeVisited;
         }
 
         public static string Print(Dictionary<string, Dictionary<string, int>> graph)

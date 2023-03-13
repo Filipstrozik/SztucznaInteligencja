@@ -64,6 +64,47 @@ namespace Z1
 
         }
 
+        public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
+        {
+            if(ConvertTimeAndCompare(edge.DepartureTime, currentTime))
+            {
+                Console.WriteLine($"{startNode} - {edge} - {currentTime}");
+                Console.WriteLine(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
+            }
+            return (int) (edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
+        }
+
+        private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime)
+        {
+            return TimeSpan.Compare(currentTime, departureTime) == 0;
+        }
+
+        public List<Node> Neighbours(Node startNode)
+        {
+            List<Node> neighours = new List<Node>();
+            foreach(Edge edge in Edges) 
+            {
+                if(edge.StartNode == startNode)
+                {
+                    neighours.Add(edge.EndNode);
+                }
+            }
+            return neighours;
+        }
+
+        public List<Edge> NeighbourEdges(Node startNode)
+        {
+            List<Edge> neighoursEdge = new List<Edge>();
+            foreach (Edge edge in Edges)
+            {
+                if (edge.StartNode == startNode)
+                {
+                    neighoursEdge.Add(edge);
+                }
+            }
+            return neighoursEdge;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
