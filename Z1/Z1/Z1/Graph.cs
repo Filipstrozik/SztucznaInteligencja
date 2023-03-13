@@ -68,8 +68,9 @@ namespace Z1
         {
             if(ConvertTimeAndCompare(edge.DepartureTime, currentTime))
             {
-                Console.WriteLine($"{startNode} - {edge} - {currentTime}");
-                Console.WriteLine(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
+                //Console.WriteLine($"{startNode} - {edge} - {currentTime}");
+                //Console.WriteLine(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
+                return (int)(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
             }
             return (int) (edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
         }

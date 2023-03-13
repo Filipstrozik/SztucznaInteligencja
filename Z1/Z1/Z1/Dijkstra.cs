@@ -63,6 +63,7 @@ namespace Z1
             while (unvisited.Count > 0)
             {
                 Node currentNode = GetMinDistance(distances, unvisited);
+                Console.WriteLine(currentNode);
                 if (currentNode.Name == endPoint)
                 {
                     Console.WriteLine(currentNode);
