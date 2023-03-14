@@ -66,19 +66,16 @@ namespace Z1
 
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
-            Console.WriteLine($"{edge} CURRENT TIMW {currentTime}");
-            Console.WriteLine(ConvertTimeAndCompare(edge.DepartureTime, currentTime));
-            if (ConvertTimeAndCompare(edge.DepartureTime, currentTime))
-            {
-                //Console.WriteLine(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
-                return int.MaxValue;
-            }
+            //Console.WriteLine($"{edge} CURRENT TIMW {currentTime}");
+            //Console.WriteLine(ConvertTimeAndCompare(edge.DepartureTime, currentTime));
             return (int) ((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.ArrivalTime.TotalMinutes - currentTime.TotalMinutes)));
+            //return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
         }
 
-        private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
+        private bool ConvertTimeAndCompare(TimeSpan arrivalTime, TimeSpan currentTime) 
         {
-            return TimeSpan.Compare(currentTime, departureTime) == 0;
+            //Console.WriteLine(TimeSpan.Compare(currentTime, arrivalTime) == -1);
+            return TimeSpan.Compare(currentTime, arrivalTime) == -1;
         }
 
         public List<Node> Neighbours(Node startNode)
@@ -94,12 +91,12 @@ namespace Z1
             return neighours;
         }
 
-        public List<Edge> NeighbourEdges(Node startNode)
+        public List<Edge> NeighbourEdges(Node startNode, TimeSpan currentTime)
         {
             List<Edge> neighoursEdge = new List<Edge>();
             foreach (Edge edge in Edges)
             {
-                if (edge.StartNode == startNode)
+                if (edge.StartNode == startNode && ConvertTimeAndCompare(edge.ArrivalTime, currentTime))
                 {
                     neighoursEdge.Add(edge);
                 }

@@ -84,7 +84,7 @@ namespace Z1
 
                     if (graph.Nodes.ContainsValue(currentNode))
                     {
-                        foreach (var neighborEdge in graph.NeighbourEdges(currentNode))
+                        foreach (var neighborEdge in graph.NeighbourEdges(currentNode, startTime))
                         {
                             
                             int distanceToNeighbor = graph.CalculateCost(currentNode, neighborEdge, startTime);
@@ -163,7 +163,7 @@ namespace Z1
                 if (current.Name == endPoint) break;
 
 
-                foreach (var next in graph.NeighbourEdges(current))//optimize getiing edges
+                foreach (var next in graph.NeighbourEdges(current, currentTime))//optimize getiing edges
                 {
                     howMany++;
                     var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
