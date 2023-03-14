@@ -29,11 +29,17 @@ public class Program
 
         //Node startNode = g.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
 
-        Node startNode = g.Nodes[(51.1353023, 17.03633491)];
-        Console.WriteLine(startNode);
+        //Node startNode = g.Nodes[(51.1353023, 17.03633491)];
+        //Node startNode = g.Nodes[(51.09365152, 17.02063499)];
 
-        DijkstraAlgorithm.PseudoDjikstra(g, startNode, "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
+        //DijkstraAlgorithm.PseudoDjikstra(g, startNode, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
         // Console.WriteLine("Shortest distances from node {0}:", "Broniewskiego");
+
+        foreach(var node in startingNodes)
+        {
+            DijkstraAlgorithm.PseudoDjikstra(g, node, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
+        }
+
 
         /*       foreach (var pair in shortestDistances)
                {

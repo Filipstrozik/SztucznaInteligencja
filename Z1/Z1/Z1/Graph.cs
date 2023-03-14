@@ -72,10 +72,9 @@ namespace Z1
             //return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
         }
 
-        private bool ConvertTimeAndCompare(TimeSpan arrivalTime, TimeSpan currentTime) 
+        private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
         {
-            //Console.WriteLine(TimeSpan.Compare(currentTime, arrivalTime) == -1);
-            return TimeSpan.Compare(currentTime, arrivalTime) == -1;
+            return TimeSpan.Compare(currentTime, departureTime) <= 0;
         }
 
         public List<Node> Neighbours(Node startNode)
@@ -96,7 +95,7 @@ namespace Z1
             List<Edge> neighoursEdge = new List<Edge>();
             foreach (Edge edge in Edges)
             {
-                if (edge.StartNode == startNode && ConvertTimeAndCompare(edge.ArrivalTime, currentTime))
+                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
                 {
                     neighoursEdge.Add(edge);
                 }
@@ -121,6 +120,19 @@ namespace Z1
                 }
             }
             return sb.ToString();
+        }
+
+        internal List<Edge> NeighbourEdgesForStartNode(Node startNode, TimeSpan currentTime)
+        {
+            List<Edge> neighoursEdge = new List<Edge>();
+            foreach (Edge edge in Edges)
+            {
+                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
+                {
+                    neighoursEdge.Add(edge);
+                }
+            }
+            return neighoursEdge;
         }
     }
 }

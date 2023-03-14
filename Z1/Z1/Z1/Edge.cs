@@ -29,7 +29,7 @@ namespace Z1
 
         public override string? ToString()
         {
-            return $"\tEdge(\n\tId={Id},\n\tCompany={Company}, \n\tLine={Line}, \n\tStartNode={StartNode}, \n\tEndNode={EndNode}, \n\tDepartureTime={DepartureTime}, \n\tArrivalTime={ArrivalTime})";
+            return $"E: {StartNode.Name} -- {Line} --> {EndNode.Name} \nt1: {DepartureTime} ---> t2: {ArrivalTime} \n Id={Id}, Company={Company} \n";
         }
     }
 

@@ -159,11 +159,14 @@ namespace Z1
                 var current = frontier.Dequeue();
                 lastNode = current;
 
-                Console.WriteLine(currentTime);
                 if (current.Name == endPoint) break;
 
 
-                foreach (var next in graph.NeighbourEdges(current, currentTime))//optimize getiing edges
+                foreach (var next in 
+                    current == startNode ? graph.NeighbourEdgesForStartNode(current, currentTime) :
+                    graph.NeighbourEdges(current, currentTime)
+                    
+                    )//optimize getiing edges
                 {
                     howMany++;
                     var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
@@ -175,12 +178,17 @@ namespace Z1
                         came_from[next.EndNode] = next;
                     }
                 }
+                if (frontier.Count == 0)
+                {
+                    Console.WriteLine("No possible solution!");
+                    break;
+                }
                 currentTime = came_from[frontier.Peek()].ArrivalTime;
 
             }
+            
             Console.WriteLine(howMany);
             var final_list = new List<Edge>();
-            Console.WriteLine(lastNode);
 
             while (came_from[lastNode] != null)
             {
@@ -189,6 +197,7 @@ namespace Z1
             }
             final_list.Reverse();
             final_list.ForEach(Console.WriteLine);
+            Console.WriteLine($"Total time {currentTime.TotalMinutes - startTime.TotalMinutes}");
         }
     }
 
