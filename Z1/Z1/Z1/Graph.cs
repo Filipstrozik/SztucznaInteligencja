@@ -66,13 +66,14 @@ namespace Z1
 
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
-            if(ConvertTimeAndCompare(edge.DepartureTime, currentTime))
+/*            if(ConvertTimeAndCompare(edge.DepartureTime, currentTime))
             {
                 //Console.WriteLine($"{startNode} - {edge} - {currentTime}");
                 //Console.WriteLine(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
                 return (int)(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
-            }
-            return (int) (edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
+            }*/
+
+            return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
         }
 
         private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime)

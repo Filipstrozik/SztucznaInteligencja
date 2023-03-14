@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -121,5 +122,52 @@ namespace Z1
 
             return sb.ToString();
         }
+
+        public static void PseudoDjikstra(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
+        {
+            Node startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
+            Node endNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == endPoint).Value;
+
+
+            var frontier = new PriorityQueue<Node, int>();
+            frontier.Enqueue(startNode, 0);
+            var came_from = new Dictionary<Node, Edge>();
+            var cost_so_far = new Dictionary<Node, int>();
+            came_from[startNode] = null;
+            cost_so_far[startNode] = 0;
+
+            int howMany = 0;
+
+            while (frontier.Count > 0)
+            {
+                var current = frontier.Dequeue();
+
+                if (current.Name == endPoint) break;
+               
+
+                foreach (var next in graph.NeighbourEdges(current))//optimize getiing edges
+                {
+                    howMany++;
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, startTime);
+                    if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
+                    {
+                        cost_so_far[next.EndNode] = new_cost;
+                        var priority = new_cost;
+                        frontier.Enqueue(next.EndNode, priority);
+                        came_from[next.EndNode] = next;
+                    }
+                }
+            }
+            Console.WriteLine(howMany);
+            var final_list = new List<Edge>();
+            Console.WriteLine(came_from);
+            foreach (var current in came_from)
+            {
+                Console.WriteLine(current.Value);
+            }
+        }
     }
+
+
+
 }

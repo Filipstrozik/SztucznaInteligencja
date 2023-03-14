@@ -20,7 +20,9 @@ public class Program
         Console.ReadKey();
         //Console.WriteLine(g);
 
-        Dictionary<Node, int> shortestDistances = DijkstraAlgorithm.FindShortestPaths(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
+        //Dictionary<Node, int> shortestDistances = DijkstraAlgorithm.FindShortestPaths(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
+
+        DijkstraAlgorithm.PseudoDjikstra(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
 
         Console.WriteLine("Shortest distances from node {0}:", "Broniewskiego");
 
