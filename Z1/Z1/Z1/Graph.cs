@@ -38,16 +38,16 @@ namespace Z1
 
         public void AddNode(Node node)
         {
-            if(!Nodes.ContainsKey((node.Longitude, node.Latitude)))
+            if(!Nodes.ContainsKey((node.Latitude, node.Longitude)))
             {
-                Nodes[(node.Longitude, node.Latitude)] = node;
+                Nodes[(node.Latitude, node.Longitude)] = node;
             }
         }
 
         public void AddEdge(Edge edge)
         {
-            Node? foundStartNode = Nodes[(edge.StartNode.Longitude, edge.StartNode.Latitude)];
-            Node? foundEndNode = Nodes[(edge.EndNode.Longitude, edge.EndNode.Latitude)];
+            Node? foundStartNode = Nodes[(edge.StartNode.Latitude, edge.StartNode.Longitude)];
+            Node? foundEndNode = Nodes[(edge.EndNode.Latitude, edge.EndNode.Longitude)];
 
             Edge newEdge = new Edge(
                 edge.Id, 
@@ -66,17 +66,17 @@ namespace Z1
 
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
-/*            if(ConvertTimeAndCompare(edge.DepartureTime, currentTime))
+            Console.WriteLine($"{edge} CURRENT TIMW {currentTime}");
+            Console.WriteLine(ConvertTimeAndCompare(edge.DepartureTime, currentTime));
+            if (ConvertTimeAndCompare(edge.DepartureTime, currentTime))
             {
-                //Console.WriteLine($"{startNode} - {edge} - {currentTime}");
                 //Console.WriteLine(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
-                return (int)(edge.ArrivalTime.TotalSeconds - currentTime.TotalSeconds);
-            }*/
-
-            return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
+                return int.MaxValue;
+            }
+            return (int) ((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.ArrivalTime.TotalMinutes - currentTime.TotalMinutes)));
         }
 
-        private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime)
+        private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
         {
             return TimeSpan.Compare(currentTime, departureTime) == 0;
         }

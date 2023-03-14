@@ -17,19 +17,28 @@ public class Program
         Console.WriteLine(g.Nodes.Count);
         Console.WriteLine(g.Edges.Count);
         Console.WriteLine("Graph created...");
-        Console.ReadKey();
+        //Console.ReadKey();
         //Console.WriteLine(g);
 
         //Dictionary<Node, int> shortestDistances = DijkstraAlgorithm.FindShortestPaths(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
 
-        DijkstraAlgorithm.PseudoDjikstra(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
+        string startPoint = "Broniewskiego";
 
-        Console.WriteLine("Shortest distances from node {0}:", "Broniewskiego");
+        var startingNodes = g.Nodes.Values.Where(n => n.Name == startPoint);
 
- /*       foreach (var pair in shortestDistances)
-        {
-            Console.WriteLine("Node {0}: {1}", pair.Key.Name, pair.Value);
-        }*/
+
+        //Node startNode = g.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
+
+        Node startNode = g.Nodes[(51.1353023, 17.03633491)];
+        Console.WriteLine(startNode);
+
+        DijkstraAlgorithm.PseudoDjikstra(g, startNode, "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
+        // Console.WriteLine("Shortest distances from node {0}:", "Broniewskiego");
+
+        /*       foreach (var pair in shortestDistances)
+               {
+                   Console.WriteLine("Node {0}: {1}", pair.Key.Name, pair.Value);
+               }*/
 
     }
 }

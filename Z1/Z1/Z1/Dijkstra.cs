@@ -123,10 +123,22 @@ namespace Z1
             return sb.ToString();
         }
 
-        public static void PseudoDjikstra(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
+        public static void PseudoDjikstra(Graph graph, Node startNode, string endPoint, TimeSpan startTime)
         {
-            Node startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
+            //Node startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
             Node endNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == endPoint).Value;
+
+/*            Console.WriteLine("startting nodes:");
+            foreach (Node node in graph.Nodes.Values.Where(n => n.Name == startPoint))
+            {
+                Console.WriteLine(node);
+            }*/
+/*            Console.WriteLine("end nodes:");
+
+            foreach (Node node in graph.Nodes.Values.Where(n => n.Name == endPoint))
+            {
+                Console.WriteLine(node);
+            }*/
 
 
             var frontier = new PriorityQueue<Node, int>();
@@ -136,19 +148,25 @@ namespace Z1
             came_from[startNode] = null;
             cost_so_far[startNode] = 0;
 
+            Node lastNode = null;
+
             int howMany = 0;
+            var currentTime = startTime;
+
 
             while (frontier.Count > 0)
             {
                 var current = frontier.Dequeue();
+                lastNode = current;
 
+                Console.WriteLine(currentTime);
                 if (current.Name == endPoint) break;
-               
+
 
                 foreach (var next in graph.NeighbourEdges(current))//optimize getiing edges
                 {
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, startTime);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
@@ -157,14 +175,20 @@ namespace Z1
                         came_from[next.EndNode] = next;
                     }
                 }
+                currentTime = came_from[frontier.Peek()].ArrivalTime;
+
             }
             Console.WriteLine(howMany);
             var final_list = new List<Edge>();
-            Console.WriteLine(came_from);
-            foreach (var current in came_from)
+            Console.WriteLine(lastNode);
+
+            while (came_from[lastNode] != null)
             {
-                Console.WriteLine(current.Value);
+                final_list.Add(came_from[lastNode]);
+                lastNode = came_from[lastNode].StartNode;
             }
+            final_list.Reverse();
+            final_list.ForEach(Console.WriteLine);
         }
     }
 
