@@ -173,7 +173,7 @@ namespace Z1
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
-                        var priority = new_cost;
+                        var priority = new_cost + Graph.EuklidesHeuristic(endNode, next.EndNode) + Graph.LineChangeCost(came_from[current], next);
                         frontier.Enqueue(next.EndNode, priority);
                         came_from[next.EndNode] = next;
                     }

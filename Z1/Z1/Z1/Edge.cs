@@ -29,7 +29,9 @@ namespace Z1
 
         public override string? ToString()
         {
-            return $"E: {StartNode.Name} -- {Line} --> {EndNode.Name} \nt1: {DepartureTime} ---> t2: {ArrivalTime} \n Id={Id}, Company={Company} \n";
+            //return $"E: {Line} t1: {DepartureTime} at: {StartNode.Name} \t\t  t2: {ArrivalTime} at: {EndNode.Name}";
+            return $" {Line.Substring(0, Math.Min(3, Line.Length)).PadRight(3)} t1: {DepartureTime} at: {StartNode.Name.Substring(0, Math.Min(20, StartNode.Name.Length)).PadRight(20)} t2: {ArrivalTime} at: {EndNode.Name.Substring(0, Math.Min(20, EndNode.Name.Length)).PadRight(20)}";
+
         }
     }
 

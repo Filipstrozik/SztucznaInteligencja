@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,6 +134,25 @@ namespace Z1
                 }
             }
             return neighoursEdge;
+        }
+
+        public static int ManhattanHeuristic(Node a, Node b)
+        {
+            return (int)( Math.Abs(a.Latitude - b.Latitude) + Math.Abs(a.Longitude - b.Longitude));
+        }
+        public static int EuklidesHeuristic(Node a, Node b)
+        {
+            return (int)(Math.Pow(a.Latitude - b.Latitude, 2) + Math.Pow(a.Longitude - b.Longitude, 2));
+        }
+
+        internal static int LineChangeCost(Edge edge, Edge next)
+        {
+            int cost = 0;
+            if (edge != null && edge.Line != next.Line)
+            {
+                cost = 100;
+            }
+            return cost;
         }
     }
 }
