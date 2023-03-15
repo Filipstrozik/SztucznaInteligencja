@@ -199,6 +199,69 @@ namespace Z1
             final_list.ForEach(Console.WriteLine);
             Console.WriteLine($"Total time {currentTime.TotalMinutes - startTime.TotalMinutes}");
         }
+
+        public static void PseudoDjikstraMerged(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
+        {
+            Node startNode = graph.MergedNodes[startPoint];
+            Node endNode = graph.MergedNodes[endPoint];
+
+            var frontier = new PriorityQueue<Node, int>();
+            frontier.Enqueue(startNode, 0);
+            var came_from = new Dictionary<Node, Edge>();
+            var cost_so_far = new Dictionary<Node, int>();
+            came_from[startNode] = null;
+            cost_so_far[startNode] = 0;
+
+            Node lastNode = null;
+
+            int howMany = 0;
+            var currentTime = startTime;
+
+
+            while (frontier.Count > 0)
+            {
+                var current = frontier.Dequeue();
+                lastNode = current;
+
+                if (current.Name == endPoint) break;
+
+
+                foreach (var next in graph.NeighbourEdgesForStartNodeMerged(current, currentTime))
+                {
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
+                    if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
+                    {
+                        howMany++;
+                        cost_so_far[next.EndNode] = new_cost;
+                        var priority = new_cost;// + Graph.ManhattanHeuristic(endNode, next.EndNode) + Graph.LineChangeCost(came_from[current], next);
+                        frontier.Enqueue(next.EndNode, priority);
+                        came_from[next.EndNode] = next;
+                    }
+                }
+                if (frontier.Count == 0)
+                {
+                    Console.WriteLine("No possible solution!");
+                    break;
+                }
+                currentTime = came_from[frontier.Peek()].ArrivalTime;
+
+            }
+
+            Console.WriteLine(howMany);
+            var final_list = new List<Edge>();
+
+            while (came_from[lastNode] != null)
+            {
+                final_list.Add(came_from[lastNode]);
+                lastNode = came_from[lastNode].StartNode;
+            }
+            final_list.Reverse();
+            foreach(var edge in final_list)
+            {
+                Console.WriteLine(edge + " " + cost_so_far[edge.EndNode]);
+            }
+            Console.WriteLine($"Total time {currentTime.TotalMinutes - startTime.TotalMinutes}");
+        }
     }
 
 

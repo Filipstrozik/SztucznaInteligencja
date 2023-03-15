@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Xml.Linq;
 using Z1;
@@ -13,18 +14,15 @@ public class Program
         NumberFormatInfo nfi = new NumberFormatInfo();
         nfi.NumberDecimalSeparator = ".";
         Graph g = new Graph();
-        DataLoader.Load(g);
-        Console.WriteLine(g.Nodes.Count);
+        DataLoader.LoadMerge(g);
+        Console.WriteLine(g.MergedNodes.Count);
         Console.WriteLine(g.Edges.Count);
         Console.WriteLine("Graph created...");
-        //Console.ReadKey();
-        //Console.WriteLine(g);
 
-        //Dictionary<Node, int> shortestDistances = DijkstraAlgorithm.FindShortestPaths(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:28:00"));
 
-        string startPoint = "Broniewskiego";
+        //string startPoint = "Broniewskiego";
 
-        var startingNodes = g.Nodes.Values.Where(n => n.Name == startPoint);
+        //var startingNodes = g.Nodes.Values.Where(n => n.Name == startPoint);
 
 
         //Node startNode = g.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
@@ -34,17 +32,17 @@ public class Program
 
         //DijkstraAlgorithm.PseudoDjikstra(g, startNode, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
         // Console.WriteLine("Shortest distances from node {0}:", "Broniewskiego");
-
+/*
         foreach(var node in startingNodes)
         {
+            var watch = Stopwatch.StartNew();
             DijkstraAlgorithm.PseudoDjikstra(g, node, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
-        }
+            watch.Stop();
+            Console.WriteLine($"The Execution time of the program is {watch.ElapsedMilliseconds}ms");
+        }*/
 
+        DijkstraAlgorithm.PseudoDjikstraMerged(g, "Broniewskiego", "BISKUPIN", TimeSpan.Parse("15:05:00"));
 
-        /*       foreach (var pair in shortestDistances)
-               {
-                   Console.WriteLine("Node {0}: {1}", pair.Key.Name, pair.Value);
-               }*/
 
     }
 }

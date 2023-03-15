@@ -10,17 +10,21 @@ namespace Z1
     public class Graph
     {
         public Dictionary<(double, double), Node> Nodes { get; set; }
-        public List<Edge> Edges { get; set; }
+
+        public Dictionary<string, Node> MergedNodes { get; set; }
+        public List<Edge> Edges { get; set; } //we can do it in priorityQueue also to keep them in order... binary search...
 
         public Graph() 
         {
             Nodes = new Dictionary<(double,double),Node>();
             Edges = new List<Edge>();
+            MergedNodes = new Dictionary<string, Node>();
         }
-        public Graph(Dictionary<(double, double), Node> nodes, List<Edge> edges)
+        public Graph(Dictionary<(double, double), Node> nodes, List<Edge> edges, Dictionary<string, Node> merged)
         {
             Nodes = nodes;
             Edges = edges;
+            MergedNodes=merged;
         }
 
         public List<Edge> GetAdjacentEdges(Node node)
@@ -36,12 +40,19 @@ namespace Z1
         }
 
 
-
         public void AddNode(Node node)
         {
             if(!Nodes.ContainsKey((node.Latitude, node.Longitude)))
             {
                 Nodes[(node.Latitude, node.Longitude)] = node;
+            }
+        }
+
+        public void AddNodeMerged(Node node)
+        {
+            if (!MergedNodes.ContainsKey(node.Name))
+            {
+                MergedNodes[node.Name] = node;
             }
         }
 
@@ -65,12 +76,28 @@ namespace Z1
 
         }
 
+        public void AddEdgeMerged(Edge edge)
+        {
+            Node? foundStartNode = MergedNodes[edge.StartNode.Name];
+            Node? foundEndNode = MergedNodes[edge.EndNode.Name];
+
+            Edge newEdge = new Edge(
+                edge.Id,
+                edge.Company,
+                edge.Line,
+                foundStartNode,
+                foundEndNode,
+                edge.ArrivalTime,
+                edge.DepartureTime);
+
+            Edges.Add(newEdge);
+
+            foundStartNode.Edges.Add(newEdge);
+        }
+
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
-            //Console.WriteLine($"{edge} CURRENT TIMW {currentTime}");
-            //Console.WriteLine(ConvertTimeAndCompare(edge.DepartureTime, currentTime));
-            return (int) ((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.ArrivalTime.TotalMinutes - currentTime.TotalMinutes)));
-            //return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
+            return (int) ((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.DepartureTime.TotalMinutes - currentTime.TotalMinutes)));
         }
 
         private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
@@ -95,6 +122,19 @@ namespace Z1
         {
             List<Edge> neighoursEdge = new List<Edge>();
             foreach (Edge edge in Edges)
+            {
+                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
+                {
+                    neighoursEdge.Add(edge);
+                }
+            }
+            return neighoursEdge;
+        }
+
+        public List<Edge> NeighbourEdgesMerged(Node startNode, TimeSpan currentTime)
+        {
+            List<Edge> neighoursEdge = new List<Edge>();
+            foreach (Edge edge in startNode.Edges)
             {
                 if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
                 {
@@ -136,12 +176,27 @@ namespace Z1
             return neighoursEdge;
         }
 
+        internal List<Edge> NeighbourEdgesForStartNodeMerged(Node startNode, TimeSpan currentTime)
+        {
+            List<Edge> neighoursEdge = new List<Edge>();
+            foreach (Edge edge in startNode.Edges)
+            {
+                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
+                {
+                    neighoursEdge.Add(edge);
+                    //maybe set only 1 represetation of each line?
+                }
+            }
+            return neighoursEdge;
+        }
+
         public static int ManhattanHeuristic(Node a, Node b)
         {
             return (int)( Math.Abs(a.Latitude - b.Latitude) + Math.Abs(a.Longitude - b.Longitude));
         }
         public static int EuklidesHeuristic(Node a, Node b)
         {
+            Console.WriteLine((int)(Math.Pow(a.Latitude - b.Latitude, 2) + Math.Pow(a.Longitude - b.Longitude, 2)));
             return (int)(Math.Pow(a.Latitude - b.Latitude, 2) + Math.Pow(a.Longitude - b.Longitude, 2));
         }
 
@@ -150,7 +205,7 @@ namespace Z1
             int cost = 0;
             if (edge != null && edge.Line != next.Line)
             {
-                cost = 100;
+                cost = 1000;
             }
             return cost;
         }
