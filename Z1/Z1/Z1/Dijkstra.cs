@@ -128,19 +128,6 @@ namespace Z1
             //Node startNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == startPoint).Value;
             Node endNode = graph.Nodes.FirstOrDefault(n => n.Value.Name == endPoint).Value;
 
-/*            Console.WriteLine("startting nodes:");
-            foreach (Node node in graph.Nodes.Values.Where(n => n.Name == startPoint))
-            {
-                Console.WriteLine(node);
-            }*/
-/*            Console.WriteLine("end nodes:");
-
-            foreach (Node node in graph.Nodes.Values.Where(n => n.Name == endPoint))
-            {
-                Console.WriteLine(node);
-            }*/
-
-
             var frontier = new PriorityQueue<Node, int>();
             frontier.Enqueue(startNode, 0);
             var came_from = new Dictionary<Node, Edge>();
@@ -211,12 +198,9 @@ namespace Z1
             var cost_so_far = new Dictionary<Node, int>();
             came_from[startNode] = null;
             cost_so_far[startNode] = 0;
-
             Node lastNode = null;
-
             int howMany = 0;
             var currentTime = startTime;
-
 
             while (frontier.Count > 0)
             {
@@ -225,15 +209,14 @@ namespace Z1
 
                 if (current.Name == endPoint) break;
 
-
                 foreach (var next in graph.NeighbourEdgesForStartNodeMerged(current, currentTime))
                 {
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime) + Graph.ManhattanHeuristic(endNode, next.EndNode);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         howMany++;
                         cost_so_far[next.EndNode] = new_cost;
-                        var priority = new_cost;// + Graph.ManhattanHeuristic(endNode, next.EndNode) + Graph.LineChangeCost(came_from[current], next);
+                        var priority = new_cost + Graph.LineChangeCost(came_from[current], next);
                         frontier.Enqueue(next.EndNode, priority);
                         came_from[next.EndNode] = next;
                     }
@@ -244,7 +227,6 @@ namespace Z1
                     break;
                 }
                 currentTime = came_from[frontier.Peek()].ArrivalTime;
-
             }
 
             Console.WriteLine(howMany);

@@ -9,7 +9,8 @@ public class Program
 {
     public static void Main()
     {
-
+        long start = Stopwatch.GetTimestamp();
+        var watch = System.Diagnostics.Stopwatch.StartNew();
 
         NumberFormatInfo nfi = new NumberFormatInfo();
         nfi.NumberDecimalSeparator = ".";
@@ -32,16 +33,22 @@ public class Program
 
         //DijkstraAlgorithm.PseudoDjikstra(g, startNode, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
         // Console.WriteLine("Shortest distances from node {0}:", "Broniewskiego");
-/*
-        foreach(var node in startingNodes)
-        {
-            var watch = Stopwatch.StartNew();
-            DijkstraAlgorithm.PseudoDjikstra(g, node, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
-            watch.Stop();
-            Console.WriteLine($"The Execution time of the program is {watch.ElapsedMilliseconds}ms");
-        }*/
+        /*
+                foreach(var node in startingNodes)
+                {
+                    var watch = Stopwatch.StartNew();
+                    DijkstraAlgorithm.PseudoDjikstra(g, node, "PL. GRUNWALDZKI", TimeSpan.Parse("07:10:00"));
+                    watch.Stop();
+                    Console.WriteLine($"The Execution time of the program is {watch.ElapsedMilliseconds}ms");
+                }*/
+        //DijkstraAlgorithm.PseudoDjikstraMerged(g, "Broniewskiego", "BISKUPIN", TimeSpan.Parse("15:00:00"));
+        DijkstraAlgorithm.PseudoDjikstraMerged(g, "Perzowa", "Jaworowa", TimeSpan.Parse("12:30:00"));
+        //DijkstraAlgorithm.PseudoDjikstraMerged(g, "Perzowa", "Jaworowa", TimeSpan.Parse("23:34:00"));
+        watch.Stop();
+        Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+        long end = Stopwatch.GetTimestamp();
 
-        DijkstraAlgorithm.PseudoDjikstraMerged(g, "Broniewskiego", "BISKUPIN", TimeSpan.Parse("15:05:00"));
+        Console.WriteLine("Elapsed Time is {0} ticks", (end - start));
 
 
     }
