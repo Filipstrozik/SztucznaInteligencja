@@ -76,9 +76,6 @@ namespace Z1
                     g.AddNodeMerged(endNode);
                     g.AddEdgeMerged(edge);
 
-                    //Console.WriteLine(startNode);
-                    //Console.WriteLine(id);
-                    //Console.WriteLine(endNode);
                 }
             }
         }

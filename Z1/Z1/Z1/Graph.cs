@@ -97,10 +97,7 @@ namespace Z1
 
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
-            //Console.WriteLine((int)((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.DepartureTime.TotalMinutes - currentTime.TotalMinutes))));
-            return (int) ((edge.ArrivalTime.TotalSeconds - edge.DepartureTime.TotalSeconds) + Math.Abs((edge.DepartureTime.TotalSeconds - currentTime.TotalSeconds)));
-            //return (int)(edge.ArrivalTime.TotalSeconds - edge.DepartureTime.TotalSeconds);
-            //return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
+            return (int) ((edge.ArrivalTime.TotalMinutes -  currentTime.TotalMinutes));
         }
 
         private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
@@ -195,7 +192,7 @@ namespace Z1
 
         public static int ManhattanHeuristic(Node a, Node b)
         {
-            return (int)(Math.Abs(a.Latitude - b.Latitude) + Math.Abs(a.Longitude - b.Longitude));
+            return (int)((Math.Abs(a.Latitude - b.Latitude) + Math.Abs(a.Longitude - b.Longitude)) * 1000);
         }
         public static int EuklidesHeuristic(Node a, Node b)
         {
@@ -207,7 +204,7 @@ namespace Z1
             int cost = 0;
             if (edge != null && edge.Line != next.Line)
             {
-                cost = 1000;
+                cost = 3000;
             }
             return cost;
         }
