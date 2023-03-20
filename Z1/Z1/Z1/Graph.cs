@@ -98,7 +98,8 @@ namespace Z1
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
             //Console.WriteLine((int)((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.DepartureTime.TotalMinutes - currentTime.TotalMinutes))));
-            return (int) ((edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes) + Math.Abs((edge.DepartureTime.TotalMinutes - currentTime.TotalMinutes)));
+            return (int) ((edge.ArrivalTime.TotalSeconds - edge.DepartureTime.TotalSeconds) + Math.Abs((edge.DepartureTime.TotalSeconds - currentTime.TotalSeconds)));
+            //return (int)(edge.ArrivalTime.TotalSeconds - edge.DepartureTime.TotalSeconds);
             //return (int) (edge.ArrivalTime.TotalMinutes - edge.DepartureTime.TotalMinutes);
         }
 

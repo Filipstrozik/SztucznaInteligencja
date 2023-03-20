@@ -211,12 +211,12 @@ namespace Z1
 
                 foreach (var next in graph.NeighbourEdgesForStartNodeMerged(current, currentTime))
                 {
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime) + Graph.ManhattanHeuristic(endNode, next.EndNode);
+                    howMany++;
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
-                        howMany++;
                         cost_so_far[next.EndNode] = new_cost;
-                        var priority = new_cost + Graph.LineChangeCost(came_from[current], next);
+                        var priority = new_cost;// + Graph.LineChangeCost(came_from[current], next);
                         frontier.Enqueue(next.EndNode, priority);
                         came_from[next.EndNode] = next;
                     }

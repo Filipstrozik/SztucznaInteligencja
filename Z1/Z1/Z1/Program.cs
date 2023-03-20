@@ -43,6 +43,8 @@ public class Program
                 }*/
         //DijkstraAlgorithm.PseudoDjikstraMerged(g, "Broniewskiego", "BISKUPIN", TimeSpan.Parse("15:00:00"));
         DijkstraAlgorithm.PseudoDjikstraMerged(g, "Perzowa", "Jaworowa", TimeSpan.Parse("12:30:00"));
+        DijkstraAlgorithm.PseudoDjikstraMerged(g, "PL. GRUNWALDZKI", "Broniewskiego", TimeSpan.Parse("09:10:00"));
+        DijkstraAlgorithm.PseudoDjikstraMerged(g, "DWORZEC GŁÓWNY", "Górnickiego", TimeSpan.Parse("10:12:00"));
         //DijkstraAlgorithm.PseudoDjikstraMerged(g, "Perzowa", "Jaworowa", TimeSpan.Parse("23:34:00"));
         watch.Stop();
         Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
