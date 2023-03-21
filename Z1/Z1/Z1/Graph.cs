@@ -27,18 +27,6 @@ namespace Z1
             MergedNodes=merged;
         }
 
-        public List<Edge> GetAdjacentEdges(Node node)
-        {
-            return Edges.Where(e => e.StartNode == node).ToList();
-        }
-
-        public List<Node> GetNeighbors(Node node)
-        {
-            var neighborEdges = GetAdjacentEdges(node);
-            var neighbors = neighborEdges.Select(e => e.EndNode).ToList();
-            return neighbors;
-        }
-
 
         public void AddNode(Node node)
         {
@@ -92,31 +80,24 @@ namespace Z1
 
             Edges.Add(newEdge);
 
-            foundStartNode.Edges.Add(newEdge);
+            foundStartNode.AddEdge(newEdge);
         }
 
         public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
         {
-            return (int) ((edge.ArrivalTime.TotalMinutes -  currentTime.TotalMinutes));
+            int result = (int)(edge.ArrivalTime.TotalMinutes - currentTime.TotalMinutes);
+            if((int)(edge.DepartureTime.TotalMinutes - currentTime.TotalMinutes) < 0) 
+            {
+                result = (int)(edge.ArrivalTime.TotalMinutes) + (int)(1440 - currentTime.TotalMinutes);
+            }
+            return result;
         }
 
-        private bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
+        public bool ConvertTimeAndCompare(TimeSpan currentTime, TimeSpan departureTime) 
         {
             return TimeSpan.Compare(currentTime, departureTime) <= 0;
         }
 
-        public List<Node> Neighbours(Node startNode)
-        {
-            List<Node> neighours = new List<Node>();
-            foreach(Edge edge in Edges) 
-            {
-                if(edge.StartNode == startNode)
-                {
-                    neighours.Add(edge.EndNode);
-                }
-            }
-            return neighours;
-        }
 
         public List<Edge> NeighbourEdges(Node startNode, TimeSpan currentTime)
         {
@@ -163,19 +144,6 @@ namespace Z1
             return sb.ToString();
         }
 
-        internal List<Edge> NeighbourEdgesForStartNode(Node startNode, TimeSpan currentTime)
-        {
-            List<Edge> neighoursEdge = new List<Edge>();
-            foreach (Edge edge in Edges)
-            {
-                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
-                {
-                    neighoursEdge.Add(edge);
-                }
-            }
-            return neighoursEdge;
-        }
-
         internal List<Edge> NeighbourEdgesForStartNodeMerged(Node startNode, TimeSpan currentTime)
         {
             List<Edge> neighoursEdge = new List<Edge>();
@@ -190,13 +158,26 @@ namespace Z1
             return neighoursEdge;
         }
 
+        internal List<Edge> NeighbourEdgesForStartNodeMergedAll(Node startNode, TimeSpan currentTime)
+        {
+            List<Edge> neighoursEdge = new List<Edge>();
+            foreach (Edge edge in startNode.Edges)
+            {
+                if (edge.StartNode == startNode)
+                {
+                    neighoursEdge.Add(edge);
+                }
+            }
+            return neighoursEdge;
+        }
+
         public static int ManhattanHeuristic(Node a, Node b)
         {
             return (int)((Math.Abs(a.Latitude - b.Latitude) + Math.Abs(a.Longitude - b.Longitude)) * 1000);
         }
         public static int EuklidesHeuristic(Node a, Node b)
         {
-            return (int)(Math.Pow(a.Latitude - b.Latitude, 2) + Math.Pow(a.Longitude - b.Longitude, 2));
+            return (int)(Math.Sqrt((Math.Pow(a.Latitude - b.Latitude, 2) + Math.Pow(a.Longitude - b.Longitude, 2))) * 1000);
         }
 
         internal static int LineChangeCost(Edge edge, Edge next)
@@ -204,7 +185,7 @@ namespace Z1
             int cost = 0;
             if (edge != null && edge.Line != next.Line)
             {
-                cost = 3000;
+                cost = 100;
             }
             return cost;
         }

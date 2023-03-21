@@ -12,6 +12,7 @@ namespace Z1
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public List<Edge> Edges { get; set; }
+
         public Node(string name, double latitude, double longitude)
         {
             Name = name;
