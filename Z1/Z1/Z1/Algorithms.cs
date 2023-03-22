@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
 namespace Z1
 {
-    public class DijkstraAlgorithm
+    public class Algorithms
     {
-
- 
-        public static void PseudoDjikstraMerged(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
+        public static void Dijkstra(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
         {
             Node startNode = graph.MergedNodes[startPoint];
             Node endNode = graph.MergedNodes[endPoint];
@@ -47,11 +47,6 @@ namespace Z1
                         came_from[next.EndNode] = next;
                     }
                 }
-                if (frontier.Count == 0)
-                {
-                    Console.WriteLine("No possible solution!");
-                    break;
-                }
                 currentTime = came_from[frontier.Peek()].ArrivalTime;
             }
 
@@ -74,7 +69,7 @@ namespace Z1
 
         }
 
-        public static void PseudoDjikstraMergedAStarTime(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
+        public static int AStarTime(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
         {
             Node startNode = graph.MergedNodes[startPoint];
             Node endNode = graph.MergedNodes[endPoint];
@@ -109,11 +104,6 @@ namespace Z1
                         came_from[next.EndNode] = next;
                     }
                 }
-                if (frontier.Count == 0)
-                {
-                    Console.WriteLine("No possible solution!");
-                    break;
-                }
                 currentTime = came_from[frontier.Peek()].ArrivalTime;
             }
 
@@ -129,15 +119,15 @@ namespace Z1
             {
                 Console.WriteLine(edge + " " + cost_so_far[edge.EndNode]);
             }
-            var totalTime = currentTime.TotalMinutes - startTime.TotalMinutes < 0 ? 1440 + (currentTime.TotalMinutes - startTime.TotalMinutes) : currentTime.TotalMinutes - startTime.TotalMinutes;
+            int totalTime = (int)(currentTime.TotalMinutes - startTime.TotalMinutes < 0 ? 1440 + (currentTime.TotalMinutes - startTime.TotalMinutes) : currentTime.TotalMinutes - startTime.TotalMinutes);
             Console.WriteLine($"Total time A* time {totalTime}");
             Console.WriteLine($"Total visted nodes: {howMany}");
-            
 
+            return totalTime;
         }
 
 
-        public static void PseudoDjikstraMergedAStarChanges(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
+        public static void AStarChanges(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
         {
             Node startNode = graph.MergedNodes[startPoint];
             Node endNode = graph.MergedNodes[endPoint];
@@ -172,11 +162,6 @@ namespace Z1
                         came_from[next.EndNode] = next;
                     }
                 }
-                if (frontier.Count == 0)
-                {
-                    Console.WriteLine("No possible solution!");
-                    break;
-                }
                 currentTime = came_from[frontier.Peek()].ArrivalTime;
             }
 
@@ -202,17 +187,30 @@ namespace Z1
             switch (mode)
             {
                 case "t":
-                    PseudoDjikstraMergedAStarTime(g, startPoint, endPoint, currentTime);
+                    AStarTime(g, startPoint, endPoint, currentTime);
                     return;
                 case "p":
-                    PseudoDjikstraMergedAStarChanges(g, startPoint, endPoint, currentTime);
+                    AStarChanges(g, startPoint, endPoint, currentTime);
                     return;
                 default:
                     break;
             }
         }
-    }
 
-    
+        public static void TabuSearch(Graph g, string startPoint, List<string> pointsToVisit, TimeSpan currentTime)
+        {
+            var time = currentTime;
+            var currPoint = startPoint;
+            foreach(var point in pointsToVisit)
+            {
+                time = time.Add(TimeSpan.FromMinutes(AStarTime(g, currPoint, point, time)));
+                currPoint = point;
+            }
+            time = time.Add(TimeSpan.FromMinutes(AStarTime(g, currPoint, startPoint, time)));
+            Console.WriteLine($"Total time Tabu {time.TotalMinutes - currentTime.TotalMinutes}");
+
+
+        }
+    }
 }
 

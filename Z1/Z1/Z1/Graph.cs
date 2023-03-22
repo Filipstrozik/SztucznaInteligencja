@@ -20,21 +20,6 @@ namespace Z1
             Edges = new List<Edge>();
             MergedNodes = new Dictionary<string, Node>();
         }
-        public Graph(Dictionary<(double, double), Node> nodes, List<Edge> edges, Dictionary<string, Node> merged)
-        {
-            Nodes = nodes;
-            Edges = edges;
-            MergedNodes=merged;
-        }
-
-
-        public void AddNode(Node node)
-        {
-            if(!Nodes.ContainsKey((node.Latitude, node.Longitude)))
-            {
-                Nodes[(node.Latitude, node.Longitude)] = node;
-            }
-        }
 
         public void AddNodeMerged(Node node)
         {
@@ -42,26 +27,6 @@ namespace Z1
             {
                 MergedNodes[node.Name] = node;
             }
-        }
-
-        public void AddEdge(Edge edge)
-        {
-            Node? foundStartNode = Nodes[(edge.StartNode.Latitude, edge.StartNode.Longitude)];
-            Node? foundEndNode = Nodes[(edge.EndNode.Latitude, edge.EndNode.Longitude)];
-
-            Edge newEdge = new Edge(
-                edge.Id, 
-                edge.Company, 
-                edge.Line,
-                foundStartNode,
-                foundEndNode, 
-                edge.ArrivalTime, 
-                edge.DepartureTime);
-
-            Edges.Add(newEdge);
-
-            foundStartNode.Edges.Add(newEdge);
-
         }
 
         public void AddEdgeMerged(Edge edge)
@@ -99,32 +64,6 @@ namespace Z1
         }
 
 
-        public List<Edge> NeighbourEdges(Node startNode, TimeSpan currentTime)
-        {
-            List<Edge> neighoursEdge = new List<Edge>();
-            foreach (Edge edge in Edges)
-            {
-                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
-                {
-                    neighoursEdge.Add(edge);
-                }
-            }
-            return neighoursEdge;
-        }
-
-        public List<Edge> NeighbourEdgesMerged(Node startNode, TimeSpan currentTime)
-        {
-            List<Edge> neighoursEdge = new List<Edge>();
-            foreach (Edge edge in startNode.Edges)
-            {
-                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
-                {
-                    neighoursEdge.Add(edge);
-                }
-            }
-            return neighoursEdge;
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -144,31 +83,20 @@ namespace Z1
             return sb.ToString();
         }
 
-        internal List<Edge> NeighbourEdgesForStartNodeMerged(Node startNode, TimeSpan currentTime)
-        {
-            List<Edge> neighoursEdge = new List<Edge>();
-            foreach (Edge edge in startNode.Edges)
-            {
-                if (edge.StartNode == startNode && ConvertTimeAndCompare(currentTime, edge.DepartureTime))
-                {
-                    neighoursEdge.Add(edge);
-                    //maybe set only 1 represetation of each line?
-                }
-            }
-            return neighoursEdge;
-        }
-
         internal List<Edge> NeighbourEdgesForStartNodeMergedAll(Node startNode, TimeSpan currentTime)
         {
-            List<Edge> neighoursEdge = new List<Edge>();
-            foreach (Edge edge in startNode.Edges)
-            {
-                if (edge.StartNode == startNode)
-                {
-                    neighoursEdge.Add(edge);
-                }
-            }
-            return neighoursEdge;
+            /*            List<Edge> neighoursEdge = new List<Edge>();
+                        foreach (Edge edge in startNode.Edges)
+                        {
+                            if (ConvertTimeAndCompare(currentTime, edge.DepartureTime))
+                            {
+                                neighoursEdge.Add(edge);
+                            }
+                        }
+                        return neighoursEdge;*/
+            //return startNode.Edges;
+
+            return startNode.Edges.Where(e => ConvertTimeAndCompare(currentTime, e.DepartureTime)).ToList();
         }
 
         public static int ManhattanHeuristic(Node a, Node b)

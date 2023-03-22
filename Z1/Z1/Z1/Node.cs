@@ -26,7 +26,6 @@ namespace Z1
             Edges.Add(edge);
         }
 
-
         public override string ToString()
         {
             return $"Node(Name={Name}, Latitude={Latitude}, Longitude={Longitude})";
