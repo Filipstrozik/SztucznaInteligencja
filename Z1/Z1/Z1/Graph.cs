@@ -43,7 +43,7 @@ namespace Z1
                 edge.ArrivalTime,
                 edge.DepartureTime);
 
-            Edges.Add(newEdge);
+            Edges.Add(newEdge);// do i need this
 
             foundStartNode.AddEdge(newEdge);
         }
@@ -64,25 +64,6 @@ namespace Z1
         }
 
 
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            var nodes = Nodes;
-
-            foreach (var node in nodes)
-            {
-                if(node.Value.Edges.Count > 1)
-                {
-                    sb.AppendLine($"Edges starting from node {node}:");
-                    foreach (var edge in node.Value.Edges)
-                    {
-                        sb.AppendLine($"- {edge}");
-                    }
-                }
-            }
-            return sb.ToString();
-        }
-
         internal List<Edge> NeighbourEdgesForStartNodeMergedAll(Node startNode, TimeSpan currentTime)
         {
             /*            List<Edge> neighoursEdge = new List<Edge>();
@@ -96,7 +77,22 @@ namespace Z1
                         return neighoursEdge;*/
             //return startNode.Edges;
 
-            return startNode.Edges.Where(e => ConvertTimeAndCompare(currentTime, e.DepartureTime)).ToList();
+             //TODO
+             //1 iterate through pirorytyqueue starting from current time and scan maximaly 20 minutes in forward...
+             //1a make a copy of piroryty queue
+             //1b 
+
+
+            //PriorityQueue<Edge, double> copyPriorityQueue = new PriorityQueue<Edge, double>((IEnumerable<(Edge Element, double Priority)>)startNode.PriorityQueue);
+            //copyPriorityQueue.Ele
+            var edges = startNode.Edges.Where(e => ConvertTimeAndCompare(currentTime, e.DepartureTime)
+            && ConvertTimeAndCompare(e.DepartureTime, currentTime.Add(TimeSpan.FromMinutes(30)))).ToList();
+            //Console.WriteLine(edges.Count);
+
+            //edges = startNode.Edges.Where(e => ConvertTimeAndCompare(currentTime, e.DepartureTime)).ToList();
+            //Console.WriteLine(edges.Count);
+
+            return edges;
         }
 
         public static int ManhattanHeuristic(Node a, Node b)
