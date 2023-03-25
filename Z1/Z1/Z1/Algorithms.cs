@@ -213,11 +213,11 @@ namespace Z1
                 {
                     if (came_from[current].Line == currentLineStrike)
                     {
-                        strikeMultiplier += 10;
+                        strikeMultiplier -= strikeMultiplier > 0 ? 10 : 0;
                     }
                     else
                     {
-                        strikeMultiplier = 0;
+                        strikeMultiplier = 130;
                         currentLineStrike = came_from[current].Line;
                     }
                 }
@@ -225,8 +225,6 @@ namespace Z1
 
                 foreach (var next in graph.NeighbourEdgesForStartNodeMergedAll(current, currentTime))
                 {
-                    //jezeli linia potencjalnia juz wystepuje w aktualniej linin to dodwaj strike (minusowy)
-                    //jezeli przelamuje strike to nic nie rob
                     var strikeCost = 0;
                     if(next.Line != currentLineStrike)
                     {
@@ -260,7 +258,7 @@ namespace Z1
                 Console.WriteLine(edge + " " + cost_so_far[edge.EndNode]);
             }
             var totalTime = currentTime.TotalMinutes - startTime.TotalMinutes < 0 ? 1440 + (currentTime.TotalMinutes - startTime.TotalMinutes) : currentTime.TotalMinutes - startTime.TotalMinutes;
-            Console.WriteLine($"Total time A* changes {totalTime}");
+            Console.WriteLine($"Total time A* changes + strike {totalTime}");
             Console.WriteLine($"Total visted nodes: {howMany}");
         }
 
@@ -279,20 +277,6 @@ namespace Z1
             }
         }
 
-        /*        public static void TabuSearch(Graph g, string startPoint, List<string> pointsToVisit, TimeSpan currentTime)
-                {
-                    var time = currentTime;
-                    var currPoint = startPoint;
-                    foreach(var point in pointsToVisit)
-                    {
-                        time = time.Add(TimeSpan.FromMinutes(AStarTime(g, currPoint, point, time)));
-                        currPoint = point;
-                    }
-                    time = time.Add(TimeSpan.FromMinutes(AStarTime(g, currPoint, startPoint, time)));
-                    Console.WriteLine($"Total time Tabu {time.TotalMinutes - currentTime.TotalMinutes}");
-
-
-                }*/
 
         public static List<string> TabuSearch(Graph g, string startPoint, List<string> pointsToVisit, TimeSpan currentTime, int tabuTenure, int maxIterations)
         {

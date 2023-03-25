@@ -66,31 +66,8 @@ namespace Z1
 
         internal List<Edge> NeighbourEdgesForStartNodeMergedAll(Node startNode, TimeSpan currentTime)
         {
-            /*            List<Edge> neighoursEdge = new List<Edge>();
-                        foreach (Edge edge in startNode.Edges)
-                        {
-                            if (ConvertTimeAndCompare(currentTime, edge.DepartureTime))
-                            {
-                                neighoursEdge.Add(edge);
-                            }
-                        }
-                        return neighoursEdge;*/
-            //return startNode.Edges;
-
-             //TODO
-             //1 iterate through pirorytyqueue starting from current time and scan maximaly 20 minutes in forward...
-             //1a make a copy of piroryty queue
-             //1b 
-
-
-            //PriorityQueue<Edge, double> copyPriorityQueue = new PriorityQueue<Edge, double>((IEnumerable<(Edge Element, double Priority)>)startNode.PriorityQueue);
-            //copyPriorityQueue.Ele
             var edges = startNode.Edges.Where(e => ConvertTimeAndCompare(currentTime, e.DepartureTime)
             && ConvertTimeAndCompare(e.DepartureTime, currentTime.Add(TimeSpan.FromMinutes(30)))).ToList();
-            //Console.WriteLine(edges.Count);
-
-            //edges = startNode.Edges.Where(e => ConvertTimeAndCompare(currentTime, e.DepartureTime)).ToList();
-            //Console.WriteLine(edges.Count);
 
             return edges;
         }

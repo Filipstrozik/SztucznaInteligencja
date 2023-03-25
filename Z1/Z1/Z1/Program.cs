@@ -12,12 +12,12 @@ public class Program
         Graph g = new Graph();
         DataLoader.LoadMerge(g);
 
-        //Run(g, "Perzowa", "Jaworowa", TimeSpan.Parse("12:30:00"));
+        Run(g, "Perzowa", "Jaworowa", TimeSpan.Parse("12:30:00"));
         //Run(g, "Perzowa", "Jaworowa", TimeSpan.Parse("23:34:00"));
         //Run(g, "Obornicka (Obwodnica)", "Jaworowa", TimeSpan.Parse("06:07:00"));
-        //Run(g, "Wielka", "ZOO", TimeSpan.Parse("16:19:00"));
+        Run(g, "Wielka", "ZOO", TimeSpan.Parse("16:19:00"));
         //Run(g, "Słonimskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("08:30:00"));
-        //Run(g, "LEŚNICA", "KSIĘŻE MAŁE", TimeSpan.Parse("07:26:00"));
+        Run(g, "LEŚNICA", "KSIĘŻE MAŁE", TimeSpan.Parse("07:28:00"));
 
 
 
