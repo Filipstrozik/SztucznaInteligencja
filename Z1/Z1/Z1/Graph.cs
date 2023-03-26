@@ -9,15 +9,11 @@ namespace Z1
 {
     public class Graph
     {
-        public Dictionary<(double, double), Node> Nodes { get; set; }
 
         public Dictionary<string, Node> MergedNodes { get; set; }
-        public List<Edge> Edges { get; set; } //we can do it in priorityQueue also to keep them in order... binary search...
 
         public Graph() 
         {
-            Nodes = new Dictionary<(double,double),Node>();
-            Edges = new List<Edge>();
             MergedNodes = new Dictionary<string, Node>();
         }
 
@@ -42,8 +38,6 @@ namespace Z1
                 foundEndNode,
                 edge.ArrivalTime,
                 edge.DepartureTime);
-
-            Edges.Add(newEdge);// do i need this
 
             foundStartNode.AddEdge(newEdge);
         }
@@ -76,6 +70,7 @@ namespace Z1
         {
             return (int)((Math.Abs(a.Latitude - b.Latitude) + Math.Abs(a.Longitude - b.Longitude)) * 1000);
         }
+
         public static int EuklidesHeuristic(Node a, Node b)
         {
             return (int)(Math.Sqrt((Math.Pow(a.Latitude - b.Latitude, 2) + Math.Pow(a.Longitude - b.Longitude, 2))) * 1000);
