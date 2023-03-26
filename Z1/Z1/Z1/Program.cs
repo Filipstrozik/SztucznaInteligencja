@@ -13,7 +13,7 @@ public class Program
         DataLoader.LoadMerge(g);
 
         //Run(g, "Perzowa", "Jaworowa", TimeSpan.Parse("12:30:00"));
-        //Run(g, "Jaworowa", "Perzowa", TimeSpan.Parse("12:30:00"));
+        //Run(g, "Jaworowa", "BISKUPIN", TimeSpan.Parse("12:30:00"));
         //Run(g, "Perzowa", "Jaworowa", TimeSpan.Parse("23:34:00"));
         //Run(g, "Obornicka (Obwodnica)", "Jaworowa", TimeSpan.Parse("06:07:00"));
         //Run(g, "Wielka", "ZOO", TimeSpan.Parse("16:19:00"));
@@ -28,35 +28,32 @@ public class Program
         //Run(g, "Perzowa", "Jaworowa", TimeSpan.Parse("23:34:00"));
         //Run(g, "Magellana", "Rogowska", TimeSpan.Parse("12:34:00"));
         //Run(g, "Rogowska", "Magellana", TimeSpan.Parse("12:34:00"));
-        //Run(g, "Jordanowska", "Nowy Dom", TimeSpan.Parse("13:35:00"));
-        //Run(g, "Broniewskiego", "Wawrzyniaka", TimeSpan.Parse("07:19:00"));
+        //Run(g, "PL. GRUNWALDZKI", "DWORZEC GŁÓWNY", TimeSpan.Parse("13:21:00"));
+        //Run(g, "Broniewskiego", "PL. GRUNWALDZKI", TimeSpan.Parse("07:19:00"));
         //Run(g, "Wyszyńskiego", "Wielka", TimeSpan.Parse("08:18:00"));
         //Run(g, "DWORZEC NADODRZE", "DWORZEC GŁÓWNY", TimeSpan.Parse("19:00:00"));
         //Run(g, "Smolec - Dębowa (sklep)", "Długołęka - Parkowa/skrzy.", TimeSpan.Parse("07:30:00"));
-        List<string> points = new List<string> { "PL. GRUNWALDZKI", "Hutmen", "Dmowskiego"};
+        List<string> points = new List<string> { "PL. GRUNWALDZKI", "Hutmen", "Dmowskiego", "Broniewskiego", "Jaworowa" };
         Random random = new Random();
         List<string> randomizedList = points.OrderBy(x => random.Next()).ToList();
-        foreach (string item in randomizedList)
+        var result = new List<string>();
+        for (int i = 0; i < 1; i++)
         {
-            Console.WriteLine(item);
+            randomizedList = points.OrderBy(x => random.Next()).ToList();
+            Console.WriteLine("\n-----------------\n");
+            result = Algorithms.TabuSearch(g, "Wita Stwosza", randomizedList, TimeSpan.Parse("10:00:00"), 3, true);
+            Algorithms.ComputeRouteTimePrint(g, "Wita Stwosza", result, TimeSpan.Parse("10:00:00"), true);
         }
-        Console.WriteLine("Tabu");
-        var result = Algorithms.TabuSearch(g, "Wita Stwosza", randomizedList, TimeSpan.Parse("10:00:00"), 1, 4);
-        foreach (var point in result)
+
+        for (int i = 0; i < 1; i++)
         {
-            Console.WriteLine(point.ToString());
+            randomizedList = points.OrderBy(x => random.Next()).ToList();
+            Console.WriteLine("\n-----------------\n");
+            result = Algorithms.TabuSearch(g, "Wita Stwosza", randomizedList, TimeSpan.Parse("10:00:00"), 3, false);
+            Algorithms.ComputeRouteTimePrint(g, "Wita Stwosza", result, TimeSpan.Parse("10:00:00"), false);
         }
-        Console.WriteLine("tabu2");
-/*        var tabu = Algorithms.TabuSearchWithoutLimits(g,
-            "Broniewskiego",
-            randomizedList,
-            TimeSpan.Parse("07:30:00"), 10, 1, new Dictionary<List<string>, int>(), 2, true
-            );
-        Console.WriteLine(tabu.Item2);
-        foreach ( var t in tabu.Item1)
-        {
-            Console.WriteLine(t.ToString());
-        }*/
+
+
     }
 
     public static void Run(Graph g, String startName, String endName, TimeSpan currentTime)
