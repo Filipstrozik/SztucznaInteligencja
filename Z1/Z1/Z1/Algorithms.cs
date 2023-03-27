@@ -5,7 +5,6 @@
         public static void Dijkstra(Graph graph, string startPoint, string endPoint, TimeSpan startTime)
         {
             Node startNode = graph.MergedNodes[startPoint];
-            Node endNode = graph.MergedNodes[endPoint];
 
             var frontier = new PriorityQueue<Node, int>();
             frontier.Enqueue(startNode, 0);
@@ -27,7 +26,7 @@
                 foreach (var next in graph.NeighbourEdgesForStartNodeMergedAll(current, currentTime))
                 {
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(next, currentTime);
 
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
@@ -84,7 +83,7 @@
                 foreach (var next in graph.NeighbourEdgesForStartNodeMergedAll(current, currentTime))
                 {
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(next, currentTime);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
@@ -140,7 +139,7 @@
                 foreach (var next in graph.NeighbourEdgesForStartNodeMergedAll(current, currentTime))
                 {
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(next, currentTime);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
@@ -194,7 +193,7 @@
                 foreach (var next in graph.NeighbourEdgesForStartNodeMergedAll(current, currentTime))
                 {
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime) + Graph.LineChangeCost(came_from[current], next);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(next, currentTime) + Graph.LineChangeCost(came_from[current], next);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
@@ -250,7 +249,7 @@
                 foreach (var next in graph.NeighbourEdgesForStartNodeMergedAll(current, currentTime))
                 {
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime) + Graph.LineChangeCost(came_from[current], next);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(next, currentTime) + Graph.LineChangeCost(came_from[current], next);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
@@ -290,7 +289,6 @@
             int howMany = 0;
             var currentTime = startTime;
 
-            var lines_strikes = new Dictionary<string, int>();
             string currentLineStrike = "";
             var strikeMultiplier = 0;
 
@@ -323,7 +321,7 @@
                         strikeCost = strikeMultiplier;
                     }
                     howMany++;
-                    var new_cost = cost_so_far[current] + graph.CalculateCost(current, next, currentTime) + Graph.LineChangeCost(came_from[current], next);
+                    var new_cost = cost_so_far[current] + graph.CalculateCost(next, currentTime) + Graph.LineChangeCost(came_from[current], next);
                     if (!cost_so_far.ContainsKey(next.EndNode) || new_cost < cost_so_far[next.EndNode])
                     {
                         cost_so_far[next.EndNode] = new_cost;
@@ -379,14 +377,10 @@
             var bestTime = ComputeRouteTime(g, startPoint, pointsToVisit, currentTime, ifTime);
             var tabuList = new HashSet<string>();
             var iteration = 0;
-            var aspirationCriteriaMet = false;
 
             while (iteration < maxIterations)
             {
-                // Generate candidate solutions by swapping adjacent cities
                 var candidates = GenerateNeighbors(newRoute);
-
-                // Evaluate candidate solutions and choose the best one that is not on the Tabu list
 
                 var bestCandidate = candidates
                     .Where(c => !tabuList.Contains(string.Join("-", c)))
@@ -399,10 +393,10 @@
                 }
 
                 if ( bestCandidate == null ) {
-                    break;
+                    tabuList = new HashSet<string>();
+                    continue;
                 }
 
-                // Update the current solution and the Tabu list
                 var newTime = ComputeRouteTime(g, startPoint, bestCandidate, time, ifTime);
                 newRoute = new List<string>(bestCandidate);
 
@@ -411,7 +405,6 @@
                     bestRoute = newRoute;
                     bestTime = newTime;
                 }
-                // Advance to the next iteration
                 iteration++;
             }
 
@@ -420,33 +413,15 @@
             return bestRoute;
         }
 
-
-        private static List<List<string>> GenerateCandidates(List<string> route)
-        {
-            var candidates = new List<List<string>>();
-
-            for (var i = 0; i < route.Count - 1; i++)
-            {
-                var candidate = new List<string>(route);
-                var tmp = candidate[i];
-                candidate[i] = candidate[i + 1];
-                candidate[i + 1] = tmp;
-                candidates.Add(candidate);
-            }
-            return candidates;
-        }
-
         public static List<List<string>> GenerateNeighbors(List<string> solution)
         {
-            List<List<string>> neighbors = new List<List<string>>();
+            List<List<string>> neighbors = new();
             int n = solution.Count;
             for (int i = 0; i < n; i++)
             {
-                List<string> neighbor = new List<string>(solution);
+                List<string> neighbor = new(solution);
                 int j = (i + 1) % n;
-                string temp = neighbor[i];
-                neighbor[i] = neighbor[j];
-                neighbor[j] = temp;
+                (neighbor[j], neighbor[i]) = (neighbor[i], neighbor[j]);
                 neighbors.Add(neighbor);
             }
             return neighbors;
@@ -479,17 +454,6 @@
             return time.TotalMinutes - currentTime.TotalMinutes;
         }
 
-        private static IEnumerable<string> GetTabuMoves(List<string> oldRoute, List<string> newRoute)
-        {
-            for (var i = 0; i < oldRoute.Count; i++)
-            {
-                if (oldRoute[i] != newRoute[i])
-                {
-                    //yield return $"{oldRoute[i]}-{newRoute[i]}";
-                    yield return string.Join("-", oldRoute);
-                }
-            }
-        }
 
         public static void ComputeRouteTimePrint(Graph g, string startPoint, List<string> pointsToVisit, TimeSpan currentTime, bool ifTime)
         {

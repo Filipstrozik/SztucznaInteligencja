@@ -12,9 +12,9 @@ namespace Z1
     {
         public static void LoadMerge(Graph g)
         {
-            String filePath = @"C:\Users\filip\Documents\Sem6\SztucznaInteligencja\Z1\Z1\Z1\connection_graph.csv";
+            String filePath = @"..\..\..\connection_graph.csv";
             string line;
-            using (StreamReader reader = new StreamReader(filePath))
+            using (StreamReader reader = new(filePath))
             {
                 reader.ReadLine();
                 while ((line = reader.ReadLine()) != null)
@@ -33,9 +33,9 @@ namespace Z1
                     string end_stop_lat = parts[10];
                     string end_stop_lon = parts[11];
 
-                    Node startNode = new Node(start_stop, Double.Parse(start_stop_lat), Double.Parse(start_stop_lon));
-                    Node endNode = new Node(end_stop, Double.Parse(end_stop_lat), Double.Parse(end_stop_lon));
-                    Edge edge = new Edge(Int32.Parse(id), company, travel_line, startNode, endNode, TimeSpan.Parse(arrival_time), TimeSpan.Parse(departure_time));
+                    Node startNode = new(start_stop, Double.Parse(start_stop_lat), Double.Parse(start_stop_lon));
+                    Node endNode = new(end_stop, Double.Parse(end_stop_lat), Double.Parse(end_stop_lon));
+                    Edge edge = new(Int32.Parse(id), company, travel_line, startNode, endNode, TimeSpan.Parse(arrival_time), TimeSpan.Parse(departure_time));
 
                     g.AddNodeMerged(startNode);
                     g.AddNodeMerged(endNode);

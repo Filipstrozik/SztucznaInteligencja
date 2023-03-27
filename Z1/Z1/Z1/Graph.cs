@@ -30,7 +30,7 @@ namespace Z1
             Node? foundStartNode = MergedNodes[edge.StartNode.Name];
             Node? foundEndNode = MergedNodes[edge.EndNode.Name];
 
-            Edge newEdge = new Edge(
+            Edge newEdge = new(
                 edge.Id,
                 edge.Company,
                 edge.Line,
@@ -42,7 +42,7 @@ namespace Z1
             foundStartNode.AddEdge(newEdge);
         }
 
-        public int CalculateCost(Node startNode, Edge edge, TimeSpan currentTime)
+        public int CalculateCost(Edge edge, TimeSpan currentTime)
         {
             int result = (int)(edge.ArrivalTime.TotalMinutes - currentTime.TotalMinutes);
             if((int)(edge.DepartureTime.TotalMinutes - currentTime.TotalMinutes) < 0) 
