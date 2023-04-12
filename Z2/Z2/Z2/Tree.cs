@@ -36,7 +36,7 @@ namespace Z2
         public GameTree(int[,] boardState, int value)
         {
             Root = new Node(boardState, value);
-            CreateTree(Root, 1, 0);
+            CreateTree(Root, 2, 0);
         }
 
         // funkcja do tworzenia drzewa
@@ -88,30 +88,119 @@ namespace Z2
         }
 
         // funkcja sprawdzająca, czy dany ruch jest możliwy
+        //private int[,] CheckMove(int[,] boardState, int row, int col, int player, int opponent)
+        //{
+        //    int[,] newState = (int[,])boardState.Clone();
+
+        //    bool isValidMove = false;
+        //    int countFlips = 0;
+
+        //    // iteracja po wszystkich kierunkach
+        //    for (int i = -1; i <= 1; i++)
+        //    {
+        //        for (int j = -1; j <= 1; j++)
+        //        {
+        //            if (i == 0 && j == 0) continue;
+
+        //            int r = row + i;
+        //            int c = col + j;
+
+        //            // sprawdzenie, czy pierwsze pole w danym kierunku należy do przeciwnika
+        //            if (r >= 0 && r < 8 && c >= 0 && c < 8 && boardState[r, c] == opponent)
+        //            {
+        //                r += i;
+        //                c += j;
+
+        //                // przeszukiwanie w danym kierunku aż do końca planszy lub znalezienia pola pustego lub pola gracza
+        //                while (r >= 0 && r < 8 && c >= 0 && c < 8)
+        //                {
+        //                    //if (boardState[r, c] == player)
+        //                    if (boardState[r, c] == player)
+        //                    {
+        //                        isValidMove = true;
+        //                        break;
+        //                    }
+        //                    else if (boardState[r, c] == 0)
+        //                    {
+        //                        break;
+        //                    }
+        //                    else
+        //                    {
+        //                        countFlips++;
+        //                    }
+
+        //                    r += i;
+        //                    c += j;
+        //                }
+
+        //                if (isValidMove)
+        //                {
+        //                    // przeszukiwanie w danym kierunku w celu odwrócenia pionków przeciwnika
+        //                    r = row + i;
+        //                    c = col + j;
+
+        //                    while (r >= 0 && r < 8 && c >= 0 && c < 8)
+        //                    {
+        //                        //if(r == 7 || c == 7)
+        //                        //{
+        //                        //    Console.WriteLine("ciekawe");
+        //                        //}
+
+        //                        if (boardState[r, c] == player)
+        //                        {
+        //                            break;
+        //                        }
+
+        //                        newState[r, c] = player;
+        //                        countFlips--;
+
+        //                        if (countFlips == 0)
+        //                        {
+        //                            break;
+        //                        }
+
+        //                        r += i;
+        //                        c += j;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    if (isValidMove)
+        //    {
+        //        newState[row, col] = player;
+        //        return newState;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
         private int[,] CheckMove(int[,] boardState, int row, int col, int player, int opponent)
         {
             int[,] newState = (int[,])boardState.Clone();
 
             bool isValidMove = false;
-            int countFlips = 0;
 
-            // iteracja po wszystkich kierunkach
+            // iteracja po sąsiednich polach
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    if (i == 0 && j == 0) continue;
-
                     int r = row + i;
                     int c = col + j;
 
                     // sprawdzenie, czy pierwsze pole w danym kierunku należy do przeciwnika
                     if (r >= 0 && r < 8 && c >= 0 && c < 8 && boardState[r, c] == opponent)
                     {
+                        int countFlips = 0;
+
                         r += i;
                         c += j;
 
-                        // przeszukiwanie w danym kierunku aż do końca planszy lub znalezienia pola pustego lub pola gracza
+                        // przeszukiwanie w danym kierunku aż do znalezienia pola pustego lub pola gracza
                         while (r >= 0 && r < 8 && c >= 0 && c < 8)
                         {
                             if (boardState[r, c] == player)
@@ -138,13 +227,8 @@ namespace Z2
                             r = row + i;
                             c = col + j;
 
-                            while (r >= 0 && r < 8 && c >= 0 && c < 8)
+                            while (r >= 0 && r < 8 && c >= 0 && c < 8 && boardState[r, c] == opponent)
                             {
-                                if (boardState[r, c] == player)
-                                {
-                                    break;
-                                }
-
                                 newState[r, c] = player;
                                 countFlips--;
 
@@ -171,6 +255,7 @@ namespace Z2
                 return null;
             }
         }
+
 
         private int CalculateBoardValue(int[,] board, int player)
         {
