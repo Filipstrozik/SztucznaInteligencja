@@ -27,6 +27,8 @@ namespace UI
         private Bitmap white;
         private Bitmap hint;
         private int bitmapPadding = 6;
+        //
+        private bool automaticPlay = false;
 
         Dictionary<Tuple<int, int>, Play> playable;
 
@@ -153,6 +155,10 @@ namespace UI
             }
             playable = game.PossiblePlays();
             UpdateBoard();
+            if (this.automaticPlay)
+            {
+                this.NextMove(sender, e);
+            }
         }
 
         //set gameboard view to represent the game's board state
@@ -299,7 +305,6 @@ namespace UI
             if (next != null) game = next;
             playable = game.PossiblePlays();
             UpdateBoard();
-
         }
 
         private void Reset(object sender, EventArgs e)
@@ -323,6 +328,27 @@ namespace UI
                     break;
             }
             SetNewGame();
+        }
+
+        private void SetAutomaticPlay(object sender, EventArgs e)
+        {
+            this.automaticPlay = true;
+        }
+
+        private void UnSetAutomaticPlay(object sender, EventArgs e)
+        {
+            this.automaticPlay = false;
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    this.NextMove(sender, e);
+                }
+            });
         }
     }
 }
