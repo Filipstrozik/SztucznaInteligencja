@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace Z2
 {
+    [Serializable]
     public class Game
     {
         //player 1 plays black.
         //when true, the active player is player1.
-        public bool IsPlayer1 { private set; get; }
-        public Board Board { private set; get; }
-        private bool deadlock = false;
+        public bool IsPlayer1 { set; get; }
+        public Board Board { set; get; }
+        public bool deadlock = false;
         public TileColor? Winner
         {
             get
@@ -43,6 +46,11 @@ namespace Z2
             }
         }
 
+        [JsonConstructor]
+        public Game()
+        {
+
+        }
         public Game(uint size)
         {
 
@@ -88,6 +96,9 @@ namespace Z2
             Place(p.Coords.Item1, p.Coords.Item2);
             foreach (Tile tile in p.AffectedTiles)
             {
+                //check this shit
+                //Console.WriteLine(tile.Coords.Item1);
+                //Console.WriteLine(tile.Coords.Item2);
                 Board[tile.Coords.Item1, tile.Coords.Item2].Flip();
             }
             int i = 0;

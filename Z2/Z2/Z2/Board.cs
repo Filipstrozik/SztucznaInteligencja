@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,9 +12,14 @@ namespace Z2
     [Serializable]
     public class Board
     {
+        public Tile[,] board;
+        public uint Size { get;  set; }
+        
+        [JsonConstructor]
+        public Board()
+        {
 
-        private Tile[,] board;
-        public uint Size { get; private set; }
+        }
 
         public Board(uint size)
         {
@@ -28,8 +34,9 @@ namespace Z2
 
         }
 
-        private static Board DeepClone(Board obj)
+/*        private static Board DeepClone(Board obj)
         {
+
             using (var ms = new MemoryStream())
             {
                 var formatter = new BinaryFormatter();
@@ -38,6 +45,26 @@ namespace Z2
 
                 return (Board)formatter.Deserialize(ms);
             }
+        }*/
+
+        private static Board DeepClone(Board obj)
+        {
+            Board clone = (Board)obj.MemberwiseClone();
+
+            // deep clone the board array
+            clone.board = new Tile[obj.Size, obj.Size];
+            for (uint row = 0; row < obj.Size; row++)
+            {
+                for (uint col = 0; col < obj.Size; col++)
+                {
+                    if (obj.board[row, col] != null)
+                    {
+                        clone.board[row, col] = new Tile(obj.board[row, col]);
+                    }
+                }
+            }
+
+            return clone;
         }
 
         //place put a color tile on the board

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,14 @@ namespace Z2
             Coords = Tuple.Create<int, int>(x, y);
             placed = true;
             return Coords;
+        }
+
+        [JsonConstructor]
+        public Tile(Tile tile)
+        {
+            this.color = tile.color;
+            this.Coords = tile.Coords;
+            this.placed = tile.placed;
         }
 
         public Tile(TileColor color)

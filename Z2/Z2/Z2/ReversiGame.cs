@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ namespace Z2
 {
     public class GameManager
     {
-        private Game game;
+        public Game game;
         public ReversiSolver[] Agents = new ReversiSolver[2];
-        private Play[] humanPlay = new Play[2];
-        private int play;
+        public Play[] humanPlay = new Play[2];
+        public int play;
 
 
         //construct manager for computer vs computer play
@@ -38,6 +39,40 @@ namespace Z2
             game = new Game(size);
             play = 0;
         }
+
+        [JsonConstructor]
+        public GameManager()
+        {
+        }
+
+        public void LoadGameState(string filepath)
+        {
+
+            string json = File.ReadAllText(filepath);
+            GameManager loaded = JsonConvert.DeserializeObject<GameManager>(json);
+            Agents = loaded.Agents;
+            game = loaded.game;
+            humanPlay = loaded.humanPlay;
+            play = loaded.play;
+            //Board = new Board(loaded.Board);
+            //IsPlayer1 = loaded.IsPlayer1;
+            //deadlock = loaded.deadlock;
+        }
+
+        public void SaveGameState(string filePath)
+        {
+            string json = JsonConvert.SerializeObject(this);
+            SaveJsonToFile(json, filePath);
+        }
+
+        public static void SaveJsonToFile(string json, string filePath)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.Write(json);
+            }
+        }
+
 
 
         //play on behalf of a human
@@ -92,6 +127,7 @@ namespace Z2
             }
             else
             {
+
                 Play p = agent.ChoosePlay(game);
                 if (p != null)
                 {

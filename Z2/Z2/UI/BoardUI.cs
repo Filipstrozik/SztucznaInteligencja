@@ -12,6 +12,7 @@ namespace UI
             Mobility,
             Corners,
             Weighted,
+            Random
         }
 
         GameManager manager;
@@ -197,13 +198,15 @@ namespace UI
             TileColor playerColor = game.IsPlayer1 ? TileColor.BLACK : TileColor.WHITE;
 
             // Count Heuristic
-            System.Console.WriteLine("The tile counting heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
+            //System.Console.WriteLine("The tile counting heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
             // Corners Heuristic
-            System.Console.WriteLine("The corners heuristic returns: " + ReversiSolver.CornersHeuristic(game, playerColor) + " for " + player);
+            //System.Console.WriteLine("The corners heuristic returns: " + ReversiSolver.CornersHeuristic(game, playerColor) + " for " + player);
             // Weighted Heuristic
-            System.Console.WriteLine("The weighted heuristic returns: " + ReversiSolver.WeightedHeuristic(game, playerColor) + " for " + player);
+            //System.Console.WriteLine("The weighted heuristic returns: " + ReversiSolver.WeightedHeuristic(game, playerColor) + " for " + player);
             // Mobility Heuristic
-            System.Console.WriteLine("The mobility heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
+            //System.Console.WriteLine("The mobility heuristic returns: " + ReversiSolver.ActualMobilityHeuristic(game, playerColor) + " for " + player);
+            // Random Heuristic
+            //System.Console.WriteLine("The random heuristic returns: " + ReversiSolver.RandomHeuristic(game, playerColor) + " for " + player);
         }
 
         private void ChangeGameMode(object sender, EventArgs e)
@@ -236,6 +239,12 @@ namespace UI
                 case "tileBlack":
                     blackMode = GameMode.Tile;
                     break;
+                case "randomWhite":
+                    whiteMode = GameMode.Random;
+                    break;
+                case "randomBlack":
+                    blackMode = GameMode.Random;
+                    break;
             }
             SetNewGame();
         }
@@ -258,6 +267,9 @@ namespace UI
                 case GameMode.Mobility:
                     whiteHeuristic = ReversiSolver.ActualMobilityHeuristic;
                     break;
+                case GameMode.Random:
+                    whiteHeuristic = ReversiSolver.RandomHeuristic;
+                    break;
             }
 
             switch (blackMode)
@@ -273,6 +285,9 @@ namespace UI
                     break;
                 case GameMode.Mobility:
                     blackHeuristic = ReversiSolver.ActualMobilityHeuristic;
+                    break;
+                case GameMode.Random:
+                    blackHeuristic = ReversiSolver.RandomHeuristic;
                     break;
             }
 
@@ -293,6 +308,7 @@ namespace UI
                 manager = new GameManager(blackHeuristic, blackPlyVal, whiteHeuristic, whitePlyVal);
             }
 
+            manager.Reset();
             game = manager.GetGame();
             playable = game.PossiblePlays();
             UpdateBoard();
@@ -300,7 +316,14 @@ namespace UI
 
         private void NextMove(object sender, EventArgs e)
         {
-            if (game.Winner != null) return;
+            if (game.Winner != null)
+            {
+                Console.WriteLine(game.Winner);
+                lblFullBoard.Text = $"Winner is: {game.Winner}";
+                // Create a new popup dialog box to display the label control
+                MessageBox.Show(lblFullBoard.Text, game.Winner.ToString());
+                return;
+            }
             Game next = manager.Next();
             if (next != null) game = next;
             playable = game.PossiblePlays();
@@ -344,11 +367,50 @@ namespace UI
         {
             await Task.Run(() =>
             {
-                for (int i = 0; i < 100; i++)
+                while (game.Winner == null)
                 {
-                    this.NextMove(sender, e);
+                    NextMove(sender, e);
                 }
+                Console.WriteLine(game.Winner);
+                Console.WriteLine($"WHITE: {game.Board.GetNumColor(TileColor.WHITE)} \n BLACK: {game.Board.GetNumColor(TileColor.BLACK)}");
+                lblFullBoard.Text = $"Winner is: {game.Winner}\nWHITE: {game.Board.GetNumColor(TileColor.WHITE)}\nBLACK: {game.Board.GetNumColor(TileColor.BLACK)}";
+                // Create a new popup dialog box to display the label control
+                MessageBox.Show(lblFullBoard.Text, game.Winner.ToString());
+                return;
             });
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON files (*.json)|*.json";
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Call your custom save method with the selected file path
+                string filePath = saveFileDialog.FileName;
+                manager.SaveGameState(filePath);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON files (*.json)|*.json";
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Call your custom save method with the selected file path
+                manager.Reset();
+                game = manager.GetGame();
+                string filePath = openFileDialog.FileName;
+                manager.LoadGameState(filePath);
+                game = manager.GetGame();
+                playable = game.PossiblePlays();
+                UpdateBoard();
+            }
         }
     }
 }
