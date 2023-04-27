@@ -20,7 +20,9 @@ namespace UI
         private GameMode whiteMode = GameMode.Human;
         private GameMode blackMode = GameMode.Human;
         private int whitePlyVal = 5;
+        private bool whitePrune = true;
         private int blackPlyVal = 5;
+        private bool blackPrune = true;
         private DataGridView gameBoard;
         private const int BOARD_SIZE = 8;
         private Bitmap blank;
@@ -28,7 +30,7 @@ namespace UI
         private Bitmap white;
         private Bitmap hint;
         private int bitmapPadding = 6;
-        //
+
         private bool automaticPlay = false;
 
         Dictionary<Tuple<int, int>, Play> playable;
@@ -37,6 +39,8 @@ namespace UI
         public BoardUI()
         {
             //TODO: Files loaded badly.  Must be in /bin already
+            // place the images in the bin folder
+
             blank = (Bitmap)Image.FromFile("./green.bmp");
             black = (Bitmap)Image.FromFile("./black.bmp");
             white = (Bitmap)Image.FromFile("./white.bmp");
@@ -117,7 +121,7 @@ namespace UI
 
                 imageColumn.Image = unMarked;
                 gameBoard.Columns.Add(imageColumn);
-                columnCount = columnCount + 1;
+                columnCount++;
             }
             while (columnCount < game.Size());
         }
@@ -145,7 +149,7 @@ namespace UI
             playable.TryGetValue(destCoords, out Play p);
             Play humanPlay = manager.OutsidePlay(p);
             if (humanPlay == null) return;
-            Game next = manager.Next();
+            Game next = manager.Next(blackPrune);
             if (next != null)
             {
                 game = next;
@@ -194,8 +198,8 @@ namespace UI
             }
 
             // Print out heuristic values for the current board for debugging
-            string player = game.IsPlayer1 ? "Black" : "White";
-            TileColor playerColor = game.IsPlayer1 ? TileColor.BLACK : TileColor.WHITE;
+            string player = game.IsFirstPlayer ? "Black" : "White";
+            TileColor playerColor = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
 
             // Count Heuristic
             //System.Console.WriteLine("The tile counting heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
@@ -297,15 +301,15 @@ namespace UI
             }
             else if (whiteMode == GameMode.Human)
             {
-                manager = new GameManager(blackHeuristic, blackPlyVal, TileColor.BLACK);
+                manager = new GameManager(blackHeuristic, blackPlyVal, TileColor.BLACK, blackPrune);
             }
             else if (blackMode == GameMode.Human)
             {
-                manager = new GameManager(whiteHeuristic, whitePlyVal, TileColor.WHITE);
+                manager = new GameManager(whiteHeuristic, whitePlyVal, TileColor.WHITE, whitePrune);
             }
             else
             {
-                manager = new GameManager(blackHeuristic, blackPlyVal, whiteHeuristic, whitePlyVal);
+                manager = new GameManager(blackHeuristic, blackPlyVal, blackPrune, whiteHeuristic, whitePlyVal, whitePrune);
             }
 
             manager.Reset();
@@ -320,11 +324,10 @@ namespace UI
             {
                 Console.WriteLine(game.Winner);
                 lblFullBoard.Text = $"Winner is: {game.Winner}";
-                // Create a new popup dialog box to display the label control
                 MessageBox.Show(lblFullBoard.Text, game.Winner.ToString());
                 return;
             }
-            Game next = manager.Next();
+            Game next = manager.Next(blackPrune);
             if (next != null) game = next;
             playable = game.PossiblePlays();
             UpdateBoard();
@@ -355,12 +358,12 @@ namespace UI
 
         private void SetAutomaticPlay(object sender, EventArgs e)
         {
-            this.automaticPlay = true;
+            automaticPlay = true;
         }
 
         private void UnSetAutomaticPlay(object sender, EventArgs e)
         {
-            this.automaticPlay = false;
+            automaticPlay = false;
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -411,6 +414,13 @@ namespace UI
                 playable = game.PossiblePlays();
                 UpdateBoard();
             }
+        }
+
+        private void SetPrune(object sender, EventArgs e)
+        {
+            CheckBox c = (CheckBox)sender;
+            whitePrune = c.Checked;
+            blackPrune = c.Checked;
         }
     }
 }

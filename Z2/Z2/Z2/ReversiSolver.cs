@@ -10,15 +10,18 @@ namespace Z2
     {
         private Func<Game, int> heuristic;
 
-        public int MaxDeep { private set; get; }
+        public int MaxDepth { private set; get; }
 
         public TileColor Color { private set; get; }
 
-        public ReversiSolver(TileColor color, Func<Game, TileColor, int> heuristic, int depth)
+        public bool Prune { private set; get; }
+
+        public ReversiSolver(TileColor color, Func<Game, TileColor, int> heuristic, int maxDepth, bool prune = true)
         {
             Color = color;
             SetHeuristic(heuristic);
-            MaxDeep = depth;
+            MaxDepth = maxDepth;
+            Prune = prune;
         }
 
         public void SetHeuristic(Func<Game, TileColor, int> heuristic)
@@ -27,13 +30,7 @@ namespace Z2
         }
 
 
-
         /// Takes a game object and returns the best move given the heuristic for the current player
-        /// </summary>
-        /// <param name="game">The game in the state that needs to be searched from</param>
-        /// <param name="prune">Whether or not to use the alpha beta pruning</param>
-        /// <returns>The best play the AI can find at its ply</returns>
-        /// 
         public Play ChoosePlay(Game game, bool prune = true)
         {
             int time = Environment.TickCount;
@@ -43,13 +40,12 @@ namespace Z2
             // calculate the time it took to think
     
             // get the best play
-            Play bestPlay = AlphaBeta(game, MaxDeep, prune).Item2;
+            Play bestPlay = AlphaBeta(game, MaxDepth, Prune).Item2;
             // return the best play
             time = Environment.TickCount - time;
             // print the time it took to think
             Console.WriteLine("AI took " + time + " milliseconds to think");
             return bestPlay;
-            //return AlphaBeta(game, MaxDeep, prune).Item2;
         }
 
         /// <summary>
@@ -114,11 +110,7 @@ namespace Z2
 
         #region heuristics
 
-        /// <summary>
         /// Calculates the heuristic value based on the difference of black tiles and white tiles
-        /// </summary>
-        /// <param name="game">Game in the state the move needs to be calculated in</param>
-        /// <returns></returns>
         public static int RandomHeuristic(Game game, TileColor color)
         {
             Random rand = new Random();
@@ -127,11 +119,7 @@ namespace Z2
 
         }
 
-        /// <summary>
         /// Calculates the heuristic value based on the difference of black tiles and white tiles
-        /// </summary>
-        /// <param name="game">Game in the state the move needs to be calculated in</param>
-        /// <returns></returns>
         public static int TileCountHeuristic(Game game, TileColor color)
         {
             int black = game.Board.GetNumColor(TileColor.BLACK);
@@ -154,15 +142,11 @@ namespace Z2
             return 0;
         }
 
-        /// <summary>
+
         /// Calculates a heuristic based on how many moves a player has relative to how many moves the opponent has
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
         public static int ActualMobilityHeuristic(Game game, TileColor color)
         {
-            TileColor currentPlayer = game.IsPlayer1 ? TileColor.BLACK : TileColor.WHITE;
+            TileColor currentPlayer = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
             TileColor maxPlayer = color;
             TileColor minPlayer = color == TileColor.BLACK ? TileColor.WHITE : TileColor.BLACK;
 
@@ -193,15 +177,11 @@ namespace Z2
 
         }
 
-        /// <summary>
         /// Calculates a score based on how many more corners one player has than the other
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
+
         public static int CornersHeuristic(Game game, TileColor color)
         {
-            TileColor currentPlayer = game.IsPlayer1 ? TileColor.BLACK : TileColor.WHITE;
+            TileColor currentPlayer = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
 
             List<Tuple<int, int>> corners = new List<Tuple<int, int>>
             {
@@ -231,12 +211,8 @@ namespace Z2
 
             return score;
         }
-        /// <summary>
-        /// Calculates the score of a board based on a set of pre-defined weights
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
+
+        /// Calculates the score of a board based on a set of pre-defined 
         public static int WeightedHeuristic(Game game, TileColor color)
         {
             if (game.Size() != 8)

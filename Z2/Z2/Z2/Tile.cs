@@ -17,8 +17,15 @@ namespace Z2
     [Serializable]
     public class Tile
     {
-        //If the tile is white, flip it to black and vis versa 
+        //If the tile is white, flip it to black and vice versa 
+        //If the tile is blank, do nothing. 
         public TileColor Flip()
+        {
+            color = (color == TileColor.WHITE) ? TileColor.BLACK : TileColor.WHITE;
+            return color;
+        }       
+        
+/*        public TileColor Flip()
         {
             if (color == TileColor.WHITE)
             {
@@ -29,15 +36,15 @@ namespace Z2
                 color = TileColor.WHITE;
             }
             return color;
-        }
+        }*/
 
-        //place a tile in an x,y coordinate.  
+        // place a tile in an x,y coordinate.  
         public Tuple<int, int> Place(int x, int y)
         {
             //tiles cannot be placed twice.
-            if (placed) throw new System.InvalidOperationException("Tile already placed!");
+            if (placed) throw new InvalidOperationException("Tile already placed!");
             //store the final position for the tile 
-            Coords = Tuple.Create<int, int>(x, y);
+            Coords = Tuple.Create(x, y);
             placed = true;
             return Coords;
         }
@@ -45,9 +52,9 @@ namespace Z2
         [JsonConstructor]
         public Tile(Tile tile)
         {
-            this.color = tile.color;
-            this.Coords = tile.Coords;
-            this.placed = tile.placed;
+            color = tile.color;
+            Coords = tile.Coords;
+            placed = tile.placed;
         }
 
         public Tile(TileColor color)

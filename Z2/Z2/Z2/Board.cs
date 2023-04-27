@@ -34,23 +34,10 @@ namespace Z2
 
         }
 
-/*        private static Board DeepClone(Board obj)
-        {
-
-            using (var ms = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, obj);
-                ms.Position = 0;
-
-                return (Board)formatter.Deserialize(ms);
-            }
-        }*/
 
         private static Board DeepClone(Board obj)
         {
             Board clone = (Board)obj.MemberwiseClone();
-
             // deep clone the board array
             clone.board = new Tile[obj.Size, obj.Size];
             for (uint row = 0; row < obj.Size; row++)
@@ -63,7 +50,6 @@ namespace Z2
                     }
                 }
             }
-
             return clone;
         }
 
@@ -71,7 +57,6 @@ namespace Z2
         public Tile Place(int x, int y, TileColor color)
         {
             //if a tile already exists here, don't place anything
-            // @TODO:  Consider throwing an exception if the color placed does not match the goal color 
             if (board[x, y] != null)
             {
                 return null;
@@ -153,11 +138,8 @@ namespace Z2
             return false;
         }
 
-        /// <summary>
+
         /// Returns the number of tiles with the given color
-        /// </summary>
-        /// <param name="color">The tile color to count</param>
-        /// <returns>The sum of the tiles with the given color</returns>
         public int GetNumColor(TileColor color)
         {
             int count = 0;

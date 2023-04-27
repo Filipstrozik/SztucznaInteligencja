@@ -1,4 +1,6 @@
-﻿namespace UI
+﻿using System.Diagnostics;
+
+namespace UI
 {
     partial class BoardUI
     {
@@ -55,6 +57,7 @@
         {
             GamePanel = new Panel();
             OptionsPanel = new Panel();
+            button3 = new Button();
             button2 = new Button();
             button1 = new Button();
             radioButton2 = new RadioButton();
@@ -82,8 +85,8 @@
             label3 = new Label();
             label2 = new Label();
             StopOrClear = new Button();
+            pruneCheckbox = new CheckBox();
             lblFullBoard = new Label();
-            button3 = new Button();
             OptionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)blackPly).BeginInit();
             ((System.ComponentModel.ISupportInitialize)whitePly).BeginInit();
@@ -117,11 +120,23 @@
             OptionsPanel.Controls.Add(label3);
             OptionsPanel.Controls.Add(label2);
             OptionsPanel.Controls.Add(StopOrClear);
+            OptionsPanel.Controls.Add(pruneCheckbox);
             OptionsPanel.Location = new Point(118, 12);
             OptionsPanel.Margin = new Padding(4, 3, 4, 3);
             OptionsPanel.Name = "OptionsPanel";
             OptionsPanel.Size = new Size(533, 249);
             OptionsPanel.TabIndex = 6;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(262, 143);
+            button3.Margin = new Padding(4, 3, 4, 3);
+            button3.Name = "button3";
+            button3.Size = new Size(80, 31);
+            button3.TabIndex = 20;
+            button3.Text = "Load";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button2
             // 
@@ -468,6 +483,18 @@
             StopOrClear.UseVisualStyleBackColor = true;
             StopOrClear.Click += Reset;
             // 
+            // pruneCheckbox
+            // 
+            pruneCheckbox.Location = new Point(206, 74);
+            pruneCheckbox.Margin = new Padding(4, 3, 4, 3);
+            pruneCheckbox.Name = "pruneCheckbox";
+            pruneCheckbox.Size = new Size(80, 19);
+            pruneCheckbox.TabIndex = 0;
+            pruneCheckbox.Tag = "pruneCheckbox";
+            pruneCheckbox.Text = "Prune";
+            pruneCheckbox.UseVisualStyleBackColor = true;
+            pruneCheckbox.CheckedChanged += SetPrune;
+            // 
             // lblFullBoard
             // 
             lblFullBoard.AutoSize = true;
@@ -476,17 +503,6 @@
             lblFullBoard.Name = "lblFullBoard";
             lblFullBoard.Size = new Size(200, 20);
             lblFullBoard.TabIndex = 0;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(262, 143);
-            button3.Margin = new Padding(4, 3, 4, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(80, 31);
-            button3.TabIndex = 20;
-            button3.Text = "Load";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // BoardUI
             // 
@@ -510,6 +526,7 @@
         }
 
 
+
         #endregion
 
         private Label label5;
@@ -518,5 +535,7 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        // windows forms checkbox button
+        private CheckBox pruneCheckbox;
     }
 }

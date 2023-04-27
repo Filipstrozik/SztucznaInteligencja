@@ -91,20 +91,18 @@ namespace Z2
             this.Color = color;
             this.Coords = coords;
 
-            // -------------------------------------
-            // calculate affected tiles 
-
-            //takes play
             TileColor playerColor = color;
             TileColor opponentColor = color == TileColor.BLACK ? TileColor.WHITE : TileColor.BLACK;
 
             int x = coords.Item1;
             int y = coords.Item2;
 
-            // generate pre-calculated array of direction vectors
-            var directionVectors = new[] { new Tuple<int, int>(-1, -1), new Tuple<int, int>(-1, 0), new Tuple<int, int>(-1, 1),
-                                   new Tuple<int, int>(0, -1),                         new Tuple<int, int>(0, 1),
-                                   new Tuple<int, int>(1, -1),  new Tuple<int, int>(1, 0),  new Tuple<int, int>(1, 1) };
+            var directionVectors = new[] 
+            {
+                new Tuple<int, int>(-1, -1), new Tuple<int, int>(-1, 0), new Tuple<int, int>(-1, 1),
+                new Tuple<int, int>(0, -1),                              new Tuple<int, int>(0, 1),
+                new Tuple<int, int>(1, -1),  new Tuple<int, int>(1, 0),  new Tuple<int, int>(1, 1) 
+            };
 
 
             // iterate over each direction vector
@@ -145,7 +143,6 @@ namespace Z2
             }
         }
 
-        // change this method to use a fixed-length array
         private void AddAffected(List<Tile> affected)
         {
             if (AffectedTiles == null)

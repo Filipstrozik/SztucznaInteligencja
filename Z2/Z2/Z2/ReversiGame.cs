@@ -16,20 +16,20 @@ namespace Z2
 
 
         //construct manager for computer vs computer play
-        public GameManager(Func<Game, TileColor, int> heuristic1, int ply1, Func<Game, TileColor, int> heuristic2, int ply2, uint size = 8)
+        public GameManager(Func<Game, TileColor, int> heuristic1, int ply1, bool prune1, Func<Game, TileColor, int> heuristic2, int ply2, bool prune2, uint size = 8)
         {
             game = new Game(size);
-            Agents[0] = new ReversiSolver(TileColor.BLACK, heuristic1, ply1);
-            Agents[1] = new ReversiSolver(TileColor.WHITE, heuristic2, ply2);
+            Agents[0] = new ReversiSolver(TileColor.BLACK, heuristic1, ply1, prune1);
+            Agents[1] = new ReversiSolver(TileColor.WHITE, heuristic2, ply2, prune2);
             play = 0;
         }
 
         //construct manager for human vs computer play
-        public GameManager(Func<Game, TileColor, int> heuristic, int ply, TileColor color, uint size = 8)
+        public GameManager(Func<Game, TileColor, int> heuristic, int ply, TileColor color, bool prune, uint size = 8)
         {
             game = new Game(size);
             int index = color == TileColor.BLACK ? 0 : 1;
-            Agents[index] = new ReversiSolver(color, heuristic, ply);
+            Agents[index] = new ReversiSolver(color, heuristic, ply, prune);
             play = 0;
         }
 
@@ -43,6 +43,7 @@ namespace Z2
         [JsonConstructor]
         public GameManager()
         {
+
         }
 
         public void LoadGameState(string filepath)
@@ -93,8 +94,8 @@ namespace Z2
 
             //if the player is the right color 
             //unsafe, since the human player could play on the AI's behalf
-            if (game.IsPlayer1 && p.Color != TileColor.BLACK
-                || !game.IsPlayer1 && p.Color != TileColor.WHITE)
+            if (game.IsFirstPlayer && p.Color != TileColor.BLACK
+                || !game.IsFirstPlayer && p.Color != TileColor.WHITE)
             {
                 throw new ArgumentException("Not your turn!");
             }
@@ -108,9 +109,9 @@ namespace Z2
             return new Game(game);
         }
 
-        public Game Next()
+        public Game Next(bool prune)
         {
-            int index = game.IsPlayer1 ? 0 : 1;
+            int index = game.IsFirstPlayer ? 0 : 1;
 
             // System.Console.WriteLine("NextPlay: " + play);
             play++;
@@ -128,7 +129,7 @@ namespace Z2
             else
             {
 
-                Play p = agent.ChoosePlay(game);
+                Play p = agent.ChoosePlay(game, prune);
                 if (p != null)
                 {
                     game.UsePlay(p);

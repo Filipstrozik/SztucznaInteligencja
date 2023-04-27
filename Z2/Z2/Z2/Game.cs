@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 namespace Z2
 {
     [Serializable]
     public class Game
     {
-        //player 1 plays black.
+        //FirstPlayer plays black.
         //when true, the active player is player1.
-        public bool IsPlayer1 { set; get; }
+        public bool IsFirstPlayer { set; get; }
         public Board Board { set; get; }
         public bool deadlock = false;
         public TileColor? Winner
@@ -21,7 +14,7 @@ namespace Z2
             get
             {
                 if (GameOver())
-                {
+                { 
                     if (Board.GetNumColor(TileColor.BLACK) > Board.GetNumColor(TileColor.WHITE))
                     {
                         return TileColor.BLACK;
@@ -51,15 +44,17 @@ namespace Z2
         {
 
         }
+
         public Game(uint size)
         {
-
             Board = new Board(size);
-            IsPlayer1 = true;
+            IsFirstPlayer = true;
+
+            //place first four tiles
+
             int x = ((int)size - 1) / 2;
             int y = ((int)size - 1) / 2;
 
-            //place first four tiles
             Place(x, y++);
             Place(x++, y);
             Place(x, y--);
@@ -69,7 +64,7 @@ namespace Z2
         public Game(Game prevGame)
         {
             Board = new Board(prevGame.Board);
-            IsPlayer1 = prevGame.IsPlayer1;
+            IsFirstPlayer = prevGame.IsFirstPlayer;
             deadlock = prevGame.deadlock;
         }
 
@@ -77,7 +72,7 @@ namespace Z2
         // the color of the tile is determined by whose turn it is
         private Tile Place(int x, int y)
         {
-            Tile placement = Board.Place(x, y, IsPlayer1 ? TileColor.BLACK : TileColor.WHITE);
+            Tile placement = Board.Place(x, y, IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE);
             if (placement != null)
             {
                 NextTurn();
@@ -87,7 +82,7 @@ namespace Z2
 
         private void NextTurn()
         {
-            IsPlayer1 = !IsPlayer1;
+            IsFirstPlayer = !IsFirstPlayer;
         }
 
         //play a play at a given position
@@ -103,22 +98,22 @@ namespace Z2
             }
             int i = 0;
             // Handle case where next player has no moves
+            // so player passes a turn
             while (i <= 2 && PossiblePlays().Count == 0)
             {
                 i++;
                 NextTurn();
             }
-            if (i >= 2) deadlock = true;
+            if (i >= 2)
+                deadlock = true;
         }
 
-        /// <summary>
+
         /// Returns a new game advanced by the single move play
-        /// </summary>
-        /// <param name="play">Move to increment the game by</param>
-        /// <returns>A new game advanced by move play</returns>
+
         public Game ForkGame(Play play)
         {
-            Game g = new Game(this);
+            Game g = new(this);
             g.UsePlay(play);
             return g;
         }
@@ -130,7 +125,7 @@ namespace Z2
         }
 
 
-        //find all possible plays given the current game state 
+        // find all possible plays given the current game state 
         // this takes into consideration whose turn it is
         public Dictionary<Tuple<int, int>, Play> PossiblePlays(bool otherPlayer = false)
         {
@@ -138,12 +133,12 @@ namespace Z2
             List<Tuple<int, int>> possiblePositions = Board.OpenAdjacentSpots();
             Dictionary<Tuple<int, int>, Play> results = new Dictionary<Tuple<int, int>, Play>();
 
-            TileColor playerColor = IsPlayer1 ? TileColor.BLACK : TileColor.WHITE;
+            TileColor playerColor = IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
 
             // If calcualting potential moves for the other player switch the color
             if (otherPlayer)
             {
-                playerColor = IsPlayer1 ? TileColor.WHITE : TileColor.BLACK; ;
+                playerColor = IsFirstPlayer ? TileColor.WHITE : TileColor.BLACK; ;
             }
 
             foreach (Tuple<int, int> coord in possiblePositions)

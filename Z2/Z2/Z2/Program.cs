@@ -28,6 +28,7 @@ for (int depth = 2; depth < 9; depth++)
     StreamWriter output = new StreamWriter("depth_" + depth + ".txt");
     Console.WriteLine("Depth:" + depth);
     output.WriteLine("Depth: " + depth);
+    bool prune = true;
     foreach (var blackHeuristic in heuristics)
     {
         foreach (var whiteHeuristic in heuristics)
@@ -35,7 +36,7 @@ for (int depth = 2; depth < 9; depth++)
             Console.WriteLine("Testing: " + blackHeuristic.Item2 + " against " + whiteHeuristic.Item2);
             output.WriteLine("Testing: " + blackHeuristic.Item2 + " against " + whiteHeuristic.Item2);
 
-            results = TestHeuristic(blackHeuristic.Item1, whiteHeuristic.Item1, depth, depth, size);
+            results = TestHeuristic(blackHeuristic.Item1, whiteHeuristic.Item1, depth, depth, prune, size);
             Tuple<Func<Game, TileColor, int>, string> winner;
             TileColor winnerColor;
 
@@ -64,12 +65,12 @@ for (int depth = 2; depth < 9; depth++)
 }
 
 
-static Tuple<int, int> TestHeuristic(Func<Game, TileColor, int> h1, Func<Game, TileColor, int> h2, int ply1 = 5, int ply2 = 5, uint size = 8)
+static Tuple<int, int> TestHeuristic(Func<Game, TileColor, int> h1, Func<Game, TileColor, int> h2, int ply1 = 5, int ply2 = 5, bool prune = true, uint size = 8)
 {
     int black = 0;
     int white = 0;
     int counter = 0;
-    GameManager manager = new GameManager(h1, ply1, h2, ply2, size);
+    GameManager manager = new(h1, ply1, prune, h2, ply2, prune, size);
     manager.Reset();
     Game game = manager.GetGame();
     while (!game.GameOver())
@@ -79,7 +80,7 @@ static Tuple<int, int> TestHeuristic(Func<Game, TileColor, int> h1, Func<Game, T
             System.Console.WriteLine("AHHHHHH");
             break;
         }
-        game = manager.Next();
+        game = manager.Next(prune);
         counter++;
     }
     Console.WriteLine(counter);
