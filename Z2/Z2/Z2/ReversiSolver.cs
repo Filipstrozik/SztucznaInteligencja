@@ -31,21 +31,24 @@ namespace Z2
 
 
         /// Takes a game object and returns the best move given the heuristic for the current player
-        public Play ChoosePlay(Game game, bool prune = true)
+        public Tuple<Play, int> ChoosePlay(Game game, bool prune = true)
         {
             int time = Environment.TickCount;
 
             game = new Game(game);
             // caclucalte millisececonds for the AI to think
             // calculate the time it took to think
-    
+
             // get the best play
-            Play bestPlay = AlphaBeta(game, MaxDepth, Prune).Item2;
+            int countNodes = 0;
+            var returnedAlphaBeta = AlphaBeta(game, MaxDepth, Prune);
+            Play bestPlay = returnedAlphaBeta.Item2;
+            countNodes = returnedAlphaBeta.Item3;
             // return the best play
             time = Environment.TickCount - time;
             // print the time it took to think
-            Console.WriteLine("AI took " + time + " milliseconds to think");
-            return bestPlay;
+            //Console.WriteLine("AI took " + time + " milliseconds to think");
+            return new Tuple<Play, int>(bestPlay, countNodes);
         }
 
         /// <summary>
@@ -57,7 +60,7 @@ namespace Z2
         /// <param name="beta">Lowest value seen so far</param>
         /// <param name="currentDepth">The depth to search the game</param>
         /// <returns></returns>
-        private Tuple<int, Play> AlphaBeta(Game game, int currentDepth = 5, bool prune = true, bool max = true, int alpha = int.MinValue, int beta = int.MaxValue)
+        private Tuple<int, Play, int> AlphaBeta(Game game, int currentDepth = 5, bool prune = true, bool max = true, int alpha = int.MinValue, int beta = int.MaxValue, int nodesVisited = 0)
         {
             //nie oceniaj możliwych zagrań, jeśli jesteś u podstawy drzewa wyszukiwania
             Dictionary<Tuple<int, int>, Play> possiblePlays = currentDepth != 0 ? game.PossiblePlays() : null;
@@ -66,7 +69,7 @@ namespace Z2
             // wyjście jeżeli: doszliśmy do ograniczenia głębokości || gra zakończona || brak możliwych ruchów
             if (currentDepth == 0 || game.GameOver() || possiblePlays.Count == 0)
             {
-                return new Tuple<int, Play>(heuristic(game), null);
+                return new Tuple<int, Play, int>(heuristic(game), null, 1); //TODO (heuristic(game) => 999999)?
             }
             // jeśli gracz jest czarny, to maksymalilzuj
             // w przeciwnym razie, to minimalizuj
@@ -79,12 +82,18 @@ namespace Z2
             // Najwyższa wartość znaleziona do tej pory przez funkcję.
             // Ustaw najniższą możliwą wartość, aby każda wartość była wyższa.
             Play bestPlay = null;
-
+            int nodesVisitedAtThisLevel = 0;
             // Dla każdej możliwej gry z zagrań Użyj Game.ForkGame(Play), aby wygenerować różne gałęzie
             foreach (KeyValuePair<Tuple<int, int>, Play> pair in game.PossiblePlays())
             {
+                nodesVisitedAtThisLevel++;
                 // Przyjmuje maksimum między gałęzią a bieżącą wartością minimalną
-                int childScore = AlphaBeta(game.ForkGame(pair.Value), currentDepth - 1, prune, !max, alpha, beta).Item1;
+                var alphaBeta = AlphaBeta(game.ForkGame(pair.Value), currentDepth - 1, prune, !max, alpha, beta);
+
+                int childScore = alphaBeta.Item1;
+                int nodes = alphaBeta.Item3;
+                //nodesVisitedAtThisLevel += nodes;
+                nodesVisited += nodes;
 
                 // Jeśli nowa wartość jest lepsza, zapisz ją i ruch, który ją daje
                 if (bestScore != Optimizer(bestScore, childScore))
@@ -104,7 +113,7 @@ namespace Z2
                 if (prune && (beta <= alpha))
                     break;
             }
-            return new Tuple<int, Play>(bestScore, bestPlay);
+            return new Tuple<int, Play, int>(bestScore, bestPlay, nodesVisited);
 
         }
 

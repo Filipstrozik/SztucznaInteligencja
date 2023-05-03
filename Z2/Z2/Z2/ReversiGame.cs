@@ -13,6 +13,7 @@ namespace Z2
         public ReversiSolver[] Agents = new ReversiSolver[2];
         public Play[] humanPlay = new Play[2];
         public int play;
+        public int visitedNodes = 0;
 
 
         //construct manager for computer vs computer play
@@ -128,8 +129,9 @@ namespace Z2
             }
             else
             {
-
-                Play p = agent.ChoosePlay(game, prune);
+                var chosenResult = agent.ChoosePlay(game, prune);
+                Play p = chosenResult.Item1 as Play;
+                visitedNodes = chosenResult.Item2;
                 if (p != null)
                 {
                     game.UsePlay(p);
