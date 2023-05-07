@@ -15,21 +15,21 @@ namespace UI
             Random
         }
 
-        GameManager manager;
+        ReversiManager manager;
         Game game;
         private GameMode whiteMode = GameMode.Human;
         private GameMode blackMode = GameMode.Human;
-        private int whitePlyVal = 5;
+        private int whiteDepthVal = 5;
         private bool whitePrune = true;
-        private int blackPlyVal = 5;
+        private int blackDepthVal = 5;
         private bool blackPrune = true;
-        private DataGridView gameBoard;
+        private readonly DataGridView gameBoard;
         private const int BOARD_SIZE = 8;
-        private Bitmap blank;
-        private Bitmap black;
-        private Bitmap white;
-        private Bitmap hint;
-        private int bitmapPadding = 6;
+        private readonly Bitmap blank;
+        private readonly Bitmap black;
+        private readonly Bitmap white;
+        private readonly Bitmap hint;
+        private readonly int bitmapPadding = 6;
 
         private bool automaticPlay = false;
 
@@ -46,7 +46,7 @@ namespace UI
             white = (Bitmap)Image.FromFile("./white.bmp");
             hint = (Bitmap)Image.FromFile("./hint.bmp");
 
-            manager = new GameManager(BOARD_SIZE);
+            manager = new ReversiManager(BOARD_SIZE);
             game = manager.GetGame();
 
             InitializeComponent();
@@ -61,19 +61,15 @@ namespace UI
                 Size = new Size(855, 582),
                 AutoSize = false,
                 Name = "gameBoard",
+                AllowUserToAddRows = false
             };
 
-            gameBoard.AllowUserToAddRows = false;
-
-            //mostly from online 
             ConfigureForm();
             SizeGrid();
             CreateColumns();
             CreateRows();
 
-
             playable = game.PossiblePlays();
-
             UpdateBoard();
         }
 
@@ -98,8 +94,6 @@ namespace UI
             gameBoard.AllowUserToResizeRows = false;
             gameBoard.BorderStyle = BorderStyle.None;
 
-            //Add twice the padding for the top of the cell 
-            //and the bottom.
             gameBoard.RowTemplate.Height = blank.Height +
                 2 * bitmapPadding + 1;
 
@@ -113,13 +107,14 @@ namespace UI
             do
             {
                 Bitmap unMarked = blank;
-                imageColumn = new DataGridViewImageColumn();
+                imageColumn = new DataGridViewImageColumn
+                {
+                    // Add twice the padding for the left and 
+                    // right sides of the cell.
+                    Width = blank.Width + 2 * bitmapPadding + 1,
 
-                //Add twice the padding for the left and 
-                //right sides of the cell.
-                imageColumn.Width = blank.Width + 2 * bitmapPadding + 1;
-
-                imageColumn.Image = unMarked;
+                    Image = unMarked
+                };
                 gameBoard.Columns.Add(imageColumn);
                 columnCount++;
             }
@@ -145,7 +140,7 @@ namespace UI
         {
             Tuple<int, int> destCoords = Tuple.Create(e.ColumnIndex, e.RowIndex);
 
-            //if there exists a valid play at this coordinate, get object
+            // if there exists a valid play at this coordinate, get object
             playable.TryGetValue(destCoords, out Play p);
             Play humanPlay = manager.OutsidePlay(p);
             if (humanPlay == null) return;
@@ -166,7 +161,7 @@ namespace UI
             }
         }
 
-        //set gameboard view to represent the game's board state
+        // set gameboard view to represent the game's board state
         private void UpdateBoard()
         {
             for (int x = 0; x < game.Size(); x++)
@@ -198,8 +193,9 @@ namespace UI
             }
 
             // Print out heuristic values for the current board for debugging
-            string player = game.IsFirstPlayer ? "Black" : "White";
-            TileColor playerColor = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
+
+            //string player = game.IsFirstPlayer ? "Black" : "White";
+            //TileColor playerColor = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE; // let it be
 
             // Count Heuristic
             //System.Console.WriteLine("The tile counting heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
@@ -249,6 +245,12 @@ namespace UI
                 case "randomBlack":
                     blackMode = GameMode.Random;
                     break;
+                case "mobilityWhite":
+                    whiteMode = GameMode.Mobility;
+                    break;
+                case "mobilityBlack":
+                    blackMode = GameMode.Mobility;
+                    break;
             }
             SetNewGame();
         }
@@ -297,19 +299,19 @@ namespace UI
 
             if (whiteMode == GameMode.Human && blackMode == GameMode.Human)
             {
-                manager = new GameManager();
+                manager = new ReversiManager(BOARD_SIZE);
             }
             else if (whiteMode == GameMode.Human)
             {
-                manager = new GameManager(blackHeuristic, blackPlyVal, TileColor.BLACK, blackPrune);
+                manager = new ReversiManager(blackHeuristic, blackDepthVal, TileColor.BLACK, blackPrune);
             }
             else if (blackMode == GameMode.Human)
             {
-                manager = new GameManager(whiteHeuristic, whitePlyVal, TileColor.WHITE, whitePrune);
+                manager = new ReversiManager(whiteHeuristic, whiteDepthVal, TileColor.WHITE, whitePrune);
             }
             else
             {
-                manager = new GameManager(blackHeuristic, blackPlyVal, blackPrune, whiteHeuristic, whitePlyVal, whitePrune);
+                manager = new ReversiManager(blackHeuristic, blackDepthVal, blackPrune, whiteHeuristic, whiteDepthVal, whitePrune);
             }
 
             manager.Reset();
@@ -323,7 +325,8 @@ namespace UI
             if (game.Winner != null)
             {
                 Console.WriteLine(game.Winner);
-                lblFullBoard.Text = $"Winner is: {game.Winner}";
+                Console.WriteLine($"WHITE: {game.Board.GetNumColor(TileColor.WHITE)}\nBLACK: {game.Board.GetNumColor(TileColor.BLACK)}");
+                lblFullBoard.Text = $"WHITE: {game.Board.GetNumColor(TileColor.WHITE)}\nBLACK: {game.Board.GetNumColor(TileColor.BLACK)}";
                 MessageBox.Show(lblFullBoard.Text, game.Winner.ToString());
                 return;
             }
@@ -341,16 +344,16 @@ namespace UI
             UpdateBoard();
         }
 
-        private void SetPly(object sender, EventArgs e)
+        private void SetDepth(object sender, EventArgs e)
         {
             NumericUpDown c = (NumericUpDown)sender;
             switch (c.Tag)
             {
                 case "white":
-                    whitePlyVal = Convert.ToInt32(c.Value);
+                    whiteDepthVal = Convert.ToInt32(c.Value);
                     break;
                 case "black":
-                    blackPlyVal = Convert.ToInt32(c.Value);
+                    blackDepthVal = Convert.ToInt32(c.Value);
                     break;
             }
             SetNewGame();
@@ -366,7 +369,7 @@ namespace UI
             automaticPlay = false;
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private async void StartAutomaticPlayButton_Click(object sender, EventArgs e)
         {
             await Task.Run(() =>
             {
@@ -375,19 +378,20 @@ namespace UI
                     NextMove(sender, e);
                 }
                 Console.WriteLine(game.Winner);
-                Console.WriteLine($"WHITE: {game.Board.GetNumColor(TileColor.WHITE)} \n BLACK: {game.Board.GetNumColor(TileColor.BLACK)}");
+                Console.WriteLine($"WHITE: {game.Board.GetNumColor(TileColor.WHITE)}\nBLACK: {game.Board.GetNumColor(TileColor.BLACK)}");
                 lblFullBoard.Text = $"Winner is: {game.Winner}\nWHITE: {game.Board.GetNumColor(TileColor.WHITE)}\nBLACK: {game.Board.GetNumColor(TileColor.BLACK)}";
-                // Create a new popup dialog box to display the label control
                 MessageBox.Show(lblFullBoard.Text, game.Winner.ToString());
                 return;
             });
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "JSON files (*.json)|*.json";
-            saveFileDialog.RestoreDirectory = true;
+            SaveFileDialog saveFileDialog = new()
+            {
+                Filter = "JSON files (*.json)|*.json",
+                RestoreDirectory = true
+            };
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -399,9 +403,11 @@ namespace UI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "JSON files (*.json)|*.json";
-            openFileDialog.RestoreDirectory = true;
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "JSON files (*.json)|*.json",
+                RestoreDirectory = true
+            };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {

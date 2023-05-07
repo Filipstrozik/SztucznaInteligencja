@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Z2;
+﻿using Z2;
 
 
 uint size = 8;
@@ -25,19 +19,19 @@ int whiteVisitedNodes = 0;
 
 Tuple<int, int> results;
 
-List<Tuple<Func<Game, TileColor, int>, string>> heuristics = new List<Tuple<Func<Game, TileColor, int>, string>>
-            {
+List<Tuple<Func<Game, TileColor, int>, string>> heuristics = new()
+{
                 Tuple.Create<Func<Game, TileColor, int>,string>(ReversiSolver.TileCountHeuristic,"Count"),
                 Tuple.Create<Func<Game, TileColor, int>,string>(ReversiSolver.ActualMobilityHeuristic,"ActualMobility"),
                 Tuple.Create<Func<Game, TileColor, int>,string>(ReversiSolver.CornersHeuristic,"Corners"),
                 Tuple.Create<Func<Game, TileColor, int>,string>(ReversiSolver.WeightedHeuristic,"Weighted"),
                 Tuple.Create<Func<Game, TileColor, int>,string>(ReversiSolver.RandomHeuristic,"Random")
 
-            };
+};
 
-for (; depth < 9; depth++)
+for (; depth < 8; depth++)
 {
-    StreamWriter output = new StreamWriter("depth_" + depth + ".txt");
+    StreamWriter output = new("depth_" + depth + ".txt");
     Console.WriteLine("Depth:" + depth);
     output.WriteLine("Depth: " + depth);
     foreach (var blackHeuristic in heuristics)
@@ -45,8 +39,8 @@ for (; depth < 9; depth++)
         foreach (var whiteHeuristic in heuristics)
         {
             Console.WriteLine($"Testing: {blackHeuristic.Item2} against {whiteHeuristic.Item2} depth: {depth} | prune: {prune}");
+            output.WriteLine($"Testing: {blackHeuristic.Item2} against {whiteHeuristic.Item2} depth: {depth} | prune: {prune}");
 
-            output.WriteLine("Testing: " + blackHeuristic.Item2 + " against " + whiteHeuristic.Item2);
 
             results = TestHeuristic(blackHeuristic.Item1, whiteHeuristic.Item1, depth, depth, prune, size);
             Tuple<Func<Game, TileColor, int>, string> winner;
@@ -63,18 +57,27 @@ for (; depth < 9; depth++)
                 winner = whiteHeuristic;
                 winnerColor = TileColor.WHITE;
             }
-            
+
             Console.WriteLine($"winner: {winnerColor}" +
                 $"\nstrategy: {winner.Item2}" +
                 $"\nBLACK ({blackHeuristic.Item2}) {results.Item1} - {results.Item2} WHITE ({whiteHeuristic.Item2})" +
                 $"\nmoves: {counter}" +
                 $"\ngameTime: {timeOfGame}ms" +
-                $"\nblackTime: {sumOfTimesBlackHeuristic}ms with {blackMoves} moves. avg: {Math.Round(((double)sumOfTimesBlackHeuristic/ (double)blackMoves), 2)}ms" +
+                $"\nblackTime: {sumOfTimesBlackHeuristic}ms with {blackMoves} moves. avg: {Math.Round(((double)sumOfTimesBlackHeuristic / (double)blackMoves), 2)}ms" +
                 $"\nwhiteTime: {sumOfTimesWhiteHeuristic}ms with {whiteMoves} moves. avg: {Math.Round(((double)sumOfTimesWhiteHeuristic / (double)whiteMoves), 2)}ms" +
                 $"\nblackNodes: {blackVisitedNodes}" +
                 $"\nwhiteNodes: {whiteVisitedNodes}" +
                 $"\n");
-            output.Write(winnerColor + " " + winner.Item2 + " " + results.Item1 + "-" + results.Item2 + '\n');
+            output.WriteLine($"winner: {winnerColor}" +
+                $"\nstrategy: {winner.Item2}" +
+                $"\nBLACK ({blackHeuristic.Item2}) {results.Item1} - {results.Item2} WHITE ({whiteHeuristic.Item2})" +
+                $"\nmoves: {counter}" +
+                $"\ngameTime: {timeOfGame}ms" +
+                $"\nblackTime: {sumOfTimesBlackHeuristic}ms with {blackMoves} moves. avg: {Math.Round(((double)sumOfTimesBlackHeuristic / (double)blackMoves), 2)}ms" +
+                $"\nwhiteTime: {sumOfTimesWhiteHeuristic}ms with {whiteMoves} moves. avg: {Math.Round(((double)sumOfTimesWhiteHeuristic / (double)whiteMoves), 2)}ms" +
+                $"\nblackNodes: {blackVisitedNodes}" +
+                $"\nwhiteNodes: {whiteVisitedNodes}" +
+                $"\n");
         }
         Console.Write('\n');
         output.Write('\n');
@@ -83,11 +86,11 @@ for (; depth < 9; depth++)
 }
 
 
- Tuple<int, int> TestHeuristic(Func<Game, TileColor, int> h1, Func<Game, TileColor, int> h2, int ply1 = 5, int ply2 = 5, bool prune = true, uint size = 8)
+Tuple<int, int> TestHeuristic(Func<Game, TileColor, int> h1, Func<Game, TileColor, int> h2, int ply1 = 5, int ply2 = 5, bool prune = true, uint size = 8)
 {
     int black = 0;
     int white = 0;
-    GameManager manager = new(h1, ply1, prune, h2, ply2, prune, size);
+    ReversiManager manager = new(h1, ply1, prune, h2, ply2, prune, size);
     manager.Reset();
     Game game = manager.GetGame();
     timeOfGame = Environment.TickCount;
@@ -103,7 +106,7 @@ for (; depth < 9; depth++)
     {
         if (counter > 100)
         {
-            System.Console.WriteLine("AHHHHHH");
+            System.Console.WriteLine("100 moves accomplished...");
             break;
         }
         if (game.IsFirstPlayer)// if black

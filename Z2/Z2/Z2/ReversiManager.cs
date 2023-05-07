@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Z2
 {
-    public class GameManager
+    public class ReversiManager
     {
         public Game game;
         public ReversiSolver[] Agents = new ReversiSolver[2];
@@ -17,7 +12,7 @@ namespace Z2
 
 
         //construct manager for computer vs computer play
-        public GameManager(Func<Game, TileColor, int> heuristic1, int ply1, bool prune1, Func<Game, TileColor, int> heuristic2, int ply2, bool prune2, uint size = 8)
+        public ReversiManager(Func<Game, TileColor, int> heuristic1, int ply1, bool prune1, Func<Game, TileColor, int> heuristic2, int ply2, bool prune2, uint size = 8)
         {
             game = new Game(size);
             Agents[0] = new ReversiSolver(TileColor.BLACK, heuristic1, ply1, prune1);
@@ -25,8 +20,8 @@ namespace Z2
             play = 0;
         }
 
-        //construct manager for human vs computer play
-        public GameManager(Func<Game, TileColor, int> heuristic, int ply, TileColor color, bool prune, uint size = 8)
+        //c onstruct manager for human vs computer play
+        public ReversiManager(Func<Game, TileColor, int> heuristic, int ply, TileColor color, bool prune, uint size = 8)
         {
             game = new Game(size);
             int index = color == TileColor.BLACK ? 0 : 1;
@@ -34,15 +29,15 @@ namespace Z2
             play = 0;
         }
 
-        //create game manager for human vs human play
-        public GameManager(uint size = 8)
+        // create game manager for human vs human play
+        public ReversiManager(uint size = 8)
         {
             game = new Game(size);
             play = 0;
         }
-
+        // json constructor for loading game state (WIP)
         [JsonConstructor]
-        public GameManager()
+        public ReversiManager()
         {
 
         }
@@ -51,14 +46,11 @@ namespace Z2
         {
 
             string json = File.ReadAllText(filepath);
-            GameManager loaded = JsonConvert.DeserializeObject<GameManager>(json);
+            ReversiManager loaded = JsonConvert.DeserializeObject<ReversiManager>(json);
             Agents = loaded.Agents;
             game = loaded.game;
             humanPlay = loaded.humanPlay;
             play = loaded.play;
-            //Board = new Board(loaded.Board);
-            //IsPlayer1 = loaded.IsPlayer1;
-            //deadlock = loaded.deadlock;
         }
 
         public void SaveGameState(string filePath)
@@ -69,16 +61,14 @@ namespace Z2
 
         public static void SaveJsonToFile(string json, string filePath)
         {
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                writer.Write(json);
-            }
+            using StreamWriter writer = new(filePath);
+            writer.Write(json);
         }
 
 
 
-        //play on behalf of a human
-        //play must be valid given the current state of the board 
+        // play on behalf of a human
+        // play must be valid given the current state of the board 
         public Play OutsidePlay(Play p)
         {
             if (p == null) return null;
@@ -93,8 +83,8 @@ namespace Z2
             }
 
 
-            //if the player is the right color 
-            //unsafe, since the human player could play on the AI's behalf
+            // if the player is the right color 
+            // unsafe, since the human player could play on the AI's behalf
             if (game.IsFirstPlayer && p.Color != TileColor.BLACK
                 || !game.IsFirstPlayer && p.Color != TileColor.WHITE)
             {
@@ -114,31 +104,29 @@ namespace Z2
         {
             int index = game.IsFirstPlayer ? 0 : 1;
 
-            // System.Console.WriteLine("NextPlay: " + play);
             play++;
             ReversiSolver agent = Agents[index];
 
-            //human player
+            // human player
             if (agent == null)
             {
-                if (humanPlay[index] == null) return null;
+                if (humanPlay[index] == null) return null!;
                 game.UsePlay(humanPlay[index]);
-                //new play should remove all other queued plays
-                humanPlay[0] = null;
-                humanPlay[1] = null;
+                // new play should remove all other queued plays
+                humanPlay[0] = null!;
+                humanPlay[1] = null!;
             }
             else
             {
                 var chosenResult = agent.ChoosePlay(game, prune);
-                Play p = chosenResult.Item1 as Play;
                 visitedNodes = chosenResult.Item2;
-                if (p != null)
+                if (chosenResult.Item1 is Play p)
                 {
                     game.UsePlay(p);
                 }
                 else
                 {
-                    //This should never happen.  Game class should handle place where no move possible.
+                    // This should never happen...
                     throw new ArgumentException();
 
                 }

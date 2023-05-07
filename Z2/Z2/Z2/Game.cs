@@ -4,8 +4,8 @@ namespace Z2
     [Serializable]
     public class Game
     {
-        //FirstPlayer plays black.
-        //when true, the active player is player1.
+        // FirstPlayer plays black.
+        // when true, the active player is player1.
         public bool IsFirstPlayer { set; get; }
         public Board Board { set; get; }
         public bool deadlock = false;
@@ -14,7 +14,7 @@ namespace Z2
             get
             {
                 if (GameOver())
-                { 
+                {
                     if (Board.GetNumColor(TileColor.BLACK) > Board.GetNumColor(TileColor.WHITE))
                     {
                         return TileColor.BLACK;
@@ -39,6 +39,7 @@ namespace Z2
             }
         }
 
+        // json constructor for deserialization
         [JsonConstructor]
         public Game()
         {
@@ -68,7 +69,7 @@ namespace Z2
             deadlock = prevGame.deadlock;
         }
 
-        //place a tile at a position
+        // place a tile at a position
         // the color of the tile is determined by whose turn it is
         private Tile Place(int x, int y)
         {
@@ -85,15 +86,12 @@ namespace Z2
             IsFirstPlayer = !IsFirstPlayer;
         }
 
-        //play a play at a given position
+        // use a play at a given position
         public void UsePlay(Play p)
         {
             Place(p.Coords.Item1, p.Coords.Item2);
             foreach (Tile tile in p.AffectedTiles)
             {
-                //check this shit
-                //Console.WriteLine(tile.Coords.Item1);
-                //Console.WriteLine(tile.Coords.Item2);
                 Board[tile.Coords.Item1, tile.Coords.Item2].Flip();
             }
             int i = 0;
@@ -109,8 +107,7 @@ namespace Z2
         }
 
 
-        /// Returns a new game advanced by the single move play
-
+        // Returns a new game advanced by the single move 
         public Game ForkGame(Play play)
         {
             Game g = new(this);
@@ -129,9 +126,9 @@ namespace Z2
         // this takes into consideration whose turn it is
         public Dictionary<Tuple<int, int>, Play> PossiblePlays(bool otherPlayer = false)
         {
-            //for all open spots on the board that are adjacent to any tiles
+            // for all open spots on the board that are adjacent to any tiles
             List<Tuple<int, int>> possiblePositions = Board.OpenAdjacentSpots();
-            Dictionary<Tuple<int, int>, Play> results = new Dictionary<Tuple<int, int>, Play>();
+            Dictionary<Tuple<int, int>, Play> results = new();
 
             TileColor playerColor = IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
 
@@ -144,7 +141,7 @@ namespace Z2
             foreach (Tuple<int, int> coord in possiblePositions)
             {
 
-                Play possiblePlay = new Play(Board, playerColor, coord);
+                Play possiblePlay = new(Board, playerColor, coord);
 
                 if (possiblePlay.AffectedTiles != null)
                 {
@@ -155,7 +152,7 @@ namespace Z2
         }
 
 
-        //right now, our only game over condition is a full board or the game is in deadlock.
+        // right now, our only game over condition is a full board or the game is in deadlock.
         public bool GameOver()
         {
             return deadlock || Board.BoardFull();
@@ -165,7 +162,5 @@ namespace Z2
         {
             return Board.Size;
         }
-
-
     }
 }

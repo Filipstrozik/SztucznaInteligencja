@@ -1,14 +1,11 @@
-﻿using System.Diagnostics;
-
-namespace UI
+﻿namespace UI
 {
     partial class BoardUI
     {
         private System.Windows.Forms.Panel GamePanel;
         private System.Windows.Forms.Panel OptionsPanel;
-        private System.Windows.Forms.Button StopOrClear;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button stopOrClear;
+        private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.Label lblFullBoard;
         private System.Windows.Forms.Button NextMoveBtn;
         private System.Windows.Forms.GroupBox blackHeuristic;
@@ -25,19 +22,13 @@ namespace UI
         private System.Windows.Forms.RadioButton mobilityWhite;
         private System.Windows.Forms.RadioButton tileWhite;
         private System.Windows.Forms.RadioButton randomWhite;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown whitePly;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown blackPly;
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
+        private System.Windows.Forms.Label whiteDepthLabel;
+        private System.Windows.Forms.NumericUpDown whiteDepth;
+        private System.Windows.Forms.Label blackDepthLabel;
+        private System.Windows.Forms.NumericUpDown blackDepth;
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        //  Clean up any resources being used.
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -49,24 +40,20 @@ namespace UI
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             GamePanel = new Panel();
             OptionsPanel = new Panel();
-            button3 = new Button();
-            button2 = new Button();
-            button1 = new Button();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
-            label5 = new Label();
-            label4 = new Label();
-            label1 = new Label();
-            blackPly = new NumericUpDown();
-            whitePly = new NumericUpDown();
+            loadGameButton = new Button();
+            saveGameButton = new Button();
+            startAutomaticPlayButton = new Button();
+            manualPlayRadioButton = new RadioButton();
+            automaticPlayRadioButton = new RadioButton();
+            creditsLabel = new Label();
+            whiteDepthLabel = new Label();
+            blackDepthLabel = new Label();
+            blackDepth = new NumericUpDown();
+            whiteDepth = new NumericUpDown();
             blackHeuristic = new GroupBox();
             humanBlack = new RadioButton();
             weightedBlack = new RadioButton();
@@ -82,14 +69,13 @@ namespace UI
             tileWhite = new RadioButton();
             randomWhite = new RadioButton();
             NextMoveBtn = new Button();
-            label3 = new Label();
-            label2 = new Label();
-            StopOrClear = new Button();
+            titleLabel = new Label();
+            stopOrClear = new Button();
             pruneCheckbox = new CheckBox();
             lblFullBoard = new Label();
             OptionsPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)blackPly).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)whitePly).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)blackDepth).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)whiteDepth).BeginInit();
             blackHeuristic.SuspendLayout();
             whiteHeuristic.SuspendLayout();
             SuspendLayout();
@@ -104,22 +90,21 @@ namespace UI
             // 
             // OptionsPanel
             // 
-            OptionsPanel.Controls.Add(button3);
-            OptionsPanel.Controls.Add(button2);
-            OptionsPanel.Controls.Add(button1);
-            OptionsPanel.Controls.Add(radioButton2);
-            OptionsPanel.Controls.Add(radioButton1);
-            OptionsPanel.Controls.Add(label5);
-            OptionsPanel.Controls.Add(label4);
-            OptionsPanel.Controls.Add(label1);
-            OptionsPanel.Controls.Add(blackPly);
-            OptionsPanel.Controls.Add(whitePly);
+            OptionsPanel.Controls.Add(loadGameButton);
+            OptionsPanel.Controls.Add(saveGameButton);
+            OptionsPanel.Controls.Add(startAutomaticPlayButton);
+            OptionsPanel.Controls.Add(manualPlayRadioButton);
+            OptionsPanel.Controls.Add(automaticPlayRadioButton);
+            OptionsPanel.Controls.Add(creditsLabel);
+            OptionsPanel.Controls.Add(whiteDepthLabel);
+            OptionsPanel.Controls.Add(blackDepthLabel);
+            OptionsPanel.Controls.Add(blackDepth);
+            OptionsPanel.Controls.Add(whiteDepth);
             OptionsPanel.Controls.Add(blackHeuristic);
             OptionsPanel.Controls.Add(whiteHeuristic);
             OptionsPanel.Controls.Add(NextMoveBtn);
-            OptionsPanel.Controls.Add(label3);
-            OptionsPanel.Controls.Add(label2);
-            OptionsPanel.Controls.Add(StopOrClear);
+            OptionsPanel.Controls.Add(titleLabel);
+            OptionsPanel.Controls.Add(stopOrClear);
             OptionsPanel.Controls.Add(pruneCheckbox);
             OptionsPanel.Location = new Point(118, 12);
             OptionsPanel.Margin = new Padding(4, 3, 4, 3);
@@ -127,123 +112,123 @@ namespace UI
             OptionsPanel.Size = new Size(533, 249);
             OptionsPanel.TabIndex = 6;
             // 
-            // button3
+            // loadButton
             // 
-            button3.Location = new Point(262, 143);
-            button3.Margin = new Padding(4, 3, 4, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(80, 31);
-            button3.TabIndex = 20;
-            button3.Text = "Load";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            loadGameButton.Location = new Point(262, 143);
+            loadGameButton.Margin = new Padding(4, 3, 4, 3);
+            loadGameButton.Name = "button3";
+            loadGameButton.Size = new Size(80, 31);
+            loadGameButton.TabIndex = 20;
+            loadGameButton.Text = "Load";
+            loadGameButton.UseVisualStyleBackColor = true;
+            loadGameButton.Click += button3_Click;
             // 
-            // button2
+            // saveButton
             // 
-            button2.Location = new Point(178, 143);
-            button2.Margin = new Padding(4, 3, 4, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(80, 31);
-            button2.TabIndex = 19;
-            button2.Text = "Save";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            saveGameButton.Location = new Point(178, 143);
+            saveGameButton.Margin = new Padding(4, 3, 4, 3);
+            saveGameButton.Name = "button2";
+            saveGameButton.Size = new Size(80, 31);
+            saveGameButton.TabIndex = 19;
+            saveGameButton.Text = "Save";
+            saveGameButton.UseVisualStyleBackColor = true;
+            saveGameButton.Click += SaveButton_Click;
             // 
-            // button1
+            // startAutomaticPlayButton
             // 
-            button1.Location = new Point(184, 205);
-            button1.Margin = new Padding(4, 3, 4, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(164, 31);
-            button1.TabIndex = 18;
-            button1.Text = "Next";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            startAutomaticPlayButton.Location = new Point(184, 205);
+            startAutomaticPlayButton.Margin = new Padding(4, 3, 4, 3);
+            startAutomaticPlayButton.Name = "button1";
+            startAutomaticPlayButton.Size = new Size(164, 31);
+            startAutomaticPlayButton.TabIndex = 18;
+            startAutomaticPlayButton.Text = "Start Automatic Play";
+            startAutomaticPlayButton.UseVisualStyleBackColor = true;
+            startAutomaticPlayButton.Click += StartAutomaticPlayButton_Click;
             // 
-            // radioButton2
+            // manualPlayRadioButton
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Checked = true;
-            radioButton2.Location = new Point(206, 121);
-            radioButton2.Margin = new Padding(4, 3, 4, 3);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(90, 19);
-            radioButton2.TabIndex = 17;
-            radioButton2.TabStop = true;
-            radioButton2.Tag = "ManualPlay";
-            radioButton2.Text = "Manual Play";
-            radioButton2.UseVisualStyleBackColor = true;
-            radioButton2.Click += UnSetAutomaticPlay;
+            manualPlayRadioButton.AutoSize = true;
+            manualPlayRadioButton.Checked = true;
+            manualPlayRadioButton.Location = new Point(206, 121);
+            manualPlayRadioButton.Margin = new Padding(4, 3, 4, 3);
+            manualPlayRadioButton.Name = "radioButton2";
+            manualPlayRadioButton.Size = new Size(90, 19);
+            manualPlayRadioButton.TabIndex = 17;
+            manualPlayRadioButton.TabStop = true;
+            manualPlayRadioButton.Tag = "ManualPlay";
+            manualPlayRadioButton.Text = "Manual Play";
+            manualPlayRadioButton.UseVisualStyleBackColor = true;
+            manualPlayRadioButton.Click += UnSetAutomaticPlay;
             // 
-            // radioButton1
+            // automaticPlayRadioButton1
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(206, 99);
-            radioButton1.Margin = new Padding(4, 3, 4, 3);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(106, 19);
-            radioButton1.TabIndex = 16;
-            radioButton1.Tag = "AutoPlay";
-            radioButton1.Text = "Automatic Play";
-            radioButton1.UseVisualStyleBackColor = true;
-            radioButton1.Click += SetAutomaticPlay;
+            automaticPlayRadioButton.AutoSize = true;
+            automaticPlayRadioButton.Location = new Point(206, 99);
+            automaticPlayRadioButton.Margin = new Padding(4, 3, 4, 3);
+            automaticPlayRadioButton.Name = "radioButton1";
+            automaticPlayRadioButton.Size = new Size(106, 19);
+            automaticPlayRadioButton.TabIndex = 16;
+            automaticPlayRadioButton.Tag = "AutoPlay";
+            automaticPlayRadioButton.Text = "Automatic Play";
+            automaticPlayRadioButton.UseVisualStyleBackColor = true;
+            automaticPlayRadioButton.Click += SetAutomaticPlay;
             // 
-            // label5
+            // craditsLabel
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(166, 56);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(165, 13);
-            label5.TabIndex = 15;
-            label5.Text = "Logic and Solution by Filip Strózik";
+            creditsLabel.AutoSize = true;
+            creditsLabel.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            creditsLabel.Location = new Point(197, 53);
+            creditsLabel.Margin = new Padding(4, 0, 4, 0);
+            creditsLabel.Name = "label5";
+            creditsLabel.Size = new Size(115, 13);
+            creditsLabel.TabIndex = 15;
+            creditsLabel.Text = "Solution by Filip Strózik";
             // 
-            // label4
+            // whiteDepthLabel
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(350, 179);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(65, 15);
-            label4.TabIndex = 14;
-            label4.Text = "White Plies";
+            whiteDepthLabel.AutoSize = true;
+            whiteDepthLabel.Location = new Point(350, 179);
+            whiteDepthLabel.Margin = new Padding(4, 0, 4, 0);
+            whiteDepthLabel.Name = "label4";
+            whiteDepthLabel.Size = new Size(73, 15);
+            whiteDepthLabel.TabIndex = 14;
+            whiteDepthLabel.Text = "White Depth";
             // 
-            // label1
+            // blackDepthLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(19, 178);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(62, 15);
-            label1.TabIndex = 12;
-            label1.Text = "Black Plies";
+            blackDepthLabel.AutoSize = true;
+            blackDepthLabel.Location = new Point(19, 178);
+            blackDepthLabel.Margin = new Padding(4, 0, 4, 0);
+            blackDepthLabel.Name = "label1";
+            blackDepthLabel.Size = new Size(70, 15);
+            blackDepthLabel.TabIndex = 12;
+            blackDepthLabel.Text = "Black Depth";
             // 
-            // blackPly
+            // blackDepth
             // 
-            blackPly.Location = new Point(127, 176);
-            blackPly.Margin = new Padding(4, 3, 4, 3);
-            blackPly.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
-            blackPly.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            blackPly.Name = "blackPly";
-            blackPly.Size = new Size(37, 23);
-            blackPly.TabIndex = 11;
-            blackPly.Tag = "black";
-            blackPly.Value = new decimal(new int[] { 5, 0, 0, 0 });
-            blackPly.ValueChanged += SetPly;
+            blackDepth.Location = new Point(127, 176);
+            blackDepth.Margin = new Padding(4, 3, 4, 3);
+            blackDepth.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
+            blackDepth.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            blackDepth.Name = "blackDepth";
+            blackDepth.Size = new Size(37, 23);
+            blackDepth.TabIndex = 11;
+            blackDepth.Tag = "black";
+            blackDepth.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            blackDepth.ValueChanged += SetDepth;
             // 
-            // whitePly
+            // whiteDepth
             // 
-            whitePly.Location = new Point(458, 176);
-            whitePly.Margin = new Padding(4, 3, 4, 3);
-            whitePly.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
-            whitePly.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            whitePly.Name = "whitePly";
-            whitePly.Size = new Size(37, 23);
-            whitePly.TabIndex = 13;
-            whitePly.Tag = "white";
-            whitePly.Value = new decimal(new int[] { 5, 0, 0, 0 });
-            whitePly.ValueChanged += SetPly;
+            whiteDepth.Location = new Point(458, 176);
+            whiteDepth.Margin = new Padding(4, 3, 4, 3);
+            whiteDepth.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
+            whiteDepth.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            whiteDepth.Name = "whiteDepth";
+            whiteDepth.Size = new Size(37, 23);
+            whiteDepth.TabIndex = 13;
+            whiteDepth.Tag = "white";
+            whiteDepth.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            whiteDepth.ValueChanged += SetDepth;
             // 
             // blackHeuristic
             // 
@@ -450,41 +435,32 @@ namespace UI
             NextMoveBtn.UseVisualStyleBackColor = true;
             NextMoveBtn.Click += NextMove;
             // 
-            // label3
+            // titleLabel
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(166, 44);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(182, 13);
-            label3.TabIndex = 7;
-            label3.Text = "UI by Luke Meier and Drew Hayward";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Microsoft New Tai Lue", 20F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(178, 3);
-            label2.Margin = new Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(138, 35);
-            label2.TabIndex = 6;
-            label2.Text = "reversi z2";
+            titleLabel.AutoSize = true;
+            titleLabel.Font = new Font("Microsoft New Tai Lue", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            titleLabel.Location = new Point(178, 3);
+            titleLabel.Margin = new Padding(4, 0, 4, 0);
+            titleLabel.Name = "label2";
+            titleLabel.Size = new Size(138, 35);
+            titleLabel.TabIndex = 6;
+            titleLabel.Text = "reversi z2";
             // 
             // StopOrClear
             // 
-            StopOrClear.Location = new Point(12, 205);
-            StopOrClear.Margin = new Padding(4, 3, 4, 3);
-            StopOrClear.Name = "StopOrClear";
-            StopOrClear.Size = new Size(164, 32);
-            StopOrClear.TabIndex = 5;
-            StopOrClear.Text = "Stop / Clear";
-            StopOrClear.UseVisualStyleBackColor = true;
-            StopOrClear.Click += Reset;
+            stopOrClear.Location = new Point(12, 205);
+            stopOrClear.Margin = new Padding(4, 3, 4, 3);
+            stopOrClear.Name = "StopOrClear";
+            stopOrClear.Size = new Size(164, 32);
+            stopOrClear.TabIndex = 5;
+            stopOrClear.Text = "Stop / Clear";
+            stopOrClear.UseVisualStyleBackColor = true;
+            stopOrClear.Click += Reset;
             // 
             // pruneCheckbox
             // 
+            pruneCheckbox.Checked = true;
+            pruneCheckbox.CheckState = CheckState.Checked;
             pruneCheckbox.Location = new Point(206, 74);
             pruneCheckbox.Margin = new Padding(4, 3, 4, 3);
             pruneCheckbox.Name = "pruneCheckbox";
@@ -516,8 +492,8 @@ namespace UI
             Text = "reversi z2";
             OptionsPanel.ResumeLayout(false);
             OptionsPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)blackPly).EndInit();
-            ((System.ComponentModel.ISupportInitialize)whitePly).EndInit();
+            ((System.ComponentModel.ISupportInitialize)blackDepth).EndInit();
+            ((System.ComponentModel.ISupportInitialize)whiteDepth).EndInit();
             blackHeuristic.ResumeLayout(false);
             blackHeuristic.PerformLayout();
             whiteHeuristic.ResumeLayout(false);
@@ -529,13 +505,12 @@ namespace UI
 
         #endregion
 
-        private Label label5;
-        private RadioButton radioButton2;
-        private RadioButton radioButton1;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        // windows forms checkbox button
+        private Label creditsLabel;
+        private RadioButton manualPlayRadioButton;
+        private RadioButton automaticPlayRadioButton;
+        private Button startAutomaticPlayButton;
+        private Button saveGameButton;
+        private Button loadGameButton;
         private CheckBox pruneCheckbox;
     }
 }

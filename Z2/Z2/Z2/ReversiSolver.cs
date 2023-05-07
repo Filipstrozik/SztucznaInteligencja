@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Z2
+﻿namespace Z2
 {
     public class ReversiSolver
     {
@@ -29,37 +23,23 @@ namespace Z2
             this.heuristic = (game) => heuristic(game, Color);
         }
 
-
-        /// Takes a game object and returns the best move given the heuristic for the current player
+        // Takes a game object and returns the best move given the heuristic for the current player
         public Tuple<Play, int> ChoosePlay(Game game, bool prune = true)
         {
             int time = Environment.TickCount;
 
             game = new Game(game);
-            // caclucalte millisececonds for the AI to think
-            // calculate the time it took to think
 
-            // get the best play
-            int countNodes = 0;
             var returnedAlphaBeta = AlphaBeta(game, MaxDepth, Prune);
             Play bestPlay = returnedAlphaBeta.Item2;
-            countNodes = returnedAlphaBeta.Item3;
+            int countNodes = returnedAlphaBeta.Item3;
             // return the best play
             time = Environment.TickCount - time;
             // print the time it took to think
-            //Console.WriteLine("AI took " + time + " milliseconds to think");
             return new Tuple<Play, int>(bestPlay, countNodes);
         }
 
-        /// <summary>
-        /// Searches the game tree and returns the a pair of the best play for the current player and it's heuristic value
-        /// </summary>
-        /// <param name="game">The game is in state to be searched from</param>
-        /// <param name="heuristic">A function that rates each board on an integer scale in terms of black. Higher is better</param>
-        /// <param name="alpha">Highest value seen so far</param>
-        /// <param name="beta">Lowest value seen so far</param>
-        /// <param name="currentDepth">The depth to search the game</param>
-        /// <returns></returns>
+        // Searches the game tree and returns the a pair of the best play for the current player and it's heuristic value
         private Tuple<int, Play, int> AlphaBeta(Game game, int currentDepth = 5, bool prune = true, bool max = true, int alpha = int.MinValue, int beta = int.MaxValue, int nodesVisited = 0)
         {
             //nie oceniaj możliwych zagrań, jeśli jesteś u podstawy drzewa wyszukiwania
@@ -69,7 +49,12 @@ namespace Z2
             // wyjście jeżeli: doszliśmy do ograniczenia głębokości || gra zakończona || brak możliwych ruchów
             if (currentDepth == 0 || game.GameOver() || possiblePlays.Count == 0)
             {
-                return new Tuple<int, Play, int>(heuristic(game), null, 1); //TODO (heuristic(game) => 999999)?
+                if (game.GameOver() && game.Winner != null)
+                {
+                    return new Tuple<int, Play, int>(99999, null!, 1);
+                }
+                return new Tuple<int, Play, int>(heuristic(game), null!, 1);
+
             }
             // jeśli gracz jest czarny, to maksymalilzuj
             // w przeciwnym razie, to minimalizuj
@@ -119,16 +104,16 @@ namespace Z2
 
         #region heuristics
 
-        /// Calculates the heuristic value based on the difference of black tiles and white tiles
+        // Calculates the heuristic value based on the difference of black tiles and white tiles
         public static int RandomHeuristic(Game game, TileColor color)
         {
-            Random rand = new Random();
-            int randomValue = rand.Next(65); // generates a random integer value between 0 and 64
+            Random rand = new();
+            int randomValue = rand.Next(100); // generates a random integer value between 0 and 100
             return randomValue;
 
         }
 
-        /// Calculates the heuristic value based on the difference of black tiles and white tiles
+        // Calculates the heuristic value based on the difference of black tiles and white tiles
         public static int TileCountHeuristic(Game game, TileColor color)
         {
             int black = game.Board.GetNumColor(TileColor.BLACK);
@@ -152,15 +137,15 @@ namespace Z2
         }
 
 
-        /// Calculates a heuristic based on how many moves a player has relative to how many moves the opponent has
+        // Calculates a heuristic based on how many moves a player has relative to how many moves the opponent has
         public static int ActualMobilityHeuristic(Game game, TileColor color)
         {
             TileColor currentPlayer = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
             TileColor maxPlayer = color;
             TileColor minPlayer = color == TileColor.BLACK ? TileColor.WHITE : TileColor.BLACK;
 
-            int maxMobility = 0;
-            int minMobility = 0;
+            int maxMobility;
+            int minMobility;
 
             // Sets the max and min mobilities
             if (currentPlayer == maxPlayer)
@@ -186,13 +171,13 @@ namespace Z2
 
         }
 
-        /// Calculates a score based on how many more corners one player has than the other
+        // Calculates a score based on how many more corners one player has than the other
 
         public static int CornersHeuristic(Game game, TileColor color)
         {
             TileColor currentPlayer = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE;
 
-            List<Tuple<int, int>> corners = new List<Tuple<int, int>>
+            List<Tuple<int, int>> corners = new()
             {
                 Tuple.Create(0, 0),
                 Tuple.Create((int) game.Board.Size - 1, 0),
@@ -217,11 +202,10 @@ namespace Z2
             }
             int score = 0;
             if (maxScore + minScore > 0) score = (100 * (maxScore - minScore)) / (minScore + maxScore);
-
             return score;
         }
 
-        /// Calculates the score of a board based on a set of pre-defined 
+        // Calculates the score of a board based on a set of pre-defined weights of each tile
         public static int WeightedHeuristic(Game game, TileColor color)
         {
             if (game.Size() != 8)
@@ -252,6 +236,12 @@ namespace Z2
             weights[3, 1] = -1;
             weights[3, 2] = 0;
             weights[3, 3] = 1;
+
+            // weights
+            // 4  -3  2  2
+            // -3 -4 -1 -1
+            // 2  -1  1  0
+            // 2  -1  0  1
             #endregion
 
 
@@ -260,6 +250,7 @@ namespace Z2
                 for (int j = 0; j < game.Size(); j++)
                 {
                     // Mirrors the weights to all 4 corners
+
                     int im = i < 4 ? i : 3 - i % 4;
                     int jm = j < 4 ? j : 3 - j % 4;
 
@@ -276,7 +267,6 @@ namespace Z2
                     }
                 }
             }
-
 
             return score;
         }

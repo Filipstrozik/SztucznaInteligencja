@@ -1,11 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Z2
 {
@@ -13,8 +6,8 @@ namespace Z2
     public class Board
     {
         public Tile[,] board;
-        public uint Size { get;  set; }
-        
+        public uint Size { get; set; }
+
         [JsonConstructor]
         public Board()
         {
@@ -34,7 +27,6 @@ namespace Z2
 
         }
 
-
         private static Board DeepClone(Board obj)
         {
             Board clone = (Board)obj.MemberwiseClone();
@@ -53,17 +45,17 @@ namespace Z2
             return clone;
         }
 
-        //place put a color tile on the board
+        // place put a color tile on the board
         public Tile Place(int x, int y, TileColor color)
         {
-            //if a tile already exists here, don't place anything
+            // if a tile already exists here, don't place anything
             if (board[x, y] != null)
             {
                 return null;
             }
-            //create a new tile of the correct color
-            Tile placement = new Tile(color);
-            //store coordinates in the Tile object, and store the object reference in the board.
+            // create a new tile of the correct color
+            Tile placement = new(color);
+            // store coordinates in the Tile object, and store the object reference in the board.
             placement.Place(x, y);
             board[x, y] = placement;
             return placement;
@@ -85,18 +77,18 @@ namespace Z2
             return true;
         }
 
-        //access board through [x,y] accessors
+        // access board through [x,y] accessors
         public Tile this[int x, int y]
         {
             get { return board[x, y]; }
         }
 
-        //for each cell in the board, add to a list if
+        // for each cell in the board, add to a list if
         //  a) it is empty and b) it has at least one adjacent placed tile
         public List<Tuple<int, int>> OpenAdjacentSpots()
         {
-            List<Tuple<int, int>> openAdjacent = new List<Tuple<int, int>>();
-            //for each cell in the board
+            List<Tuple<int, int>> openAdjacent = new();
+            // for each cell in the board
             for (int x = 0; x < Size; x++)
             {
                 for (int y = 0; y < Size; y++)
@@ -111,7 +103,7 @@ namespace Z2
             return openAdjacent;
         }
 
-        //check to see if the cell at x,y is adjacent to any placed tiles
+        // check to see if the cell at x,y is adjacent to any placed tiles
         private bool AdjacentToTile(int x, int y)
         {
             /*
@@ -139,7 +131,7 @@ namespace Z2
         }
 
 
-        /// Returns the number of tiles with the given color
+        // Returns the number of tiles with the given color
         public int GetNumColor(TileColor color)
         {
             int count = 0;

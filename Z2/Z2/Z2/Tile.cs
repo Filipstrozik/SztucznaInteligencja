@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Z2
 {
@@ -17,33 +12,19 @@ namespace Z2
     [Serializable]
     public class Tile
     {
-        //If the tile is white, flip it to black and vice versa 
-        //If the tile is blank, do nothing. 
+        // If the tile is white, flip it to black and vice versa 
         public TileColor Flip()
         {
             color = (color == TileColor.WHITE) ? TileColor.BLACK : TileColor.WHITE;
             return color;
-        }       
-        
-/*        public TileColor Flip()
-        {
-            if (color == TileColor.WHITE)
-            {
-                color = TileColor.BLACK;
-            }
-            else
-            {
-                color = TileColor.WHITE;
-            }
-            return color;
-        }*/
+        }
 
         // place a tile in an x,y coordinate.  
         public Tuple<int, int> Place(int x, int y)
         {
-            //tiles cannot be placed twice.
+            // tiles cannot be placed twice.
             if (placed) throw new InvalidOperationException("Tile already placed!");
-            //store the final position for the tile 
+            // store the final position for the tile 
             Coords = Tuple.Create(x, y);
             placed = true;
             return Coords;
@@ -62,7 +43,6 @@ namespace Z2
             this.color = color;
             Coords = Tuple.Create(-1, -1);
         }
-
 
         public TileColor color { get; private set; }
         private bool placed = false;
