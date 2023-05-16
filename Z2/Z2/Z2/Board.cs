@@ -113,11 +113,6 @@ namespace Z2
              *  x c c c x 
              *  x x x x x
              *  
-             *  Where x,y is the position of O, 
-             *     check each cell c to see if a tile is placed anywhere adjacent
-             *  x-1 is right before the position, x+1 is right after. Likewise for y.
-             *  
-             *  Min and Max so we don't have indexing errors.
              */
             for (int ix = Math.Max(0, x - 1); ix <= x + 1 && ix < Size; ix++)
             {

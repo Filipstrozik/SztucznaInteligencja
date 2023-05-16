@@ -49,6 +49,7 @@
             // wyjście jeżeli: doszliśmy do ograniczenia głębokości || gra zakończona || brak możliwych ruchów
             if (currentDepth == 0 || game.GameOver() || possiblePlays.Count == 0)
             {
+                // jezeli gracz jakiś wygrał
                 if (game.GameOver() && game.Winner != null)
                 {
                     return new Tuple<int, Play, int>(99999, null!, 1);
@@ -267,7 +268,6 @@
                     }
                 }
             }
-
             return score;
         }
 

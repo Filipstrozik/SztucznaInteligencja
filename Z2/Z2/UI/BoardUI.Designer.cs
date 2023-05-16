@@ -82,10 +82,10 @@
             // 
             // GamePanel
             // 
-            GamePanel.Location = new Point(29, 279);
-            GamePanel.Margin = new Padding(4, 3, 4, 3);
+            GamePanel.Location = new Point(50, 523);
+            GamePanel.Margin = new Padding(7, 6, 7, 6);
             GamePanel.Name = "GamePanel";
-            GamePanel.Size = new Size(723, 652);
+            GamePanel.Size = new Size(1239, 1367);
             GamePanel.TabIndex = 5;
             // 
             // OptionsPanel
@@ -106,29 +106,29 @@
             OptionsPanel.Controls.Add(titleLabel);
             OptionsPanel.Controls.Add(stopOrClear);
             OptionsPanel.Controls.Add(pruneCheckbox);
-            OptionsPanel.Location = new Point(118, 12);
-            OptionsPanel.Margin = new Padding(4, 3, 4, 3);
+            OptionsPanel.Location = new Point(202, 24);
+            OptionsPanel.Margin = new Padding(7, 6, 7, 6);
             OptionsPanel.Name = "OptionsPanel";
-            OptionsPanel.Size = new Size(533, 249);
+            OptionsPanel.Size = new Size(914, 498);
             OptionsPanel.TabIndex = 6;
             // 
-            // loadButton
+            // loadGameButton
             // 
-            loadGameButton.Location = new Point(262, 143);
-            loadGameButton.Margin = new Padding(4, 3, 4, 3);
-            loadGameButton.Name = "button3";
-            loadGameButton.Size = new Size(80, 31);
+            loadGameButton.Location = new Point(449, 286);
+            loadGameButton.Margin = new Padding(7, 6, 7, 6);
+            loadGameButton.Name = "loadGameButton";
+            loadGameButton.Size = new Size(137, 62);
             loadGameButton.TabIndex = 20;
             loadGameButton.Text = "Load";
             loadGameButton.UseVisualStyleBackColor = true;
-            loadGameButton.Click += button3_Click;
+            loadGameButton.Click += LoadButton_Click;
             // 
-            // saveButton
+            // saveGameButton
             // 
-            saveGameButton.Location = new Point(178, 143);
-            saveGameButton.Margin = new Padding(4, 3, 4, 3);
-            saveGameButton.Name = "button2";
-            saveGameButton.Size = new Size(80, 31);
+            saveGameButton.Location = new Point(305, 286);
+            saveGameButton.Margin = new Padding(7, 6, 7, 6);
+            saveGameButton.Name = "saveGameButton";
+            saveGameButton.Size = new Size(137, 62);
             saveGameButton.TabIndex = 19;
             saveGameButton.Text = "Save";
             saveGameButton.UseVisualStyleBackColor = true;
@@ -136,10 +136,10 @@
             // 
             // startAutomaticPlayButton
             // 
-            startAutomaticPlayButton.Location = new Point(184, 205);
-            startAutomaticPlayButton.Margin = new Padding(4, 3, 4, 3);
-            startAutomaticPlayButton.Name = "button1";
-            startAutomaticPlayButton.Size = new Size(164, 31);
+            startAutomaticPlayButton.Location = new Point(315, 410);
+            startAutomaticPlayButton.Margin = new Padding(7, 6, 7, 6);
+            startAutomaticPlayButton.Name = "startAutomaticPlayButton";
+            startAutomaticPlayButton.Size = new Size(281, 62);
             startAutomaticPlayButton.TabIndex = 18;
             startAutomaticPlayButton.Text = "Start Automatic Play";
             startAutomaticPlayButton.UseVisualStyleBackColor = true;
@@ -149,10 +149,10 @@
             // 
             manualPlayRadioButton.AutoSize = true;
             manualPlayRadioButton.Checked = true;
-            manualPlayRadioButton.Location = new Point(206, 121);
-            manualPlayRadioButton.Margin = new Padding(4, 3, 4, 3);
-            manualPlayRadioButton.Name = "radioButton2";
-            manualPlayRadioButton.Size = new Size(90, 19);
+            manualPlayRadioButton.Location = new Point(353, 242);
+            manualPlayRadioButton.Margin = new Padding(7, 6, 7, 6);
+            manualPlayRadioButton.Name = "manualPlayRadioButton";
+            manualPlayRadioButton.Size = new Size(152, 34);
             manualPlayRadioButton.TabIndex = 17;
             manualPlayRadioButton.TabStop = true;
             manualPlayRadioButton.Tag = "ManualPlay";
@@ -160,58 +160,58 @@
             manualPlayRadioButton.UseVisualStyleBackColor = true;
             manualPlayRadioButton.Click += UnSetAutomaticPlay;
             // 
-            // automaticPlayRadioButton1
+            // automaticPlayRadioButton
             // 
             automaticPlayRadioButton.AutoSize = true;
-            automaticPlayRadioButton.Location = new Point(206, 99);
-            automaticPlayRadioButton.Margin = new Padding(4, 3, 4, 3);
-            automaticPlayRadioButton.Name = "radioButton1";
-            automaticPlayRadioButton.Size = new Size(106, 19);
+            automaticPlayRadioButton.Location = new Point(353, 198);
+            automaticPlayRadioButton.Margin = new Padding(7, 6, 7, 6);
+            automaticPlayRadioButton.Name = "automaticPlayRadioButton";
+            automaticPlayRadioButton.Size = new Size(178, 34);
             automaticPlayRadioButton.TabIndex = 16;
             automaticPlayRadioButton.Tag = "AutoPlay";
             automaticPlayRadioButton.Text = "Automatic Play";
             automaticPlayRadioButton.UseVisualStyleBackColor = true;
             automaticPlayRadioButton.Click += SetAutomaticPlay;
             // 
-            // craditsLabel
+            // creditsLabel
             // 
             creditsLabel.AutoSize = true;
             creditsLabel.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            creditsLabel.Location = new Point(197, 53);
-            creditsLabel.Margin = new Padding(4, 0, 4, 0);
-            creditsLabel.Name = "label5";
-            creditsLabel.Size = new Size(115, 13);
+            creditsLabel.Location = new Point(338, 106);
+            creditsLabel.Margin = new Padding(7, 0, 7, 0);
+            creditsLabel.Name = "creditsLabel";
+            creditsLabel.Size = new Size(203, 24);
             creditsLabel.TabIndex = 15;
             creditsLabel.Text = "Solution by Filip Strózik";
             // 
             // whiteDepthLabel
             // 
             whiteDepthLabel.AutoSize = true;
-            whiteDepthLabel.Location = new Point(350, 179);
-            whiteDepthLabel.Margin = new Padding(4, 0, 4, 0);
-            whiteDepthLabel.Name = "label4";
-            whiteDepthLabel.Size = new Size(73, 15);
+            whiteDepthLabel.Location = new Point(600, 358);
+            whiteDepthLabel.Margin = new Padding(7, 0, 7, 0);
+            whiteDepthLabel.Name = "whiteDepthLabel";
+            whiteDepthLabel.Size = new Size(131, 30);
             whiteDepthLabel.TabIndex = 14;
             whiteDepthLabel.Text = "White Depth";
             // 
             // blackDepthLabel
             // 
             blackDepthLabel.AutoSize = true;
-            blackDepthLabel.Location = new Point(19, 178);
-            blackDepthLabel.Margin = new Padding(4, 0, 4, 0);
-            blackDepthLabel.Name = "label1";
-            blackDepthLabel.Size = new Size(70, 15);
+            blackDepthLabel.Location = new Point(33, 356);
+            blackDepthLabel.Margin = new Padding(7, 0, 7, 0);
+            blackDepthLabel.Name = "blackDepthLabel";
+            blackDepthLabel.Size = new Size(124, 30);
             blackDepthLabel.TabIndex = 12;
             blackDepthLabel.Text = "Black Depth";
             // 
             // blackDepth
             // 
-            blackDepth.Location = new Point(127, 176);
-            blackDepth.Margin = new Padding(4, 3, 4, 3);
+            blackDepth.Location = new Point(218, 352);
+            blackDepth.Margin = new Padding(7, 6, 7, 6);
             blackDepth.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
             blackDepth.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             blackDepth.Name = "blackDepth";
-            blackDepth.Size = new Size(37, 23);
+            blackDepth.Size = new Size(63, 35);
             blackDepth.TabIndex = 11;
             blackDepth.Tag = "black";
             blackDepth.Value = new decimal(new int[] { 5, 0, 0, 0 });
@@ -219,12 +219,12 @@
             // 
             // whiteDepth
             // 
-            whiteDepth.Location = new Point(458, 176);
-            whiteDepth.Margin = new Padding(4, 3, 4, 3);
+            whiteDepth.Location = new Point(785, 352);
+            whiteDepth.Margin = new Padding(7, 6, 7, 6);
             whiteDepth.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
             whiteDepth.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             whiteDepth.Name = "whiteDepth";
-            whiteDepth.Size = new Size(37, 23);
+            whiteDepth.Size = new Size(63, 35);
             whiteDepth.TabIndex = 13;
             whiteDepth.Tag = "white";
             whiteDepth.Value = new decimal(new int[] { 5, 0, 0, 0 });
@@ -238,11 +238,11 @@
             blackHeuristic.Controls.Add(mobilityBlack);
             blackHeuristic.Controls.Add(tileBlack);
             blackHeuristic.Controls.Add(randomBlack);
-            blackHeuristic.Location = new Point(13, 7);
-            blackHeuristic.Margin = new Padding(4, 3, 4, 3);
+            blackHeuristic.Location = new Point(22, 14);
+            blackHeuristic.Margin = new Padding(7, 6, 7, 6);
             blackHeuristic.Name = "blackHeuristic";
-            blackHeuristic.Padding = new Padding(4, 3, 4, 3);
-            blackHeuristic.Size = new Size(164, 168);
+            blackHeuristic.Padding = new Padding(7, 6, 7, 6);
+            blackHeuristic.Size = new Size(281, 336);
             blackHeuristic.TabIndex = 9;
             blackHeuristic.TabStop = false;
             blackHeuristic.Text = "Black Heuristic";
@@ -251,10 +251,10 @@
             // 
             humanBlack.AutoSize = true;
             humanBlack.Checked = true;
-            humanBlack.Location = new Point(6, 142);
-            humanBlack.Margin = new Padding(4, 3, 4, 3);
+            humanBlack.Location = new Point(10, 284);
+            humanBlack.Margin = new Padding(7, 6, 7, 6);
             humanBlack.Name = "humanBlack";
-            humanBlack.Size = new Size(100, 19);
+            humanBlack.Size = new Size(168, 34);
             humanBlack.TabIndex = 4;
             humanBlack.TabStop = true;
             humanBlack.Tag = "humanBlack";
@@ -265,10 +265,10 @@
             // weightedBlack
             // 
             weightedBlack.AutoSize = true;
-            weightedBlack.Location = new Point(7, 117);
-            weightedBlack.Margin = new Padding(4, 3, 4, 3);
+            weightedBlack.Location = new Point(12, 234);
+            weightedBlack.Margin = new Padding(7, 6, 7, 6);
             weightedBlack.Name = "weightedBlack";
-            weightedBlack.Size = new Size(102, 19);
+            weightedBlack.Size = new Size(174, 34);
             weightedBlack.TabIndex = 3;
             weightedBlack.Tag = "weightedBlack";
             weightedBlack.Text = "Weighted Tiles";
@@ -278,10 +278,10 @@
             // cornersBlack
             // 
             cornersBlack.AutoSize = true;
-            cornersBlack.Location = new Point(6, 92);
-            cornersBlack.Margin = new Padding(4, 3, 4, 3);
+            cornersBlack.Location = new Point(10, 184);
+            cornersBlack.Margin = new Padding(7, 6, 7, 6);
             cornersBlack.Name = "cornersBlack";
-            cornersBlack.Size = new Size(66, 19);
+            cornersBlack.Size = new Size(109, 34);
             cornersBlack.TabIndex = 2;
             cornersBlack.Tag = "cornersBlack";
             cornersBlack.Text = "Corners";
@@ -291,10 +291,10 @@
             // mobilityBlack
             // 
             mobilityBlack.AutoSize = true;
-            mobilityBlack.Location = new Point(6, 69);
-            mobilityBlack.Margin = new Padding(4, 3, 4, 3);
+            mobilityBlack.Location = new Point(10, 138);
+            mobilityBlack.Margin = new Padding(7, 6, 7, 6);
             mobilityBlack.Name = "mobilityBlack";
-            mobilityBlack.Size = new Size(106, 19);
+            mobilityBlack.Size = new Size(178, 34);
             mobilityBlack.TabIndex = 1;
             mobilityBlack.Tag = "mobilityBlack";
             mobilityBlack.Text = "Actual Mobility";
@@ -304,10 +304,10 @@
             // tileBlack
             // 
             tileBlack.AutoSize = true;
-            tileBlack.Location = new Point(6, 43);
-            tileBlack.Margin = new Padding(4, 3, 4, 3);
+            tileBlack.Location = new Point(10, 86);
+            tileBlack.Margin = new Padding(7, 6, 7, 6);
             tileBlack.Name = "tileBlack";
-            tileBlack.Size = new Size(79, 19);
+            tileBlack.Size = new Size(132, 34);
             tileBlack.TabIndex = 0;
             tileBlack.Tag = "tileBlack";
             tileBlack.Text = "Tile Count";
@@ -317,10 +317,10 @@
             // randomBlack
             // 
             randomBlack.AutoSize = true;
-            randomBlack.Location = new Point(6, 18);
-            randomBlack.Margin = new Padding(4, 3, 4, 3);
+            randomBlack.Location = new Point(10, 36);
+            randomBlack.Margin = new Padding(7, 6, 7, 6);
             randomBlack.Name = "randomBlack";
-            randomBlack.Size = new Size(70, 19);
+            randomBlack.Size = new Size(116, 34);
             randomBlack.TabIndex = 0;
             randomBlack.Tag = "randomBlack";
             randomBlack.Text = "Random";
@@ -335,11 +335,11 @@
             whiteHeuristic.Controls.Add(mobilityWhite);
             whiteHeuristic.Controls.Add(tileWhite);
             whiteHeuristic.Controls.Add(randomWhite);
-            whiteHeuristic.Location = new Point(350, 3);
-            whiteHeuristic.Margin = new Padding(4, 3, 4, 3);
+            whiteHeuristic.Location = new Point(600, 6);
+            whiteHeuristic.Margin = new Padding(7, 6, 7, 6);
             whiteHeuristic.Name = "whiteHeuristic";
-            whiteHeuristic.Padding = new Padding(4, 3, 4, 3);
-            whiteHeuristic.Size = new Size(164, 172);
+            whiteHeuristic.Padding = new Padding(7, 6, 7, 6);
+            whiteHeuristic.Size = new Size(281, 344);
             whiteHeuristic.TabIndex = 10;
             whiteHeuristic.TabStop = false;
             whiteHeuristic.Text = "White Heuristic";
@@ -348,10 +348,10 @@
             // 
             humanWhite.AutoSize = true;
             humanWhite.Checked = true;
-            humanWhite.Location = new Point(10, 146);
-            humanWhite.Margin = new Padding(4, 3, 4, 3);
+            humanWhite.Location = new Point(17, 292);
+            humanWhite.Margin = new Padding(7, 6, 7, 6);
             humanWhite.Name = "humanWhite";
-            humanWhite.Size = new Size(100, 19);
+            humanWhite.Size = new Size(168, 34);
             humanWhite.TabIndex = 4;
             humanWhite.TabStop = true;
             humanWhite.Tag = "humanWhite";
@@ -362,10 +362,10 @@
             // weightedWhite
             // 
             weightedWhite.AutoSize = true;
-            weightedWhite.Location = new Point(10, 123);
-            weightedWhite.Margin = new Padding(4, 3, 4, 3);
+            weightedWhite.Location = new Point(17, 246);
+            weightedWhite.Margin = new Padding(7, 6, 7, 6);
             weightedWhite.Name = "weightedWhite";
-            weightedWhite.Size = new Size(102, 19);
+            weightedWhite.Size = new Size(174, 34);
             weightedWhite.TabIndex = 3;
             weightedWhite.Tag = "weightedWhite";
             weightedWhite.Text = "Weighted Tiles";
@@ -375,10 +375,10 @@
             // cornersWhite
             // 
             cornersWhite.AutoSize = true;
-            cornersWhite.Location = new Point(10, 98);
-            cornersWhite.Margin = new Padding(4, 3, 4, 3);
+            cornersWhite.Location = new Point(17, 196);
+            cornersWhite.Margin = new Padding(7, 6, 7, 6);
             cornersWhite.Name = "cornersWhite";
-            cornersWhite.Size = new Size(66, 19);
+            cornersWhite.Size = new Size(109, 34);
             cornersWhite.TabIndex = 2;
             cornersWhite.Tag = "cornersWhite";
             cornersWhite.Text = "Corners";
@@ -388,10 +388,10 @@
             // mobilityWhite
             // 
             mobilityWhite.AutoSize = true;
-            mobilityWhite.Location = new Point(10, 73);
-            mobilityWhite.Margin = new Padding(4, 3, 4, 3);
+            mobilityWhite.Location = new Point(17, 146);
+            mobilityWhite.Margin = new Padding(7, 6, 7, 6);
             mobilityWhite.Name = "mobilityWhite";
-            mobilityWhite.Size = new Size(106, 19);
+            mobilityWhite.Size = new Size(178, 34);
             mobilityWhite.TabIndex = 1;
             mobilityWhite.Tag = "mobilityWhite";
             mobilityWhite.Text = "Actual Mobility";
@@ -401,10 +401,10 @@
             // tileWhite
             // 
             tileWhite.AutoSize = true;
-            tileWhite.Location = new Point(10, 47);
-            tileWhite.Margin = new Padding(4, 3, 4, 3);
+            tileWhite.Location = new Point(17, 94);
+            tileWhite.Margin = new Padding(7, 6, 7, 6);
             tileWhite.Name = "tileWhite";
-            tileWhite.Size = new Size(79, 19);
+            tileWhite.Size = new Size(132, 34);
             tileWhite.TabIndex = 0;
             tileWhite.Tag = "tileWhite";
             tileWhite.Text = "Tile Count";
@@ -414,10 +414,10 @@
             // randomWhite
             // 
             randomWhite.AutoSize = true;
-            randomWhite.Location = new Point(10, 22);
-            randomWhite.Margin = new Padding(4, 3, 4, 3);
+            randomWhite.Location = new Point(17, 44);
+            randomWhite.Margin = new Padding(7, 6, 7, 6);
             randomWhite.Name = "randomWhite";
-            randomWhite.Size = new Size(70, 19);
+            randomWhite.Size = new Size(116, 34);
             randomWhite.TabIndex = 0;
             randomWhite.Tag = "randomWhite";
             randomWhite.Text = "Random";
@@ -426,10 +426,10 @@
             // 
             // NextMoveBtn
             // 
-            NextMoveBtn.Location = new Point(349, 205);
-            NextMoveBtn.Margin = new Padding(4, 3, 4, 3);
+            NextMoveBtn.Location = new Point(598, 410);
+            NextMoveBtn.Margin = new Padding(7, 6, 7, 6);
             NextMoveBtn.Name = "NextMoveBtn";
-            NextMoveBtn.Size = new Size(164, 31);
+            NextMoveBtn.Size = new Size(281, 62);
             NextMoveBtn.TabIndex = 8;
             NextMoveBtn.Text = "Next";
             NextMoveBtn.UseVisualStyleBackColor = true;
@@ -439,19 +439,19 @@
             // 
             titleLabel.AutoSize = true;
             titleLabel.Font = new Font("Microsoft New Tai Lue", 20F, FontStyle.Bold, GraphicsUnit.Point);
-            titleLabel.Location = new Point(178, 3);
-            titleLabel.Margin = new Padding(4, 0, 4, 0);
-            titleLabel.Name = "label2";
-            titleLabel.Size = new Size(138, 35);
+            titleLabel.Location = new Point(305, 6);
+            titleLabel.Margin = new Padding(7, 0, 7, 0);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(237, 62);
             titleLabel.TabIndex = 6;
             titleLabel.Text = "reversi z2";
             // 
-            // StopOrClear
+            // stopOrClear
             // 
-            stopOrClear.Location = new Point(12, 205);
-            stopOrClear.Margin = new Padding(4, 3, 4, 3);
-            stopOrClear.Name = "StopOrClear";
-            stopOrClear.Size = new Size(164, 32);
+            stopOrClear.Location = new Point(21, 410);
+            stopOrClear.Margin = new Padding(7, 6, 7, 6);
+            stopOrClear.Name = "stopOrClear";
+            stopOrClear.Size = new Size(281, 64);
             stopOrClear.TabIndex = 5;
             stopOrClear.Text = "Stop / Clear";
             stopOrClear.UseVisualStyleBackColor = true;
@@ -461,10 +461,10 @@
             // 
             pruneCheckbox.Checked = true;
             pruneCheckbox.CheckState = CheckState.Checked;
-            pruneCheckbox.Location = new Point(206, 74);
-            pruneCheckbox.Margin = new Padding(4, 3, 4, 3);
+            pruneCheckbox.Location = new Point(353, 148);
+            pruneCheckbox.Margin = new Padding(7, 6, 7, 6);
             pruneCheckbox.Name = "pruneCheckbox";
-            pruneCheckbox.Size = new Size(80, 19);
+            pruneCheckbox.Size = new Size(137, 38);
             pruneCheckbox.TabIndex = 0;
             pruneCheckbox.Tag = "pruneCheckbox";
             pruneCheckbox.Text = "Prune";
@@ -482,12 +482,12 @@
             // 
             // BoardUI
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(779, 943);
+            ClientSize = new Size(1335, 1924);
             Controls.Add(OptionsPanel);
             Controls.Add(GamePanel);
-            Margin = new Padding(4, 3, 4, 3);
+            Margin = new Padding(7, 6, 7, 6);
             Name = "BoardUI";
             Text = "reversi z2";
             OptionsPanel.ResumeLayout(false);

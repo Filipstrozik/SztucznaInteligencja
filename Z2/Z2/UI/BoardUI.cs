@@ -194,19 +194,19 @@ namespace UI
 
             // Print out heuristic values for the current board for debugging
 
-            //string player = game.IsFirstPlayer ? "Black" : "White";
-            //TileColor playerColor = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE; // let it be
+/*            string player = game.IsFirstPlayer ? "Black" : "White";
+            TileColor playerColor = game.IsFirstPlayer ? TileColor.BLACK : TileColor.WHITE; // let it be
 
             // Count Heuristic
-            //System.Console.WriteLine("The tile counting heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
+            System.Console.WriteLine("The tile counting heuristic returns: " + ReversiSolver.TileCountHeuristic(game, playerColor) + " for " + player);
             // Corners Heuristic
-            //System.Console.WriteLine("The corners heuristic returns: " + ReversiSolver.CornersHeuristic(game, playerColor) + " for " + player);
+            System.Console.WriteLine("The corners heuristic returns: " + ReversiSolver.CornersHeuristic(game, playerColor) + " for " + player);
             // Weighted Heuristic
-            //System.Console.WriteLine("The weighted heuristic returns: " + ReversiSolver.WeightedHeuristic(game, playerColor) + " for " + player);
-            // Mobility Heuristic
-            //System.Console.WriteLine("The mobility heuristic returns: " + ReversiSolver.ActualMobilityHeuristic(game, playerColor) + " for " + player);
+            System.Console.WriteLine("The weighted heuristic returns: " + ReversiSolver.WeightedHeuristic(game, playerColor) + " for " + player);
+            //Mobility Heuristic
+            System.Console.WriteLine("The mobility heuristic returns: " + ReversiSolver.ActualMobilityHeuristic(game, playerColor) + " for " + player);
             // Random Heuristic
-            //System.Console.WriteLine("The random heuristic returns: " + ReversiSolver.RandomHeuristic(game, playerColor) + " for " + player);
+            System.Console.WriteLine("The random heuristic returns: " + ReversiSolver.RandomHeuristic(game, playerColor) + " for " + player);*/
         }
 
         private void ChangeGameMode(object sender, EventArgs e)
@@ -373,6 +373,7 @@ namespace UI
         {
             await Task.Run(() =>
             {
+
                 while (game.Winner == null)
                 {
                     NextMove(sender, e);
@@ -401,7 +402,7 @@ namespace UI
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void LoadButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new()
             {

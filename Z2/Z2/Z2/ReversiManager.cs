@@ -12,11 +12,11 @@ namespace Z2
 
 
         //construct manager for computer vs computer play
-        public ReversiManager(Func<Game, TileColor, int> heuristic1, int ply1, bool prune1, Func<Game, TileColor, int> heuristic2, int ply2, bool prune2, uint size = 8)
+        public ReversiManager(Func<Game, TileColor, int> blackHeuritic, int blackDepth, bool prune1, Func<Game, TileColor, int> whiteHeuristic, int whiteDepth, bool prune2, uint size = 8)
         {
             game = new Game(size);
-            Agents[0] = new ReversiSolver(TileColor.BLACK, heuristic1, ply1, prune1);
-            Agents[1] = new ReversiSolver(TileColor.WHITE, heuristic2, ply2, prune2);
+            Agents[0] = new ReversiSolver(TileColor.BLACK, blackHeuritic, blackDepth, prune1);
+            Agents[1] = new ReversiSolver(TileColor.WHITE, whiteHeuristic, whiteDepth, prune2);
             play = 0;
         }
 
