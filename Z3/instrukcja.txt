@@ -1,0 +1,48 @@
+W ramach pracy nad ćwiczeniem należy wykonać:
+● Wybrać konkretne urządzenie (np. drukarkę, kserokopiarkę, urządzenie
+gospodarstwa domowego) lub aplikację komputerową i następnie należy
+zapoznać się z jego instrukcją obsługi, a w szczególności z rozdziałem o
+rozwiązywaniu problemów.
+● Na tej podstawie należy zdefiniować i zapisać w Prologu prostą sieć semantyczną
+pojęć istotnych dla opisu urządzenia i opisać w niej jego elementy składowe (czyli
+konkretne obiekty).
+● Należy pokazać możliwości wnioskowania i działanie unifikacji w oparciu o
+zbudowaną sieć na kilku dobrze dobranych przykładach zapytań prologowych i
+wnioskowaniach.
+● Następnie należy wydobyć z treści zdania opisujące reguły diagnostyczne, zasady
+postępowania, sposoby postępowanie w razie występowania problemów itd. i
+spróbować je przetłumaczyć na reguły zapisane jako klauzule i predykaty
+Prologowe.
+o Zapewne za pierwszym razem efekt będzie pozostawiał jeszcze dużo do
+poprawy, dlatego należy zapisywać kolejne główne wersje i przedstawić je
+w ramach raportu z wykonania ćwiczenia jako ilustrację procesu
+wypracowywania rozwiązania.
+● Możliwości opracowanej bazy wiedzy należy pokazać na kilku przykładowych
+problemach rozwiązanych za pomocą wnioskowania (minimum 3). W doborze
+przykładów należy zwrócić uwagę na pokazanie możliwości procesu
+wnioskowania, np. głębokości, ciekawego wykorzystania
+● W ramach raportu z realizacji ćwiczenia należy przedstawić kod bazy wiedzy
+wraz z komentarzem dotyczącym znaczenia poszczególnych faktów, klauzul oraz
+przyjętych rozwiązań.
+
+Na ocenę za ćwiczenie będą wpływały następujące aspekty:
+● złożoność wiedzy zapisanej w postaci reguł,
+● złożoność opracowanej sieci semantycznej i poziom generalizacji (np.
+zdefiniowane klasy komponentów, części, użytkowników itd.),
+● złożoność zbudowanych klauzul,
+● wieloetatowość procesu wnioskowania i zakres generalizacji procesu
+wnioskowania,
+● dobre i ciekawe wykorzystanie mechanizmu unifikacji
+
+Punktacja
+● Konstrukcja prostej sieci semantycznej opisującej wybrane urządzenie lub
+aplikację: 20 pkt.
+● Pokazanie możliwości wnioskowania i działanie unifikacji na kilku dobrze
+dobranych przykładach zapytań i wnioskowaniu: 10 pkt.
+● Wydobycie z treści instrukcji zdań opisujących reguły diagnostyczne, zasady
+postępowania, sposoby postępowanie w razie występowania problemów itd.: 10
+pkt.
+● Opracowanie bazy wiedzy w Prologu (bazy klauzul) opisującej wiedzę wyrażoną
+w tych zdaniach: 30 pkt
+● Pokazanie możliwości opracowanej bazy wiedzy na kilku przykładowych
+problemach rozwiązanych za pomocą wnioskowania (minimum 3).: 30 pkt.
