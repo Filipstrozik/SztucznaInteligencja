@@ -1,81 +1,80 @@
 /*
-    Drukarka to Brother DCP-T425W, stoi na komodzie w moim pokoju,
-    a instrukcja obsługi była podstawą do zrealizowania tej listy.
-    Instrukcja jest zatytułowana "Podręcznik szybkiej obsługi".
-    Drukarka posiada takie elementy jak: 
-    - kabel zasilający
-    - kabel USB
-    - taca na papier
-    - papier
-    - głowica drukująca
-    - tusz black
-    - tusz cyan
-    - tusz magenta
-    - tusz yellow
-    Drukarka posiada takie przyciski jak:
-    - przycisk włączania
-    - przycisk kopiowania w kolorze
-    - przycisk kopiowania w czerni
-    - przycisk szybkiego kopiowania
-    - przycisk drukowania w czerni
-    Drukarka posiada takie diody jak:
-    - dioda zasilania
-    - dioda ostrzegawcza
-    - dioda tuszu
-    - dioda wifi
+Drukarka to Brother DCP-T425W, stoi na komodzie w moim pokoju,
+a instrukcja obsługi była podstawą do zrealizowania tej listy.
+Instrukcja jest zatytułowana "Podręcznik szybkiej obsługi".
+Drukarka posiada takie elementy jak: 
+- kabel zasilający
+- kabel USB
+- taca na papier
+- papier
+- głowica drukująca
+- tusz black
+- tusz cyan
+- tusz magenta
+- tusz yellow
+Drukarka posiada takie przyciski jak:
+- przycisk włączania
+- przycisk kopiowania w kolorze
+- przycisk kopiowania w czerni
+- przycisk szybkiego kopiowania
+- przycisk drukowania w czerni
+Drukarka posiada takie diody jak:
+- dioda zasilania
+- dioda ostrzegawcza
+- dioda tuszu
+- dioda wifi
 
-    Po któtkiej lekturze możemy trafic na strone roziwązywania problemów, która zawiera takie informacje jak:
-    opis przycisków oraz diód:
-    - 1. - przycisk włączania
-    - 2. - dioda led zasilania
-    - 3. - dioda led ostrzegawcza
-    - 4. - dioda led atramentu
-    - 5. - przycisk kopiowania w kolorze
-    - 6. - przycisk kopiowania w czerni
-    - 7. - przycisk szybkiego kopiowania
-    - 8. - przycisk / dioda LED Wi-Fi
-    Również możemy znaleźć informacje o tym jakie błędy mogą wystąpić oraz jak je rozwiązać na podstawie kombinacji swiecenia diód.
-    Dostępne są trzy stany diod: 
-    - wyłączona
-    - włączona
-    - miganie
+Po któtkiej lekturze możemy trafic na strone roziwązywania problemów, która zawiera takie informacje jak:
+opis przycisków oraz diód:
+- 1. - przycisk włączania
+- 2. - dioda led zasilania
+- 3. - dioda led ostrzegawcza
+- 4. - dioda led atramentu
+- 5. - przycisk kopiowania w kolorze
+- 6. - przycisk kopiowania w czerni
+- 7. - przycisk szybkiego kopiowania
+- 8. - przycisk / dioda LED Wi-Fi
+Również możemy znaleźć informacje o tym jakie błędy mogą wystąpić oraz jak je rozwiązać na podstawie kombinacji swiecenia diód.
+Dostępne są trzy stany diod: 
+- wyłączona
+- włączona
+- miganie
 
-    Obrazkami przedstawione są następujące stany diod oraz ich probelemy:
-    1.
-    - dioda zasilania - wyłączona
-    - dioda ostrzegawcza - wyłączona
-    - dioda tuszu - wyłączona
-    - problem - drukarka nie jest podłączona do prądu
-    - element - kabel zasilający
+Obrazkami przedstawione są następujące stany diod oraz ich probelemy:
+1.
+- dioda zasilania - wyłączona
+- dioda ostrzegawcza - wyłączona
+- dioda tuszu - wyłączona
+- problem - drukarka nie jest podłączona do prądu
+- element - kabel zasilający
 
-    2.
-    - dioda zasilania - wyłączona
-    - dioda ostrzegawcza - wyłączona
-    - dioda tuszu - wyłączona
-    - problem - drukarka jest wyłączona
-    - element - przycisk włączania
+2.
+- dioda zasilania - wyłączona
+- dioda ostrzegawcza - wyłączona
+- dioda tuszu - wyłączona
+- problem - drukarka jest wyłączona
+- element - przycisk włączania
 
-    3.
-    - dioda zasilania - miganie
-    - dioda ostrzegawcza - miganie
-    - dioda tuszu - wyłączona
-    - problem - zacięcie papieru
-    - element - papier
+3.
+- dioda zasilania - miganie
+- dioda ostrzegawcza - miganie
+- dioda tuszu - wyłączona
+- problem - zacięcie papieru
+- element - papier
 
-    4.
-    - dioda zasilania - włączona
-    - dioda ostrzegawcza - włączona
-    - dioda tuszu - wyłączona
-    - problem - brak papieru
-    - element - papier
+4.
+- dioda zasilania - włączona
+- dioda ostrzegawcza - włączona
+- dioda tuszu - wyłączona
+- problem - brak papieru
+- element - papier
 
-    5.
-    - dioda zasilania - włączona
-    - dioda ostrzegawcza - miganie
-    - dioda tuszu - wyłączona
-    - problem - zły rozmiar papieru
-    - element - papier
-    
+5.
+- dioda zasilania - włączona
+- dioda ostrzegawcza - miganie
+- dioda tuszu - wyłączona
+- problem - zły rozmiar papieru
+- element - papier
 */
 
 % Printer information
@@ -133,35 +132,27 @@ printer_panel_element(ink_led_diode).
 printer_panel_element(wifi_diode_button).
 
 /*
-    Mając te infromacje, możemy wokonywać proste zapytania, 
-    które będą odpowiadć na pytania typu:
-    - czy drukarka jest bezprzewodowa?
-    - w jaki sposób można drukować?
-    - czy można skanować na drukarce?
-    - jaki jest numer tuszu czarnego
-    - jakie elementy posiada drukarka?
+Mając te infromacje, możemy wokonywać proste zapytania, 
+które będą odpowiadć na pytania typu:
+- czy drukarka jest bezprzewodowa?
+- w jaki sposób można drukować?
+- czy można skanować na drukarce?
+- jaki jest numer tuszu czarnego
+- jakie elementy posiada drukarka?
 
+Przykładowe zapytania:
+?- wireless_printer(brother_dcp_t425w).
+?- can_print(brother_dcp_t425w, TRYB).
+?- can_scan(brother_dcp_t425w, color).
+?- ink_cartridge(black_ink_cartidge, NUMER).
+?- printer_element(ELEMENT).
 
-    Przykładowe zapytania:
-    ?- wireless_printer(brother_dcp_t425w).
-    ?- can_print(brother_dcp_t425w, TRYB).
-    ?- can_scan(brother_dcp_t425w, color).
-    ?- ink_cartridge(black_ink_cartidge, NUMER).
-    ?- printer_element(ELEMENT).
-
-    Wszystkie zapytania zwrócą wartość true, ponieważ są to fakty o drukarce.
-    Gdybyśmy mieli fakty o wielu drukarkach, to moglibyśmy poniekąd tworzyć zapytania w celu znalezenia 
-    drukarki o określonych właściwościach, np.:
-    ?- wireless_printer(PRINTER), can_print(PRINTER, color), can_scan(PRINTER, color).
-    Zapytanie to zwróciłoby nam wszystkie drukarki, które posiadają możliwość drukowania w kolorze oraz skanowania w kolorze.
-    W naszym przypadku zwróciłoby to tylko jedną drukarkę, ponieważ tylko jedna z nich spełnia te warunki.
-
-    
-
-    Wracając, mając zdefiniowane elementy drukarki, dzięki opisom stanów drukarki w instrukcji, możemy zdefiniować,
-    które elementy powodują wystąpienie błędu, a które nie. To przy opisie stanów drukarki za pomocą diod, pozwoli 
-    na określenie, które elementy są przyczyną wystąpienia błędu i w jaki sposób można mu zaradzić.
-
+Wszystkie zapytania zwrócą wartość true, ponieważ są to fakty o drukarce.
+Gdybyśmy mieli fakty o wielu drukarkach, to moglibyśmy poniekąd tworzyć zapytania w celu znalezenia 
+drukarki o określonych właściwościach, np.:
+?- wireless_printer(PRINTER), can_print(PRINTER, color), can_scan(PRINTER, color).
+Zapytanie to zwróciłoby nam wszystkie drukarki, które posiadają możliwość drukowania w kolorze oraz skanowania w kolorze.
+W naszym przypadku zwróciłoby to tylko jedną drukarkę, ponieważ tylko jedna z nich spełnia te warunki.
 */
 
 
@@ -220,18 +211,10 @@ fix(low_magenta_ink, 'fill up magenta ink cartridge').
 fix(low_yellow_ink, 'fill up yellow ink cartridge').
 fix(low_black_ink, 'fill up black ink cartridge').
 
-
-/*
-
-
-*/
-
-
+% Troubleshooting rules
+% Reguły rozwiązywania problemów
 define_error_by_led(POWER, WARN, INK, ERROR) :-
     led_state(ERROR, POWER, WARN, INK).
-
-
-% change this code to not check printer_panel_element if already checked printer_element
 
 define_element(POWER, WARN, INK, ELEMENT) :-
     define_error_by_led(POWER, WARN, INK, ERROR),
@@ -239,8 +222,6 @@ define_element(POWER, WARN, INK, ELEMENT) :-
     cause(ELEMENT, STATE, ERROR),
     (\+ printer_element(ELEMENT), printer_panel_element(ELEMENT)).
     
-
-
 define_printing_element(PRINT_QLTY, ELEMENT) :-
     print_problem(PRINT_QLTY, ERROR),
     cause(ELEMENT, PRINT_QLTY, ERROR),
@@ -258,7 +239,7 @@ troubleshoot_printing_quality(PRINT_QLTY, ACTION) :-
     define_solution(ERROR,ACTION).
 
 /*
-dzięki tym predykatom możemy określić, które elementy drukarki powodują wystąpienie błędu
+Dzięki tym predykatom możemy określić, które elementy drukarki powodują wystąpienie błędu
 oraz jakie rozwiązanie jest potrzebne, aby go naprawić.
 Dodatkowo możemy określić, które elementy drukarki powodują wystąpienie błędu w jakości wydruku
 oraz jakie rozwiązanie jest potrzebne, aby go naprawić.
@@ -287,6 +268,7 @@ Przykładowe zapytania:
     ?- troubleshoot_printing_quality(bad_quality, ACTION).
     ?- troubleshoot_printing_quality(good_quality_but_no_color, ACTION).
 */
+
 troubleshoot_script :-
     write('Is the printer printing?'), nl,
     read(Answer),
