@@ -24,7 +24,7 @@
     - dioda tuszu
     - dioda wifi
 
-    Po któtkiej lekurze możemy trafic na strone roziwązywania problemów, która zawiera takie informacje jak:
+    Po któtkiej lekturze możemy trafic na strone roziwązywania problemów, która zawiera takie informacje jak:
     opis przycisków oraz diód:
     - 1. - przycisk włączania
     - 2. - dioda led zasilania
@@ -76,14 +76,6 @@
     - problem - zły rozmiar papieru
     - element - papier
     
-    (naciaganie)
-    6.
-    - dioda zasilania - miganie
-    - dioda ostrzegawcza - miganie
-    - dioda tuszu - miganie
-    - problem - zanieczyszczona głowica drukująca
-    - element - głowica drukująca
-
 */
 
 % Printer information
@@ -120,25 +112,25 @@ printer_element(usb_cable).
 printer_element(paper_tray).
 printer_element(paper).
 printer_element(printhead).
-printer_element(black_ink_cartidge).
-printer_element(cyan_ink_cartidge).
-printer_element(yellow_ink_cartidge).
-printer_element(magenta_ink_cartidge).
+printer_element(black_ink_cartridge).
+printer_element(cyan_ink_cartridge).
+printer_element(yellow_ink_cartridge).
+printer_element(magenta_ink_cartridge).
 
 % Printer panel elements
 % Fakty o elementach panelu drukarki
-printer_panel_element(brother_dcp_t425w, power_on_button).
-printer_panel_element(brother_dcp_t425w, start_color_button).
-printer_panel_element(brother_dcp_t425w, start_mono_button).
-printer_panel_element(brother_dcp_t425w, fast_copy_button).
-printer_panel_element(brother_dcp_t425w, start_mono_button).
+printer_panel_element(power_button).
+printer_panel_element(start_color_button).
+printer_panel_element(start_mono_button).
+printer_panel_element(fast_copy_button).
+printer_panel_element(start_mono_button).
 
 % Status Diodes
 % Fakty o diodach
-printer_panel_element(brother_dcp_t425w, led_diode_power).
-printer_panel_element(brother_dcp_t425w, led_diode_warinig).
-printer_panel_element(brother_dcp_t425w, ink_led_diode).
-printer_panel_element(brother_dcp_t425w, wifi_diode_button).
+printer_panel_element(led_diode_power).
+printer_panel_element(led_diode_warinig).
+printer_panel_element(ink_led_diode).
+printer_panel_element(wifi_diode_button).
 
 /*
     Mając te infromacje, możemy wokonywać proste zapytania, 
@@ -164,6 +156,8 @@ printer_panel_element(brother_dcp_t425w, wifi_diode_button).
     Zapytanie to zwróciłoby nam wszystkie drukarki, które posiadają możliwość drukowania w kolorze oraz skanowania w kolorze.
     W naszym przypadku zwróciłoby to tylko jedną drukarkę, ponieważ tylko jedna z nich spełnia te warunki.
 
+    
+
     Wracając, mając zdefiniowane elementy drukarki, dzięki opisom stanów drukarki w instrukcji, możemy zdefiniować,
     które elementy powodują wystąpienie błędu, a które nie. To przy opisie stanów drukarki za pomocą diod, pozwoli 
     na określenie, które elementy są przyczyną wystąpienia błędu i w jaki sposób można mu zaradzić.
@@ -174,48 +168,43 @@ printer_panel_element(brother_dcp_t425w, wifi_diode_button).
 % LED states representing error states
 % Fakty o stanach diod, które odpowiadają za błędy
 % led_state(Error, Power, Warning, Ink)
-
+led_state(not_plugged_in, off, off, off).
 led_state(turned_off, off, off, off).
 led_state(paper_jam, blink, blink, off).
 led_state(no_paper, on, on, off).
 led_state(paper_tray_not_inserted, on, on, off).
 led_state(incorrect_paper_size, on, blink, off).
-% naciagane
-%led_state(dirty_printhead, blink, blink, blink).
-
-% printer just works
-
 
 
 % Error results in a secific state
 % Fakty o błędach, które powodują wystąpienie konkretnego stanu diod
-problem(not_plugged_in, turned_off). % drukarka nie jest podłączona do prądu
+problem(no_power, not_plugged_in). % drukarka nie jest podłączona do prądu
 problem(off, turned_off). % drukarka wyłączona
 problem(dont_print, paper_jam). % zacięcie papieru
 problem(dont_print, no_paper). % brak papieru
-problem(incorrect_paper_size, dont_print). % nieprawidłowy rozmiar papieru
-problem(paper_tray_not_inserted, dont_print). % nieprawidłowy rozmiar papieru
+problem(dont_print, incorrect_paper_size). % nieprawidłowy rozmiar papieru
+problem(dont_print, paper_tray_not_inserted). % nieprawidłowy rozmiar papieru
 
-problem(dirty_printhead, bad_print). % zła jakość wydruku
-problem(low_cyan_ink, bad_print). % zła jakość wydruku
-problem(low_magenta_ink, bad_print). % zła jakość wydruku
-problem(low_yellow_ink, bad_print). % zła jakość wydruku
-problem(low_black_ink, bad_print). % zła jakość wydruku
+print_problem(bad_quality, dirty_printhead). % zła jakość wydruku
+print_problem(good_quality_but_no_color, low_cyan_ink). % zła jakość wydruku
+print_problem(good_quality_but_no_color, low_magenta_ink). % zła jakość wydruku
+print_problem(good_quality_but_no_color, low_yellow_ink). % zła jakość wydruku
+print_problem(good_quality_but_no_color, low_black_ink). % zła jakość wydruku
 
 
 % Element causes a specifc Error 
 % Fakty o elementach, które powodują wystąpienie konkretnego błędu
-cause(power_cable, not_plugged_in). % kabel zasilający nie jest podłączony
-cause(power_button, off). % kabel zasilający nie jest podłączony
-cause(paper, no_paper). % brak papieru
-cause(paper_tray, paper_tray_not_inserted). % taca na papier nie jest włożona
-cause(paper, incorrect_paper_size). % papier nie pasuje do drukarki
-cause(paper, paper_jam). % papier powoduje zacięcie papieru
-cause(printhead, dirty_printhead). % głowica drukująca jest zanieczyszczona
-cause(cyan_ink_cartridge, low_cyan_ink). % brak tuszu cyan
-cause(magenta_ink_cartridge, low_magenta_ink). % brak tuszu magenta
-cause(yellow_ink_cartridge, low_yellow_ink). % brak tuszu yellow
-cause(black_ink_cartridge, low_black_ink). % brak tuszu black
+cause(power_cable, no_power, not_plugged_in). % kabel zasilający nie jest podłączony
+cause(power_button, off, turned_off). % kabel zasilający nie jest podłączony
+cause(paper, dont_print, no_paper). % brak papieru
+cause(paper_tray, dont_print, paper_tray_not_inserted). % taca na papier nie jest włożona
+cause(paper, dont_print, incorrect_paper_size). % papier nie pasuje do drukarki
+cause(paper, dont_print, paper_jam). % papier powoduje zacięcie papieru
+cause(printhead, bad_quality, dirty_printhead). % głowica drukująca jest zanieczyszczona
+cause(cyan_ink_cartridge, good_quality_but_no_color, low_cyan_ink). % brak tuszu cyan
+cause(magenta_ink_cartridge, good_quality_but_no_color, low_magenta_ink). % brak tuszu magenta
+cause(yellow_ink_cartridge, good_quality_but_no_color, low_yellow_ink). % brak tuszu yellow
+cause(black_ink_cartridge, good_quality_but_no_color, low_black_ink). % brak tuszu black
 
 % Solutions to problems
 % Fakty o rozwiązaniach problemów
@@ -226,56 +215,94 @@ fix(paper_tray_not_inserted, 'insert a paper tray properly').
 fix(incorrect_paper_size, 'insert a proper paper size').
 fix(paper_jam, 'remove a paper jam').
 fix(dirty_printhead, 'clean a printhead').
-
-
-
-
-% led_state(ERROR, blink, blink, off), cause(ELEMENT, ERROR).
-
-define_error(Power, Warn, Ink, ERROR) :-
-    led_state(ERROR, Power, Warn, Ink).
-% define_error(off, off, off).
-
-working('nothing to do, printer wo').
-
-
-
-
-
-define_element(Power, Warn, Ink, ELEMENT) :-
-    (led_state(ERROR, Power, Warn, Ink),
-    problem(STATE, ERROR),
-    cause(ELEMENT, STATE)).
+fix(low_cyan_ink, 'fill up cyan ink cartridge').
+fix(low_magenta_ink, 'fill up magenta ink cartridge').
+fix(low_yellow_ink, 'fill up yellow ink cartridge').
+fix(low_black_ink, 'fill up black ink cartridge').
 
 
 /*
-define_element(Power, Warn, Ink, ELEMENT) :-
-    ((led_state(ERROR, Power, Warn, Ink),
-    problem(STATE, ERROR)),
-    cause(ELEMENT, STATE));
-    ( \+ led_state(_, Power, Warn, Ink), 
-    problem(STATE, bad_print),
-    cause(ELEMENT, STATE)).
+
+
 */
 
-%define_element(off, off, off, ELEMENT).
 
+define_error_by_led(POWER, WARN, INK, ERROR) :-
+    led_state(ERROR, POWER, WARN, INK).
+
+
+% change this code to not check printer_panel_element if already checked printer_element
+
+define_element(POWER, WARN, INK, ELEMENT) :-
+    define_error_by_led(POWER, WARN, INK, ERROR),
+    problem(STATE, ERROR),
+    cause(ELEMENT, STATE, ERROR),
+    (\+ printer_element(ELEMENT), printer_panel_element(ELEMENT)).
+    
+
+
+define_printing_element(PRINT_QLTY, ELEMENT) :-
+    print_problem(PRINT_QLTY, ERROR),
+    cause(ELEMENT, PRINT_QLTY, ERROR),
+    printer_element(ELEMENT).
 
 define_solution(ERROR, ACTION) :-
     fix(ERROR, ACTION).
-    
 
-troubleshoot(Power, Warn, Ink, ACTION) :-
-    (define_error(Power, Warn, Ink, ERROR),
-    define_solution(ERROR,ACTION));
-    working(ACTION).
-    
+troubleshoot(POWER, WARN, INK, ACTION) :-
+    define_error_by_led(POWER, WARN, INK, ERROR),
+    define_solution(ERROR,ACTION).
 
-% cause(X,Y), problem(Y, bad_print), led_state(Y, blink, blink, blink).
+troubleshoot_printing_quality(PRINT_QLTY, ACTION) :-
+    print_problem(PRINT_QLTY, ERROR),
+    define_solution(ERROR,ACTION).
 
+/*
+dzięki tym predykatom możemy określić, które elementy drukarki powodują wystąpienie błędu
+oraz jakie rozwiązanie jest potrzebne, aby go naprawić.
+Dodatkowo możemy określić, które elementy drukarki powodują wystąpienie błędu w jakości wydruku
+oraz jakie rozwiązanie jest potrzebne, aby go naprawić.
 
-
-cos(Error):-
-    problem(Error, Element1),
-    problem(Error, Element2),
-    Element1 \= Element2.
+Przykładowe zapytania:
+ - możemy sprawdzić jaki stan diod odpowiada problemowi:
+    define_error_by_led(on, blink, off, ERROR).
+    define_error_by_led(POWER, WARN, INK, paper_jam).
+ - możemy sprawdzić, które elementy powodują wystąpienie błędu:
+    ?- define_element(off, off, off, ELEMENT).
+    ?- define_element(on, on, off, ELEMENT).
+    ?- define_element(blink, blink, off, ELEMENT).
+    ?- define_element(POWER, WARN, INK, incorrect_paper_size).
+ - możemy zdefiniować, które elementy powodują wystąpienie błędu w jakości wydruku:
+    ?- define_printing_element(bad_quality, ELEMENT).
+    ?- define_printing_element(good_quality_but_no_color, ELEMENT).
+ - możemy zdefiniować, jakie czynności są wymagane do naprawy konkretnego błedu:
+    ?- define_solution(incorrect_paper_size, ACTION).
+    ?- define_solution(dirty_printhead, ACTION).
+    ?- define_solution(low_black_ink, ACTION).
+ - możemy wnioskować jaka czynność jest potrzebna podając stany diod:
+    ?- troubleshoot(off, off, off, ACTION).
+    ?- troubleshoot(on, on, off, ACTION).
+    ?- troubleshoot(blink, blink, off, ACTION).
+ - możemy wnioskować jaka czynność jest potrzebna określając jakość wydruku:
+    ?- troubleshoot_printing_quality(bad_quality, ACTION).
+    ?- troubleshoot_printing_quality(good_quality_but_no_color, ACTION).
+*/
+troubleshoot_script :-
+    write('Is the printer printing?'), nl,
+    read(Answer),
+    (Answer = n ->
+        write('What is the state of the Power diode? (on / blink / off)'), nl,
+        read(Power),
+        write('What is the state of the Warn diode? (on / blink / off)'), nl,
+        read(Warn),
+        write('What is the state of the Ink diode? (on / blink / off)'), nl,
+        read(Ink),
+        troubleshoot(Power, Warn, Ink, ACTION),
+        write(ACTION), nl
+    ;
+    Answer = y ->
+        write('What is the quality of printing? (bad_quality / good_quality_but_no_color)'), nl,
+        read(Quality),
+        troubleshoot_printing_quality(Quality, ACTION),
+        write(ACTION), nl
+    ).
